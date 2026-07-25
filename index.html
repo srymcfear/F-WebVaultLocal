@@ -910,8 +910,33 @@ function genPassword(){
 }
 
 // ─── STORAGE ─────────────────────────────────────────
-function loadData(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}}catch{return{}}}
-function saveData(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}
+function loadData(){
+  try{
+    const d=JSON.parse(localStorage.getItem(STORAGE_KEY))||{}
+    if(d.custom_categories && Array.isArray(d.custom_categories)){
+      const defaults=['email','social','dev','finance','shopping','work','other']
+      state.categories=Array.from(new Set([...defaults, ...d.custom_categories]))
+    }
+    return d
+  }catch{return{}}
+}
+function saveData(d){
+  const defaults=['email','social','dev','finance','shopping','work','other']
+  d.custom_categories=state.categories.filter(c=>!defaults.includes(c))
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(d))
+}
+
+function addCustomCategory(rawName){
+  if(!rawName)return null
+  const clean=rawName.trim().toLowerCase()
+  if(!clean)return null
+  if(!state.categories.includes(clean)){
+    state.categories.push(clean)
+    const data=loadData()
+    saveData(data)
+  }
+  return clean
+}
 
 // ─── STATE ───────────────────────────────────────────
 let state={
@@ -1357,7 +1382,7 @@ function render(){
           return `<div class="vault-entry" style="flex-direction:column;align-items:stretch;gap:14px;padding:18px;background:rgba(6,10,18,0.95);border-color:var(--primary);">
             <div class="grid-2">
               <div class="form-group"><label>Tên Dịch Vụ (Service)</label><input class="terminal-input" id="edit-service" value="${esc(state.editForm.service)}"/></div>
-              <div class="form-group"><label>Danh Mục (Category)</label><select class="terminal-input" id="edit-cat"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Danh Mục (Category)</label><div style="display:flex;gap:8px;"><select class="terminal-input" id="edit-cat" style="flex:1;"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}<option value="__new__">+ TẠO DANH MỤC MỚI...</option></select><button type="button" class="btn btn-terminal btn-sm" id="btn-add-cat-edit" title="Tạo danh mục mới">${SVG.plus} MỚI</button></div></div>
             </div>
             <div class="grid-2">
               <div class="form-group"><label>Tên đăng nhập / Email</label><input class="terminal-input" id="edit-user" value="${esc(state.editForm.username)}"/></div>
@@ -1409,7 +1434,7 @@ function render(){
             <h4 style="font-size:15px;font-weight:700;color:var(--primary-hover);margin-bottom:14px;display:flex;align-items:center;gap:8px;">${SVG.plus} THÊM TÀI KHOẢN MỚI</h4>
             <div class="grid-2 mb-12">
               <div class="form-group"><label>Tên Dịch Vụ (Google, GitHub, Facebook...)</label><input class="terminal-input" id="new-service" placeholder="VD: GitHub" value="${esc(state.newItem.service)}"/></div>
-              <div class="form-group"><label>Danh Mục</label><select class="terminal-input" id="new-cat"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Danh Mục</label><div style="display:flex;gap:8px;"><select class="terminal-input" id="new-cat" style="flex:1;"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}<option value="__new__">+ TẠO DANH MỤC MỚI...</option></select><button type="button" class="btn btn-terminal btn-sm" id="btn-add-cat-new" title="Tạo danh mục mới">${SVG.plus} MỚI</button></div></div>
             </div>
             <div class="grid-2 mb-12">
               <div class="form-group"><label>Tên Đăng Nhập / Email</label><input class="terminal-input" id="new-user" placeholder="user@domain.com" value="${esc(state.newItem.username)}"/></div>
@@ -1689,11 +1714,43 @@ function bindEvents(){
     }
     document.querySelectorAll('.pill[data-cat]').forEach(el=>{el.addEventListener('click',()=>{state.activeCategory=el.dataset.cat===''?'':el.dataset.cat;render()})})
 
+    // Category creation handler
+    const triggerAddCategory=(targetField)=>{
+      const catInput=prompt('Nhập tên danh mục mới (VD: crypto, game, personal, banking, cloud...):')
+      if(catInput){
+        const clean=addCustomCategory(catInput)
+        if(clean){
+          if(targetField==='new') state.newItem.category=clean
+          if(targetField==='edit') state.editForm.category=clean
+          toast('success',`Đã tạo danh mục "${clean.toUpperCase()}"`)
+          render()
+        }else if(targetField==='new'){
+          state.newItem.category=''
+          render()
+        }else if(targetField==='edit'){
+          state.editForm.category=''
+          render()
+        }
+      }else if(targetField==='new'){
+        state.newItem.category=''
+        render()
+      }else if(targetField==='edit'){
+        state.editForm.category=''
+        render()
+      }
+    }
+
+    document.getElementById('btn-add-cat-new')?.addEventListener('click',()=>triggerAddCategory('new'))
+    document.getElementById('btn-add-cat-edit')?.addEventListener('click',()=>triggerAddCategory('edit'))
+
     // Add form
     document.getElementById('new-service')?.addEventListener('input',e=>{state.newItem.service=e.target.value})
     document.getElementById('new-user')?.addEventListener('input',e=>{state.newItem.username=e.target.value})
     document.getElementById('new-pass')?.addEventListener('input',e=>{state.newItem.password=e.target.value})
-    document.getElementById('new-cat')?.addEventListener('change',e=>{state.newItem.category=e.target.value})
+    document.getElementById('new-cat')?.addEventListener('change',e=>{
+      if(e.target.value==='__new__') triggerAddCategory('new')
+      else state.newItem.category=e.target.value
+    })
     document.getElementById('gen-new')?.addEventListener('click',()=>{state.newItem.password=genPassword();render()})
     document.getElementById('save-add')?.addEventListener('click',addItem)
     document.getElementById('cancel-add')?.addEventListener('click',()=>{state.showAdd=false;state.newItem={service:'',username:'',password:'',category:''};render()})
@@ -1702,7 +1759,10 @@ function bindEvents(){
     document.getElementById('edit-service')?.addEventListener('input',e=>{state.editForm.service=e.target.value})
     document.getElementById('edit-user')?.addEventListener('input',e=>{state.editForm.username=e.target.value})
     document.getElementById('edit-pass')?.addEventListener('input',e=>{state.editForm.password=e.target.value})
-    document.getElementById('edit-cat')?.addEventListener('change',e=>{state.editForm.category=e.target.value})
+    document.getElementById('edit-cat')?.addEventListener('change',e=>{
+      if(e.target.value==='__new__') triggerAddCategory('edit')
+      else state.editForm.category=e.target.value
+    })
     document.getElementById('gen-edit')?.addEventListener('click',()=>{state.editForm.password=genPassword();render()})
     document.getElementById('save-edit')?.addEventListener('click',saveEdit)
     document.getElementById('cancel-edit')?.addEventListener('click',()=>{state.editingId=null;render()})

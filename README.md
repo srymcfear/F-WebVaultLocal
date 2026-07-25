@@ -60,9 +60,19 @@ Nhằm đảm bảo tính tương thích và bảo mật cao nhất, ô nhập M
 3. Không cần cài đặt `Node.js` hay `npm`.
 
 ### 2. Deploy miễn phí lên Cloudflare Pages (`*.pages.dev`)
-1. Đăng nhập [dash.cloudflare.com](https://dash.cloudflare.com) $\rightarrow$ chọn **Workers & Pages** $\rightarrow$ **Pages**.
-2. Chọn **Upload assets** $\rightarrow$ Kéo thả thư mục chứa file `index.html` lên.
-3. Nhận ngay đường link web tĩnh dạng `https://ten-du-an.pages.dev` chạy 24/7 hoàn toàn miễn phí!
+
+🚀 **Kéo thả trực tiếp (Không cần cài đặt gì, có link `.pages.dev` sau 10 giây!)**
+Nếu bạn không muốn liên kết GitHub, bạn chỉ cần kéo thả file `index.html` trực tiếp lên Cloudflare:
+
+1. Truy cập trang chủ Cloudflare: [dash.cloudflare.com](https://dash.cloudflare.com) và đăng ký/đăng nhập 1 tài khoản miễn phí.
+2. Ở menu bên trái, bấm vào **Workers & Pages**.
+3. Chọn tab **Pages** $\rightarrow$ bấm nút **Create a project**.
+4. Chọn mục **Upload assets** (Kéo thả file).
+5. Nhập **Project name** (Tên dự án của bạn, ví dụ: `fear-vault`). Tên này sẽ tạo thành link `https://fear-vault.pages.dev`.
+6. Kéo thư mục chứa file `index.html` thả vào ô vuông trên màn hình.
+7. Bấm **Save and Deploy**.
+
+✨ **Hoàn thành!** Bạn sẽ nhận được ngay đường link dạng `https://fear-vault.pages.dev` hoạt động 24/7!
 
 ---
 
