@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>FEAR·VAULT · CYBER HUD</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" async></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-primary:#000000;
+  --bg-secondary:#05070c;
+  --surface:rgba(6,10,18,0.92);
+  --surface-hover:rgba(12,20,34,0.96);
+  --foreground:#ffffff;
+  --muted:#64748b;
+  --primary:#00f0ff;
+  --primary-hover:#38bdf8;
+  --primary-glow:rgba(0,240,255,0.35);
+  --accent:#00f0ff;
+  --accent-hover:#38bdf8;
+  --accent-glow:rgba(0,240,255,0.35);
+  --red-accent:#ef4444;
+  --red-glow:rgba(239,68,68,0.25);
+  --border:rgba(0,240,255,0.28);
+  --border-hover:rgba(0,240,255,0.55);
+  --success:#10b981;
+  --warning:#f59e0b;
+  --error:#ef4444;
+  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-display:'Orbitron',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html, body{
+  background:#000000 !important;
+  background-color:#000000 !important;
+  width:100vw;
+  height:100vh;
+  margin:0;
+  padding:0;
+  overflow:hidden !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-sans);
+  color:var(--foreground);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+}
+
+/* Background Particle Canvas */
+#cosmic-canvas{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100vh;
+  pointer-events:none;
+  z-index:0;
+  background-color:#000000 !important;
+}
+
+.container{
+  width:100%;
+  max-width:1080px;
+  height:100vh;
+  max-height:100vh;
+  margin:0 auto;
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:16px;
+}
+
+/* Header & Glass Section */
+.terminal-section{
+  width:100%;
+  max-height:calc(100vh - 32px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border-radius:20px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  backdrop-filter:blur(24px);
+  box-shadow:0 16px 48px 0 rgba(0,0,0,0.9), 0 0 20px rgba(0,240,255,0.1);
+  transition:all 0.3s ease;
+}
+.terminal-section .title-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 22px;
+  border-bottom:1px solid rgba(0,240,255,0.2);
+  background:rgba(4,7,14,0.9);
+}
+.terminal-section .title-bar .dot{width:12px;height:12px;border-radius:50%}
+.terminal-section .title-bar .dot.r{background:var(--error)}
+.terminal-section .title-bar .dot.y{background:var(--warning)}
+.terminal-section .title-bar .dot.g{background:var(--success)}
+.terminal-section .title-bar .lbl{
+  margin-left:8px;
+  font-size:13px;
+  color:var(--muted);
+  font-family:var(--font-mono);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.terminal-section .title-bar .lbl b{
+  color:#00f0ff;
+  font-weight:800;
+  font-family:var(--font-display);
+  letter-spacing:1px;
+}
+.terminal-section .body{padding:24px;font-size:14px;overflow-y:auto;flex:1}
+
+/* Forms & Inputs */
+.terminal-input{
+  width:100%;
+  height:46px;
+  padding:0 18px;
+  font-family:var(--font-sans);
+  font-size:14px;
+  background:rgba(4,7,14,0.9);
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--foreground);
+  outline:none;
+  transition:all 0.25s ease;
+}
+.terminal-input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(0,240,255,0.35);
+  background:rgba(6,10,20,0.98);
+}
+.terminal-input::placeholder{color:#475569}
+select.terminal-input{cursor:pointer}
+
+/* Capsule / Pill Input for Login */
+.input-pill{
+  border-radius:9999px !important;
+  height:52px !important;
+  padding:0 26px !important;
+  font-size:15px !important;
+  background:rgba(4,7,14,0.94) !important;
+  border:1.5px solid rgba(0,240,255,0.4) !important;
+}
+.input-pill:focus{
+  border-color:var(--accent) !important;
+  box-shadow:0 0 0 2px rgba(0,240,255,0.4) !important;
+}
+
+/* 6 OTP Squircle Boxes for 2FA */
+.otp-group{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin:18px 0 12px 0;
+}
+.otp-box{
+  width:50px;
+  height:56px;
+  border-radius:16px;
+  text-align:center;
+  font-family:var(--font-mono);
+  font-size:24px;
+  font-weight:700;
+  color:#ffffff;
+  background:rgba(4,7,14,0.92);
+  border:1.5px solid var(--border);
+  outline:none;
+  transition:transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,0.7);
+}
+.otp-box:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 16px var(--accent-glow), inset 0 0 6px var(--accent-glow);
+  transform:scale(1.08) translateY(-2px);
+  background:rgba(8,14,26,0.98);
+}
+.otp-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 6px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+
+/* Buttons */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  height:42px;
+  padding:0 20px;
+  font-family:var(--font-sans);
+  font-size:13px;
+  font-weight:700;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all 0.25s ease;
+  text-decoration:none;
+  white-space:nowrap;
+  border:none;
+}
+.btn-terminal{
+  background:rgba(0,240,255,0.08);
+  color:var(--foreground);
+  border:1px solid var(--border);
+}
+.btn-terminal:hover{
+  color:#ffffff;
+  border-color:var(--accent);
+  background:rgba(0,240,255,0.2);
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px var(--accent-glow);
+}
+.btn-terminal-primary{
+  background:linear-gradient(135deg, #00f0ff, #0284c7, #38bdf8);
+  background-size:200% 200%;
+  animation:gradientShift 4s ease infinite;
+  color:#000000;
+  font-weight:800;
+  box-shadow:0 6px 20px rgba(0,240,255,0.4);
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.btn-terminal-primary:hover{
+  box-shadow:0 8px 26px rgba(0,240,255,0.6);
+  filter:brightness(1.15);
+  transform:translateY(-2px);
+}
+.btn-danger{
+  background:rgba(239,68,68,0.14);
+  color:var(--error);
+  border:1px solid rgba(239,68,68,0.35);
+}
+.btn-danger:hover{
+  background:rgba(239,68,68,0.3);
+  border-color:var(--error);
+  color:#ffffff;
+  transform:translateY(-2px);
+}
+.btn-sm{height:34px;padding:0 14px;font-size:12px;border-radius:8px}
+
+/* Toolbar & Layout */
+.prompt-line{display:flex;align-items:center;gap:10px}
+
+/* Filter Pills */
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.pill{
+  padding:7px 16px;
+  border-radius:24px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  border:1px solid var(--border);
+  color:var(--muted);
+  background:rgba(4,7,14,0.75);
+  transition:all 0.2s ease;
+}
+.pill.active{
+  border-color:var(--accent);
+  color:#000000;
+  font-weight:800;
+  background:linear-gradient(135deg, #00f0ff, #38bdf8);
+  box-shadow:0 0 16px var(--accent-glow);
+}
+.pill:hover:not(.active){border-color:var(--border-hover);color:var(--foreground);transform:translateY(-1px)}
+
+/* 3D Cyber HUD Lock Screen Card (Nền đen tuyền, chữ Cyan/White) */
+.lock-screen{
+  position:relative;
+  overflow:hidden;
+  width:100%;
+  max-width:440px;
+  margin:0 auto;
+  padding:34px 28px;
+  text-align:center;
+  border:1px solid rgba(0,240,255,0.35);
+  border-radius:24px;
+  background:rgba(6,10,18,0.76);
+  backdrop-filter:blur(18px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.92), inset 0 0 30px rgba(0,240,255,0.06);
+  transform-style:preserve-3d;
+  transition:transform 0.15s ease-out;
+}
+#recover-btn:hover{
+  color:#ffffff !important;
+  text-shadow:0 0 14px #00f0ff !important;
+  transform:translateY(-1px);
+}
+.lock-screen .glow{
+  position:absolute;
+  top:25%;
+  left:50%;
+  width:240px;
+  height:240px;
+  background:radial-gradient(circle, rgba(0,240,255,0.1), rgba(56,189,248,0.05), transparent 70%);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+
+/* Cyber HUD Telemetry Header */
+.hud-telemetry{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:14px;
+  font-family:var(--font-mono);
+  position:relative;
+  z-index:2;
+}
+.hud-tag{
+  font-size:10px;
+  font-weight:700;
+  color:#00f0ff;
+  letter-spacing:3px;
+  opacity:0.9;
+}
+.hud-num{
+  font-family:var(--font-display);
+  font-size:22px;
+  font-weight:800;
+  color:#ffffff;
+  letter-spacing:3px;
+  margin-top:2px;
+}
+.hud-num span{color:#00f0ff}
+
+/* Cyber HUD Progress Bar */
+.hud-progress{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  margin-bottom:18px;
+  position:relative;
+  z-index:2;
+}
+.hud-progress-bar{
+  flex:1;
+  height:4px;
+  background:rgba(0,240,255,0.15);
+  border-radius:2px;
+  overflow:hidden;
+  position:relative;
+}
+.hud-progress-bar::after{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  height:100%;
+  width:85%;
+  background:linear-gradient(90deg, #00f0ff, #38bdf8);
+  box-shadow:0 0 10px #00f0ff;
+}
+.hud-progress-txt{
+  font-family:var(--font-mono);
+  font-size:10px;
+  font-weight:700;
+  color:#00f0ff;
+  letter-spacing:1px;
+}
+
+/* Cyber HUD Corner Brackets */
+.hud-corner{
+  position:absolute;
+  width:16px;
+  height:16px;
+  border:2px solid #00f0ff;
+  pointer-events:none;
+  opacity:0.85;
+}
+.hud-corner.top-left{top:12px;left:12px;border-right:none;border-bottom:none}
+.hud-corner.top-right{top:12px;right:12px;border-left:none;border-bottom:none}
+.hud-corner.bottom-left{bottom:12px;left:12px;border-right:none;border-top:none}
+.hud-corner.bottom-right{bottom:12px;right:12px;border-left:none;border-top:none}
+
+/* Spinning Circular Stamp Badge */
+.spinning-stamp-container{
+  position:absolute;
+  right:-15px;
+  bottom:-15px;
+  width:130px;
+  height:130px;
+  pointer-events:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0.85;
+}
+.spinning-stamp{
+  width:100%;
+  height:100%;
+  animation:spinStamp 18s linear infinite;
+}
+@keyframes spinStamp{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+.stamp-center-icon{
+  position:absolute;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(0,240,255,0.15);
+  border:1px solid rgba(0,240,255,0.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#00f0ff;
+}
+
+/* Ghost Background Typography */
+.ghost-typography{
+  position:absolute;
+  left:-10px;
+  bottom:35px;
+  z-index:0;
+  pointer-events:none;
+  user-select:none;
+  display:flex;
+  flex-direction:column;
+  line-height:0.85;
+  text-align:left;
+  opacity:0.35;
+}
+.ghost-text-primary{
+  font-family:var(--font-display);
+  font-size:44px;
+  font-weight:900;
+  color:rgba(255,255,255,0.03);
+  letter-spacing:3px;
+}
+.ghost-text-outline{
+  font-family:var(--font-display);
+  font-size:44px;
+  font-weight:900;
+  -webkit-text-stroke:1px rgba(0,240,255,0.2);
+  color:transparent;
+  letter-spacing:3px;
+}
+
+.lock-screen .icon-wrapper{
+  width:68px;
+  height:68px;
+  margin:0 auto 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:20px;
+  background:linear-gradient(135deg, rgba(0,240,255,0.25), rgba(56,189,248,0.25));
+  border:1px solid rgba(0,240,255,0.4);
+  color:#00f0ff;
+  box-shadow:0 6px 20px rgba(0,240,255,0.25);
+  position:relative;
+  z-index:1;
+}
+.lock-screen h2{
+  font-family:var(--font-display);
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#ffffff;
+  margin-bottom:6px;
+  background:linear-gradient(135deg, #ffffff, #00f0ff, #38bdf8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  position:relative;
+  z-index:1;
+}
+.lock-screen .hint{font-size:13px;color:var(--muted);margin-bottom:20px;position:relative;z-index:1}
+
+/* Vault Entries */
+.vault-entry{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px 20px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:rgba(6,10,18,0.75);
+  font-size:14px;
+  transition:all 0.25s ease;
+  margin-bottom:12px;
+}
+.vault-entry:hover{
+  border-color:var(--accent);
+  background:var(--surface-hover);
+  transform:translateY(-3px) scale(1.005);
+  box-shadow:0 8px 28px rgba(0,240,255,0.2);
+}
+.vault-entry .icon-letter{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  font-weight:800;
+  font-size:19px;
+  flex-shrink:0;
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:0 4px 16px rgba(0,0,0,0.6);
+}
+.vault-entry .service{font-weight:700;font-size:16px;color:#ffffff;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vault-entry .username{color:var(--muted);font-size:13px;flex-shrink:0;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vault-entry .pass{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:#ffffff;
+  flex-shrink:0;
+  letter-spacing:2px;
+  padding:6px 14px;
+  background:rgba(0,0,0,0.7);
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.1);
+  min-width:120px;
+  text-align:center;
+}
+.vault-entry .cat{
+  font-size:11px;
+  font-weight:700;
+  padding:4px 10px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  flex-shrink:0;
+}
+.vault-entry .actions{display:flex;gap:6px;flex-shrink:0}
+
+/* Utility Helpers */
+.flex{display:flex}
+.flex-col{flex-direction:column}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.gap-4{gap:4px}
+.gap-8{gap:8px}
+.gap-12{gap:12px}
+.mt-8{margin-top:8px}
+.mt-12{margin-top:12px}
+.mt-16{margin-top:16px}
+.mb-8{margin-bottom:8px}
+.mb-12{margin-bottom:12px}
+.mb-16{margin-bottom:16px}
+.w-full{width:100%}
+.text-center{text-align:center}
+.shrink-0{flex-shrink:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:640px){
+  .grid-2{grid-template-columns:1fr}
+  .vault-entry{flex-wrap:wrap}
+  .vault-entry .username{max-width:100%}
+  .vault-entry .actions{width:100%;justify-content:flex-end;margin-top:4px}
+  .otp-box{width:42px;height:48px;font-size:20px;border-radius:12px}
+  .ghost-typography{display:none}
+}
+.hidden{display:none}
+
+/* Modals & Toasts */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.88);
+  backdrop-filter:blur(14px);
+  padding:16px;
+}
+.modal{
+  width:100%;
+  max-width:460px;
+  border:1px solid rgba(0,240,255,0.4);
+  border-radius:20px;
+  background:rgba(6,10,18,0.98);
+  box-shadow:0 24px 64px rgba(0,0,0,0.95);
+  padding:32px;
+}
+.modal h3{font-size:18px;font-weight:700;color:#ffffff;margin-bottom:18px}
+.toast{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:100;
+  padding:12px 26px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:600;
+  font-family:var(--font-sans);
+  border:1px solid;
+  backdrop-filter:blur(20px);
+  box-shadow:0 12px 36px rgba(0,0,0,0.7);
+  transition:all 0.3s ease;
+}
+.toast.success{border-color:rgba(16,185,129,0.5);background:rgba(16,185,129,0.2);color:var(--success)}
+.toast.error{border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.2);color:var(--error)}
+.toast.fade{opacity:0;transform:translate(-50%,12px)}
+.totp-input{text-align:center;letter-spacing:14px;font-size:28px;font-weight:700;font-family:var(--font-mono);padding:14px}
+.badge-2fa{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:3px 10px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:700;
+  color:var(--success);
+  border:1px solid rgba(16,185,129,0.4);
+  background:rgba(16,185,129,0.12);
+  margin-left:8px;
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input[type="search"]::-webkit-search-cancel-button{filter:invert(0.7);cursor:pointer}
+svg{display:inline-block;vertical-align:middle}
+
+/* ─── ANIMATIONS & DYNAMIC MICRO-INTERACTIONS ─── */
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: scale(0.94) translateY(12px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes floatIcon {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+@keyframes pulseGlow {
+  0% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.95); }
+  50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.08); }
+  100% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.95); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.7) translateY(16px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes slideUpFade {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastBounce {
+  0% { opacity: 0; transform: translate(-50%, 28px) scale(0.85); }
+  60% { opacity: 1; transform: translate(-50%, -4px) scale(1.03); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@keyframes modalSlide {
+  0% { opacity: 0; transform: translateY(28px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lock-screen {
+  animation: fadeInScale 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.lock-screen .glow {
+  animation: pulseGlow 5.5s ease-in-out infinite alternate;
+}
+.lock-screen .icon-wrapper {
+  animation: floatIcon 3.5s ease-in-out infinite alternate;
+}
+.modal-overlay .modal {
+  animation: modalSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.toast {
+  animation: toastBounce 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.otp-box:nth-child(1) { animation: popIn 0.35s 0.04s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+.otp-box:nth-child(2) { animation: popIn 0.35s 0.08s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+.otp-box:nth-child(3) { animation: popIn 0.35s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+.otp-box:nth-child(4) { animation: popIn 0.35s 0.16s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+.otp-box:nth-child(5) { animation: popIn 0.35s 0.20s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+.otp-box:nth-child(6) { animation: popIn 0.35s 0.24s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+
+.btn:active {
+  transform: scale(0.96) !important;
+}
+.pill:active {
+  transform: scale(0.93);
+}
+</style>
+</head>
+<body>
+
+<canvas id="cosmic-canvas"></canvas>
+
+<div class="container" id="app"></div>
+
+<script>
+// ─── SVG ICONS ───────────────────────────────────────
+const SVG={
+  lock:`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>`,
+  shield:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>`,
+  copy:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
+  eye:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`,
+  eyeOff:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`,
+  edit:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`,
+  trash:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`,
+  plus:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`,
+  search:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`,
+  key:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="m21 2-9.6 9.6"></path><path d="m15.5 7.5 3 3"></path></svg>`,
+  dice:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><circle cx="15.5" cy="8.5" r="1.5"></circle><circle cx="15.5" cy="15.5" r="1.5"></circle><circle cx="8.5" cy="15.5" r="1.5"></circle></svg>`,
+  export:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
+  import:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>`
+}
+
+// ─── CONSTANTS ───────────────────────────────────────
+const PBKDF2_ITERATIONS = 100000
+const KEY_LENGTH = 256
+const SALT_LENGTH = 16
+const IV_LENGTH = 12
+const AUTO_LOCK_MS = 5 * 60 * 1000
+const CLIPBOARD_CLEAR_MS = 30 * 1000
+const STORAGE_KEY = 'fear_vault'
+const TOTP_PERIOD = 30
+const TOTP_DIGITS = 6
+
+// ─── CRYPTO UTILITIES ────────────────────────────────
+function b64ToBuf(b64){const b=atob(b64);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer}
+function bufToB64(buf){const u=new Uint8Array(buf);let b='';for(let i=0;i<u.byteLength;i++)b+=String.fromCharCode(u[i]);return btoa(b)}
+function randBytes(n){return crypto.getRandomValues(new Uint8Array(n))}
+
+async function deriveKey(pw,salt){
+  const enc=new TextEncoder()
+  const km=await crypto.subtle.importKey('raw',enc.encode(pw),{name:'PBKDF2'},false,['deriveKey'])
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:PBKDF2_ITERATIONS,hash:'SHA-256'},km,{name:'AES-GCM',length:KEY_LENGTH},false,['encrypt','decrypt'])
+}
+
+async function pbkdf2Hash(pw,salt){
+  const enc=new TextEncoder()
+  const km=await crypto.subtle.importKey('raw',enc.encode(pw),{name:'PBKDF2'},false,['deriveBits'])
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:PBKDF2_ITERATIONS,hash:'SHA-256'},km,256)
+  return bufToB64(bits)
+}
+
+async function hashPassword(pw){
+  const salt=randBytes(SALT_LENGTH)
+  const hash=await pbkdf2Hash(pw,salt)
+  return bufToB64(salt.buffer)+':'+hash
+}
+
+async function verifyPassword(pw,stored){
+  const ci=stored.indexOf(':')
+  const salt=new Uint8Array(b64ToBuf(stored.slice(0,ci)))
+  const sh=stored.slice(ci+1)
+  const c=await pbkdf2Hash(pw,salt)
+  return c===sh
+}
+
+function generateVaultKey(){return bufToB64(randBytes(32).buffer)}
+function generateRecoveryKey(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let k='FEAR-';const r=randBytes(8);for(let i=0;i<8;i++){if(i===4)k+='-';k+=c[r[i]%c.length]}return k}
+
+// PBKDF2-based encrypt/decrypt — ONLY for vault_key_encrypted & vault_key_recovery
+async function aesEncrypt(pt,pw){
+  const salt=randBytes(SALT_LENGTH);const iv=randBytes(IV_LENGTH)
+  const key=await deriveKey(pw,salt)
+  const enc=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(pt))
+  const c=new Uint8Array(salt.length+iv.length+enc.byteLength)
+  c.set(salt,0);c.set(iv,salt.length);c.set(new Uint8Array(enc),salt.length+iv.length)
+  return bufToB64(c.buffer)
+}
+
+async function aesDecrypt(ct,pw){
+  const c=new Uint8Array(b64ToBuf(ct))
+  const salt=c.slice(0,SALT_LENGTH);const iv=c.slice(SALT_LENGTH,SALT_LENGTH+IV_LENGTH);const d=c.slice(SALT_LENGTH+IV_LENGTH)
+  const key=await deriveKey(pw,salt)
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},key,d))
+}
+
+// Direct AES-256-GCM — for entry data & TOTP secret
+async function directEncrypt(plaintext, rawKeyB64){
+  const keyBytes=new Uint8Array(b64ToBuf(rawKeyB64))
+  const iv=randBytes(IV_LENGTH)
+  const key=await crypto.subtle.importKey('raw',keyBytes,{name:'AES-GCM'},false,['encrypt'])
+  const enc=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(plaintext))
+  const out=new Uint8Array(iv.length+enc.byteLength)
+  out.set(iv,0);out.set(new Uint8Array(enc),iv.length)
+  return bufToB64(out.buffer)
+}
+
+async function directDecrypt(ciphertext, rawKeyB64){
+  const keyBytes=new Uint8Array(b64ToBuf(rawKeyB64))
+  const c=new Uint8Array(b64ToBuf(ciphertext))
+  const iv=c.slice(0,IV_LENGTH);const d=c.slice(IV_LENGTH)
+  const key=await crypto.subtle.importKey('raw',keyBytes,{name:'AES-GCM'},false,['decrypt'])
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},key,d))
+}
+
+// ─── BASE32 ──────────────────────────────────────────
+function base32Encode(buf){
+  const a='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
+  const u=new Uint8Array(buf);let bits='',r=''
+  for(const b of u)bits+=b.toString(2).padStart(8,'0')
+  for(let i=0;i<bits.length;i+=5)r+=a[parseInt(bits.substring(i,i+5).padEnd(5,'0'),2)]
+  return r
+}
+
+function base32Decode(s){
+  const a='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';let bits=''
+  for(const c of s.toUpperCase().replace(/[^A-Z2-7]/g,'')){ const v=a.indexOf(c);if(v>=0)bits+=v.toString(2).padStart(5,'0') }
+  const bytes=new Uint8Array(Math.floor(bits.length/8))
+  for(let i=0;i<bytes.length;i++)bytes[i]=parseInt(bits.substring(i*8,i*8+8),2)
+  return bytes.buffer
+}
+
+// ─── TOTP (RFC 6238) ─────────────────────────────────
+async function generateTOTPCode(secretB32, counter){
+  const secret=base32Decode(secretB32)
+  const cBuf=new ArrayBuffer(8);const v=new DataView(cBuf)
+  v.setUint32(0,Math.floor(counter/0x100000000));v.setUint32(4,counter&0xffffffff)
+  const key=await crypto.subtle.importKey('raw',secret,{name:'HMAC',hash:'SHA-1'},false,['sign'])
+  const hmac=new Uint8Array(await crypto.subtle.sign('HMAC',key,cBuf))
+  const o=hmac[19]&0x0f
+  const code=(((hmac[o]&0x7f)<<24)|((hmac[o+1]&0xff)<<16)|((hmac[o+2]&0xff)<<8)|(hmac[o+3]&0xff))%1000000
+  return code.toString().padStart(6,'0')
+}
+
+async function verifyTOTP(secretB32, inputCode){
+  const now=Math.floor(Date.now()/1000/TOTP_PERIOD)
+  for(let i=-1;i<=1;i++){
+    const code=await generateTOTPCode(secretB32,now+i)
+    if(code===inputCode)return true
+  }
+  return false
+}
+
+// ─── QR CODE RENDERER ────────────────────────────────
+function renderQR(text, containerId){
+  const el=document.getElementById(containerId)
+  if(!el)return
+  if(typeof qrcode==='undefined'){
+    el.innerHTML='<p style="font-size:13px;color:var(--warning);padding:16px;">⚠ QR không khả dụng (offline). Nhập thủ công Secret Key bên dưới.</p>'
+    return
+  }
+  try{
+    const qr=qrcode(0,'M');qr.addData(text);qr.make()
+    const cnt=qr.getModuleCount(),cell=5,mg=10,sz=cnt*cell+mg*2
+    let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="border-radius:8px;">`
+    svg+=`<rect width="${sz}" height="${sz}" fill="#0f0c1b"/>`
+    for(let r=0;r<cnt;r++)for(let c=0;c<cnt;c++)if(qr.isDark(r,c))svg+=`<rect x="${c*cell+mg}" y="${r*cell+mg}" width="${cell}" height="${cell}" fill="#00f0ff"/>`
+    svg+='</svg>'
+    el.innerHTML=svg
+  }catch(e){el.innerHTML='<p style="font-size:13px;color:var(--error);">Lỗi tạo QR: '+e.message+'</p>'}
+}
+
+// ─── EXPORT/IMPORT ENVELOPE (v2) ────────────────────
+async function deriveExportKeys(pw,salt){
+  const enc=new TextEncoder()
+  const km=await crypto.subtle.importKey('raw',enc.encode(pw),{name:'PBKDF2'},false,['deriveBits'])
+  const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:PBKDF2_ITERATIONS,hash:'SHA-256'},km,512)
+  const eb=new Uint8Array(bits.slice(0,32));const hb=new Uint8Array(bits.slice(32))
+  const ek=await crypto.subtle.importKey('raw',eb,{name:'AES-GCM'},false,['encrypt','decrypt'])
+  const hk=await crypto.subtle.importKey('raw',hb,{name:'HMAC',hash:'SHA-256'},false,['sign','verify'])
+  return{encKey:ek,hmacKey:hk}
+}
+
+async function exportVault(data,pw){
+  const salt=randBytes(SALT_LENGTH);const iv=randBytes(IV_LENGTH)
+  const{encKey,hmacKey}=await deriveExportKeys(pw,salt)
+  const enc=await crypto.subtle.encrypt({name:'AES-GCM',iv},encKey,new TextEncoder().encode(data))
+  const sb=bufToB64(salt.buffer);const ib=bufToB64(iv.buffer);const cb=bufToB64(enc)
+  const sig=await crypto.subtle.sign('HMAC',hmacKey,new TextEncoder().encode(sb+ib+cb))
+  return{version:2,created_at:new Date().toISOString(),algorithm:'AES-256-GCM',kdf:{name:'PBKDF2',iterations:PBKDF2_ITERATIONS,hash:'SHA-256'},salt:sb,iv:ib,ciphertext:cb,hmac:bufToB64(sig)}
+}
+
+async function importVault(env,pw){
+  if(env.version!==2)return null
+  const salt=new Uint8Array(b64ToBuf(env.salt));const{encKey,hmacKey}=await deriveExportKeys(pw,salt)
+  const sig=b64ToBuf(env.hmac);const valid=await crypto.subtle.verify('HMAC',hmacKey,sig,new TextEncoder().encode(env.salt+env.iv+env.ciphertext))
+  if(!valid)return null
+  const iv=new Uint8Array(b64ToBuf(env.iv));const ct=b64ToBuf(env.ciphertext)
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},encKey,ct))
+}
+
+// ─── PASSWORD GENERATOR (Fisher-Yates + CSPRNG) ─────
+function genPassword(){
+  const u='ABCDEFGHIJKLMNOPQRSTUVWXYZ',l='abcdefghijklmnopqrstuvwxyz',d='0123456789',s='!@#$%^&*()_-+=<>?',a=u+l+d+s
+  const arr=[]
+  arr.push(u[randBytes(1)[0]%u.length])
+  arr.push(l[randBytes(1)[0]%l.length])
+  arr.push(d[randBytes(1)[0]%d.length])
+  arr.push(s[randBytes(1)[0]%s.length])
+  for(let i=4;i<20;i++)arr.push(a[randBytes(1)[0]%a.length])
+  const rnd=randBytes(arr.length)
+  for(let i=arr.length-1;i>0;i--){const j=rnd[i]%(i+1);[arr[i],arr[j]]=[arr[j],arr[i]]}
+  return arr.join('')
+}
+
+// ─── STORAGE ─────────────────────────────────────────
+function loadData(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}}catch{return{}}}
+function saveData(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}
+
+// ─── STATE ───────────────────────────────────────────
+let state={
+  page:'locked', // locked|create|recovery-show|recovery|recovery-reset|totp-verify|unlocked
+  masterPassword:'',
+  confirmPassword:'',
+  vaultKey:'',
+  recoveryKey:'',
+  recoveryKeyInput:'',
+  items:[],
+  search:'',
+  activeCategory:'',
+  editingId:null,
+  editForm:{service:'',username:'',password:'',category:''},
+  showAdd:false,
+  newItem:{service:'',username:'',password:'',category:''},
+  loading:false,
+  toast:null,
+  categories:['email','social','dev','finance','shopping','work','other'],
+  showPasswords:{},
+  showChangePw:false,
+  changePwForm:{current:'',newPw:'',confirm:''},
+  totpCode:'',
+  _totpSecret:'',
+  show2FASetup:false,
+  setup2FASecret:'',
+  showMasterPw:false,
+  setup2FACode:''
+}
+let lockTimer=null,toastTimer=null,clipboardTimer=null
+
+function toast(type,title){
+  if(toastTimer)clearTimeout(toastTimer)
+  state.toast={type,title};render()
+  toastTimer=setTimeout(()=>{state.toast=null;render()},3000)
+}
+function resetLockTimer(){
+  if(lockTimer)clearTimeout(lockTimer)
+  if(state.page==='unlocked')lockTimer=setTimeout(lockVault,AUTO_LOCK_MS)
+}
+
+// ─── ENTRY HELPERS ───────────────────────────────────
+async function decryptEntries(entries,effectiveKey){
+  const results=await Promise.all((entries||[]).map(async(e)=>{
+    try{
+      if(e.encrypted){const json=await directDecrypt(e.encrypted,effectiveKey);const p=JSON.parse(json);return{item:{id:e.id,...p},legacy:false}}
+      else{const pt=await aesDecrypt(e.password,effectiveKey);return{item:{id:e.id,service:e.service,username:e.username,password:pt,category:e.category||''},legacy:true}}
+    }catch{return{item:{id:e.id,service:e.service||'???',username:e.username||'',password:'[decrypt error]',category:e.category||''},legacy:false,error:true}}
+  }))
+  return{items:results.map(r=>r.item),needsMigration:results.some(r=>r.legacy)}
+}
+
+async function migrateEntries(items,effectiveKey){
+  return Promise.all(items.filter(i=>i.password!=='[decrypt error]').map(async(item)=>{
+    const json=JSON.stringify({service:item.service,username:item.username,password:item.password,category:item.category})
+    return{id:item.id,encrypted:await directEncrypt(json,effectiveKey)}
+  }))
+}
+
+async function encryptEntry(item,effectiveKey){
+  const json=JSON.stringify({service:item.service,username:item.username,password:item.password,category:item.category})
+  return directEncrypt(json,effectiveKey)
+}
+
+// ─── VAULT OPS ───────────────────────────────────────
+async function completeUnlock(effectiveKey,data){
+  const{items,needsMigration}=await decryptEntries(data.entries,effectiveKey)
+  if(needsMigration){data.entries=await migrateEntries(items,effectiveKey);saveData(data)}
+  state.items=items;state.page='unlocked';state.loading=false;state._totpSecret=''
+  render();resetLockTimer()
+}
+
+async function handleUnlock(){
+  if(!state.masterPassword)return
+  state.loading=true;render()
+  const data=loadData()
+  if(!data.vault_hash){state.page='create';state.loading=false;render();return}
+  const ok=await verifyPassword(state.masterPassword,data.vault_hash)
+  if(!ok){toast('error','Sai mật khẩu chính!');state.loading=false;render();return}
+  let effectiveKey=state.masterPassword
+  if(data.vault_key_encrypted){
+    try{effectiveKey=await aesDecrypt(data.vault_key_encrypted,state.masterPassword);state.vaultKey=effectiveKey}catch{}
+  }
+  if(data.totp_encrypted){
+    try{
+      state._totpSecret=await directDecrypt(data.totp_encrypted,effectiveKey)
+      if(state.totpCode&&state.totpCode.length===6){
+        const valid=await verifyTOTP(state._totpSecret,state.totpCode)
+        if(!valid){toast('error','Mã 2FA không đúng');state.loading=false;render();return}
+        await completeUnlock(effectiveKey,data)
+        return
+      }
+      state.totpCode='';state.page='totp-verify';state.loading=false;render()
+      return
+    }catch{toast('error','Lỗi giải mã 2FA');state.loading=false;render();return}
+  }
+  await completeUnlock(effectiveKey,data)
+}
+
+async function handleTOTPVerify(){
+  if(state.totpCode.length!==6)return
+  state.loading=true;render()
+  const valid=await verifyTOTP(state._totpSecret,state.totpCode)
+  if(!valid){toast('error','Mã xác thực không đúng');state.loading=false;render();return}
+  const data=loadData()
+  await completeUnlock(state.vaultKey,data)
+}
+
+async function handleCreateVault(){
+  if(!state.masterPassword||!state.confirmPassword)return
+  if(state.masterPassword!==state.confirmPassword){toast('error','Mật khẩu không khớp');render();return}
+  if(state.masterPassword.length<6){toast('error','Mật khẩu phải ≥6 ký tự');render();return}
+  state.loading=true;render()
+  const vk=generateVaultKey();const rk=generateRecoveryKey()
+  const vh=await hashPassword(state.masterPassword)
+  const evk=await aesEncrypt(vk,state.masterPassword)
+  const erk=await aesEncrypt(vk,rk)
+  const rh=await hashPassword(rk)
+  saveData({vault_hash:vh,vault_key_encrypted:evk,vault_key_recovery:erk,recovery_hash:rh,entries:[]})
+  state.recoveryKey=rk;state.vaultKey=vk;state.page='recovery-show';state.loading=false;render()
+}
+
+async function handleRecover(){
+  if(!state.recoveryKeyInput)return
+  state.loading=true;render()
+  const data=loadData()
+  if(!data.recovery_hash){toast('error','Không có Recovery Key');state.loading=false;render();return}
+  const ok=await verifyPassword(state.recoveryKeyInput,data.recovery_hash)
+  if(!ok){toast('error','Sai Recovery Key');state.loading=false;render();return}
+  try{
+    state.vaultKey=await aesDecrypt(data.vault_key_recovery,state.recoveryKeyInput)
+    state.masterPassword='';state.confirmPassword='';state.page='recovery-reset';state.loading=false;render()
+  }catch{toast('error','Không thể giải mã vault key');state.loading=false;render()}
+}
+
+async function handleRecoverReset(){
+  if(!state.masterPassword||!state.confirmPassword)return
+  if(state.masterPassword!==state.confirmPassword){toast('error','Mật khẩu không khớp');render();return}
+  if(state.masterPassword.length<6){toast('error','Mật khẩu phải ≥6 ký tự');render();return}
+  state.loading=true;render()
+  const newHash=await hashPassword(state.masterPassword)
+  const newEvk=await aesEncrypt(state.vaultKey,state.masterPassword)
+  const data=loadData()
+  data.vault_hash=newHash;data.vault_key_encrypted=newEvk;saveData(data)
+  state.recoveryKeyInput=''
+  await completeUnlock(state.vaultKey,data)
+  toast('success','Đã khôi phục và đặt lại mật khẩu')
+}
+
+function lockVault(){
+  state.page='locked';state.masterPassword='';state.confirmPassword='';state.vaultKey='';state.showMasterPw=false;state.items=[];state.search='';state.activeCategory='';state.showAdd=false;state.editingId=null;state.showPasswords={};state.showChangePw=false;state.changePwForm={current:'',newPw:'',confirm:''};state.totpCode='';state._totpSecret='';state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode=''
+  render()
+}
+
+async function addItem(){
+  if(!state.newItem.service||!state.newItem.password)return
+  const ek=state.vaultKey||state.masterPassword;if(!ek)return
+  const enc=await encryptEntry(state.newItem,ek)
+  const data=loadData();const entry={id:crypto.randomUUID(),encrypted:enc}
+  data.entries.push(entry);saveData(data)
+  state.items.unshift({id:entry.id,service:state.newItem.service,username:state.newItem.username,password:state.newItem.password,category:state.newItem.category||''})
+  state.newItem={service:'',username:'',password:'',category:''};state.showAdd=false
+  toast('success','Đã thêm mục mới');resetLockTimer()
+}
+
+async function saveEdit(){
+  if(!state.editingId)return
+  const ek=state.vaultKey||state.masterPassword;if(!ek)return
+  const enc=await encryptEntry(state.editForm,ek)
+  const data=loadData();const idx=data.entries.findIndex(e=>e.id===state.editingId);if(idx===-1)return
+  data.entries[idx]={id:state.editingId,encrypted:enc};saveData(data)
+  state.items=state.items.map(i=>i.id===state.editingId?{...state.editForm,id:state.editingId}:i)
+  state.editingId=null;toast('success','Đã cập nhật');resetLockTimer()
+}
+
+function deleteItem(id){
+  const data=loadData();data.entries=data.entries.filter(e=>e.id!==id);saveData(data)
+  state.items=state.items.filter(i=>i.id!==id);toast('success','Đã xoá mục')
+}
+
+function copyText(t){
+  if(clipboardTimer)clearTimeout(clipboardTimer)
+  navigator.clipboard.writeText(t).then(()=>{
+    toast('success','Đã sao chép vào bộ nhớ đệm (xoá sau 30s)')
+    clipboardTimer=setTimeout(()=>navigator.clipboard.writeText('').catch(()=>{}),CLIPBOARD_CLEAR_MS)
+  }).catch(()=>{})
+}
+
+async function handleExport(){
+  const rk=prompt('Nhập Recovery Key để mã hoá file xuất:')
+  if(!rk)return
+  const data=loadData()
+  if(data.vault_key_recovery){try{await aesDecrypt(data.vault_key_recovery,rk)}catch{toast('error','Sai Recovery Key');return}}
+  const plainData=state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category}))
+  const env=await exportVault(JSON.stringify(plainData),rk)
+  const blob=new Blob([JSON.stringify(env,null,2)],{type:'application/json'})
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fear-vault-export.json';a.click();URL.revokeObjectURL(a.href)
+  toast('success','Xuất Vault thành công')
+}
+
+async function handleImport(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json'
+  inp.onchange=async()=>{
+    const f=inp.files[0];if(!f)return
+    const rk=prompt('Nhập Recovery Key để giải mã file:');if(!rk)return
+    try{
+      const envelope=JSON.parse(await f.text());const json=await importVault(envelope,rk)
+      if(!json){toast('error','Sai Recovery Key hoặc file không hợp lệ');return}
+      const imported=JSON.parse(json);const ek=state.vaultKey||state.masterPassword;const data=loadData()
+      for(const item of imported){const id=crypto.randomUUID();const enc=await encryptEntry(item,ek);data.entries.push({id,encrypted:enc});state.items.push({id:id,service:item.service,username:item.username,password:item.password,category:item.category||''})}
+      saveData(data);toast('success','Import '+imported.length+' mục thành công');render()
+    }catch(e){toast('error','Lỗi import: '+e.message)}
+  };inp.click()
+}
+
+async function handleChangePassword(){
+  const f=state.changePwForm
+  if(!f.current||!f.newPw||!f.confirm)return
+  if(f.newPw!==f.confirm){toast('error','Mật khẩu mới không khớp');return}
+  if(f.newPw.length<6){toast('error','Mật khẩu phải ≥6 ký tự');return}
+  state.loading=true;render()
+  const d=loadData();const ok=await verifyPassword(f.current,d.vault_hash)
+  if(!ok){toast('error','Sai mật khẩu hiện tại');state.loading=false;render();return}
+  let vk=state.vaultKey;if(d.vault_key_encrypted){try{vk=await aesDecrypt(d.vault_key_encrypted,f.current)}catch{}}
+  if(!vk){toast('error','Không thể giải mã vault key');state.loading=false;render();return}
+  d.vault_hash=await hashPassword(f.newPw);d.vault_key_encrypted=await aesEncrypt(vk,f.newPw);saveData(d)
+  state.vaultKey=vk;state.masterPassword='';state.showChangePw=false;state.changePwForm={current:'',newPw:'',confirm:''};state.loading=false
+  toast('success','Đã đổi mật khẩu chính');render()
+}
+
+// ─── 2FA OPS ─────────────────────────────────────────
+function handleSetup2FAStart(){
+  const secretBytes=randBytes(20)
+  state.setup2FASecret=base32Encode(secretBytes.buffer)
+  state.setup2FACode='';state.show2FASetup=true;render()
+  const uri=`otpauth://totp/FEAR-VAULT?secret=${state.setup2FASecret}&issuer=FEAR&algorithm=SHA1&digits=6&period=30`
+  renderQR(uri,'qr-container')
+}
+
+async function handleVerify2FASetup(){
+  if(state.setup2FACode.length!==6)return
+  state.loading=true;render()
+  const valid=await verifyTOTP(state.setup2FASecret,state.setup2FACode)
+  if(!valid){toast('error','Mã xác thực không đúng. Kiểm tra lại ứng dụng.');state.loading=false;render();return}
+  const ek=state.vaultKey||state.masterPassword
+  const encrypted=await directEncrypt(state.setup2FASecret,ek)
+  const data=loadData();data.totp_encrypted=encrypted;saveData(data)
+  state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';state.loading=false
+  toast('success','2FA đã được bật thành công!');render()
+}
+
+async function handleDisable2FA(){
+  const code=prompt('Nhập mã 6 chữ số từ app 2FA để xác nhận tắt 2FA:');if(!code||code.length!==6)return
+  const data=loadData();if(!data.totp_encrypted)return
+  const ek=state.vaultKey||state.masterPassword;let secret
+  try{secret=await directDecrypt(data.totp_encrypted,ek)}catch{toast('error','Lỗi giải mã 2FA');return}
+  const ok=await verifyTOTP(secret,code);if(!ok){toast('error','Mã xác thực không đúng');return}
+  delete data.totp_encrypted;saveData(data)
+  toast('success','2FA đã được tắt');render()
+}
+
+// ─── CATEGORY HELPERS ──────────────────────────────────
+function catColors(){
+  return{
+    email:'linear-gradient(135deg, #00f0ff, #0284c7)',
+    social:'linear-gradient(135deg, #10b981, #06b6d4)',
+    dev:'linear-gradient(135deg, #3b82f6, #00f0ff)',
+    finance:'linear-gradient(135deg, #f59e0b, #d97706)',
+    shopping:'linear-gradient(135deg, #ec4899, #f43f5e)',
+    work:'linear-gradient(135deg, #64748b, #475569)'
+  }
+}
+
+// ─── RENDER ──────────────────────────────────────────
+function render(){
+  const app=document.getElementById('app');let html='';const data=loadData()
+  const has2FA=!!data.totp_encrypted
+
+  if(state.page==='locked'){
+    html=`
+      <div class="lock-screen">
+        <!-- Biometric Circuit Fingerprint Scanner Card Background -->
+        <canvas id="fp-card-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.45;border-radius:24px;"></canvas>
+
+        <div class="glow"></div>
+
+        <!-- Cyber HUD Corner Brackets -->
+        <div class="hud-corner top-left"></div>
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+        <div class="hud-corner bottom-right"></div>
+        
+        <!-- Cyber HUD Telemetry Header (Cyan & White) -->
+        <div class="hud-telemetry">
+          <span class="hud-tag">■ RANGE REGION AREA ■</span>
+          <span class="hud-num">0147 - <span>INF</span> .0215</span>
+        </div>
+
+        <!-- Cyber HUD Progress Bar -->
+        <div class="hud-progress">
+          <div class="hud-progress-bar"></div>
+          <span class="hud-progress-txt">LOADING 100</span>
+        </div>
+
+        <!-- Spinning Circular Stamp Badge -->
+        <div class="spinning-stamp-container">
+          <svg class="spinning-stamp" viewBox="0 0 160 160">
+            <path id="stampPath" d="M 80, 80 m -60, 0 a 60,60 0 1,1 120,0 a 60,60 0 1,1 -120,0" fill="none" />
+            <text font-family="'Orbitron', sans-serif" font-size="10" font-weight="700" fill="rgba(0, 240, 255, 0.75)" letter-spacing="3">
+              <textPath href="#stampPath">• BIOMETRIC MATRIX HUD • FEAR VAULT </textPath>
+            </text>
+          </svg>
+          <div class="stamp-center-icon">${SVG.lock}</div>
+        </div>
+
+        <!-- Ghost Typography -->
+        <div class="ghost-typography">
+          <span class="ghost-text-primary">SECURITY</span>
+          <span class="ghost-text-outline">WITHOUT LIMITS</span>
+        </div>
+
+        <div class="icon-wrapper">${SVG.lock}</div>
+        <h2>FEAR · VAULT</h2>
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:350px;margin:0 auto;position:relative;z-index:2;">
+          <div class="form-group" style="position:relative;">
+            <input type="${state.showMasterPw?'text':'password'}" class="terminal-input input-pill" id="pw-input" placeholder="Mật khẩu chính" value="${esc(state.masterPassword)}" style="padding-right:52px !important;"/>
+            <button type="button" id="toggle-master-pw" style="position:absolute;right:18px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:6px;display:flex;align-items:center;justify-content:center;z-index:3;transition:all 0.2s;" title="${state.showMasterPw?'Ẩn mật khẩu':'Hiển thị mật khẩu'}">
+              ${state.showMasterPw?SVG.eyeOff:SVG.eye}
+            </button>
+          </div>
+          <div id="pw-warn-msg" style="display:none;font-size:11.5px;color:#ef4444;font-weight:600;margin-top:-6px;text-align:left;padding-left:14px;animation:slideUpFade 0.2s ease-out both;">
+            ⚠️ Chỉ nhận chữ Tiếng Anh (A-Z, a-z), số (0-9) &amp; ký tự: @ ! # &amp; -
+          </div>
+          <div class="form-group mb-4">
+            <div class="otp-group">
+              ${[0,1,2,3,4,5].map(i=>`<input type="text" maxlength="1" class="otp-box" data-idx="${i}" inputmode="numeric" autocomplete="one-time-code" value="${esc(state.totpCode[i]||'')}"/>`).join('')}
+            </div>
+            <div class="otp-footer">
+              <span id="totp-timer" style="font-family:var(--font-mono);font-size:12px;color:${has2FA?'#00f0ff':'var(--muted)'};font-weight:700;">${has2FA?'30s':'2FA (TOTP)'}</span>
+              ${data.vault_hash?`<a href="#" id="recover-btn" style="color:#00f0ff;text-decoration:none;font-weight:700;font-size:12px;letter-spacing:0.3px;transition:all 0.2s ease;text-shadow:0 0 10px rgba(0,240,255,0.6);">Quên mật khẩu?</a>`:''}
+            </div>
+          </div>
+          <button class="btn btn-terminal-primary w-full" style="height:50px;border-radius:9999px;font-size:15px;margin-top:6px;" id="unlock-btn">${SVG.lock} MỞ KHÓA VAULT</button>
+        </div>
+        <div style="margin-top:22px;text-align:center;position:relative;z-index:2;">
+          <button class="btn btn-terminal btn-sm" id="reset-btn" style="font-size:11px;">Reset Kho</button>
+        </div>
+      </div>`
+  }else if(state.page==='create'){
+    html=`
+      <div class="lock-screen">
+        <div class="glow"></div>
+        <div class="icon-wrapper">${SVG.shield}</div>
+        <h2>TẠO VAULT MỚI</h2>
+        <p class="hint">Thiết lập mật khẩu chính để bảo vệ dữ liệu của bạn</p>
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:340px;margin:0 auto;position:relative;z-index:2;">
+          <input type="password" class="terminal-input input-pill" id="pw-input" placeholder="Mật khẩu chính" value="${esc(state.masterPassword)}"/>
+          <input type="password" class="terminal-input input-pill" id="pw-confirm" placeholder="Xác nhận mật khẩu chính" value="${esc(state.confirmPassword)}"/>
+          <button class="btn btn-terminal-primary w-full" style="height:50px;border-radius:9999px;" id="create-btn">${SVG.shield} KHỞI TẠO VAULT</button>
+        </div>
+        <div style="margin-top:18px;font-size:12px;color:var(--muted);">Mã hoá AES-256-GCM & PBKDF2 trực tiếp trên trình duyệt.</div>
+      </div>`
+  }else if(state.page==='recovery-show'){
+    html=`
+      <div class="lock-screen" style="max-width:480px;">
+        <div class="glow"></div>
+        <div class="icon-wrapper" style="color:var(--success);">${SVG.shield}</div>
+        <h2>ĐÃ TẠO VAULT THÀNH CÔNG</h2>
+        <p class="hint">Lưu ngay Recovery Key bên dưới. Đây là cách duy nhất để khôi phục Vault nếu bạn quên mật khẩu chính!</p>
+        <div style="margin:20px auto;padding:16px;border:1px solid var(--warning);background:rgba(245,158,11,0.08);border-radius:12px;">
+          <p style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:6px;letter-spacing:1px;">RECOVERY KEY CỦA BẠN</p>
+          <p style="font-family:var(--font-mono);font-size:18px;font-weight:700;letter-spacing:4px;color:#ffffff;">${esc(state.recoveryKey)}</p>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <button class="btn btn-terminal" id="copy-rk-btn">${SVG.copy} SAO CHÉP MÃ</button>
+          <button class="btn btn-terminal-primary" id="enter-vault-btn">TRUY CẬP VAULT</button>
+        </div>
+        <p style="margin-top:18px;font-size:12px;color:var(--error);">⚠️ Nếu mất cả Mật khẩu chính và Recovery Key, dữ liệu không thể khôi phục!</p>
+      </div>`
+  }else if(state.page==='recovery'){
+    html=`
+      <div class="lock-screen">
+        <div class="glow"></div>
+        <div class="icon-wrapper">${SVG.key}</div>
+        <h2>KHÔI PHỤC VAULT</h2>
+        <p class="hint">Nhập mã Recovery Key để đặt lại mật khẩu chính</p>
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:340px;margin:0 auto;">
+          <input type="text" class="terminal-input input-pill" id="recover-input" placeholder="FEAR-XXXX-XXXX" value="${esc(state.recoveryKeyInput)}"/>
+          <button class="btn btn-terminal-primary w-full" style="height:50px;border-radius:9999px;" id="recover-submit">XÁC THỰC RECOVERY KEY</button>
+          <button class="btn btn-terminal w-full" id="back-to-lock">QUAY LẠI</button>
+        </div>
+      </div>`
+  }else if(state.page==='recovery-reset'){
+    html=`
+      <div class="lock-screen">
+        <div class="glow"></div>
+        <div class="icon-wrapper">${SVG.key}</div>
+        <h2>ĐẶT MẬT KHẨU MỚI</h2>
+        <p class="hint">Recovery Key hợp lệ. Vui lòng thiết lập mật khẩu chính mới.</p>
+        <div style="display:flex;flex-direction:column;gap:14px;max-width:340px;margin:0 auto;">
+          <input type="password" class="terminal-input input-pill" id="pw-input" placeholder="Mật khẩu mới (≥6 ký tự)" value="${esc(state.masterPassword)}"/>
+          <input type="password" class="terminal-input input-pill" id="pw-confirm" placeholder="Xác nhận mật khẩu mới" value="${esc(state.confirmPassword)}"/>
+          <button class="btn btn-terminal-primary w-full" style="height:50px;border-radius:9999px;" id="recover-reset-btn">ĐẶT LẠI & MỞ VAULT</button>
+          <button class="btn btn-terminal w-full" id="back-to-lock">HỦY</button>
+        </div>
+      </div>`
+  }else if(state.page==='totp-verify'){
+    html=`
+      <div class="lock-screen">
+        <div class="glow"></div>
+        <div class="icon-wrapper">${SVG.shield}</div>
+        <h2>XÁC THỰC 2 BƯỚC (2FA)</h2>
+        <p class="hint">Nhập mã 6 chữ số từ ứng dụng xác thực của bạn (Google Authenticator, Authy, ...)</p>
+        <div style="max-width:300px;margin:0 auto;">
+          <div class="otp-group">
+            ${[0,1,2,3,4,5].map(i=>`<input type="text" maxlength="1" class="otp-box" data-idx="${i}" inputmode="numeric" autocomplete="one-time-code" value="${esc(state.totpCode[i]||'')}"/>`).join('')}
+          </div>
+          <button class="btn btn-terminal-primary w-full" style="height:48px;border-radius:9999px;margin-top:16px;" id="totp-verify-btn">XÁC THỰC 2FA</button>
+          <button class="btn btn-terminal w-full" style="margin-top:8px;" id="totp-back-btn">QUAY LẠI</button>
+        </div>
+      </div>`
+  }else if(state.page==='unlocked'){
+    const filtered=state.items.filter(i=>{
+      if(state.search){const q=state.search.toLowerCase();if(!i.service.toLowerCase().includes(q)&&!i.username.toLowerCase().includes(q))return false}
+      if(state.activeCategory&&(i.category||'other')!==state.activeCategory)return false
+      return true
+    })
+    const catCount=new Map()
+    for(const i of state.items){const c=i.category||'other';catCount.set(c,(catCount.get(c)||0)+1)}
+    let entriesHtml=''
+    if(filtered.length===0&&state.items.length===0){
+      entriesHtml='<div style="text-align:center;padding:56px 20px;color:var(--muted);font-size:14px;border:1px dashed var(--border);border-radius:12px;">Kho trống — Bấm nút <b>+ THÊM MỤC MỚI</b> để lưu tài khoản đầu tiên.</div>'
+    }else if(filtered.length===0){
+      entriesHtml='<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">Không tìm thấy mật khẩu nào khớp với "<b>'+esc(state.search)+'</b>"</div>'
+    }else{
+      entriesHtml=filtered.map(i=>{
+        const isEdit=state.editingId===i.id
+        const letter=i.service.charAt(0).toUpperCase()
+        const ccs=catColors()
+        const cat=(i.category||'other').toLowerCase()
+        const bg=ccs[cat]||'linear-gradient(135deg, #00f0ff, #0284c7)'
+        if(isEdit){
+          return `<div class="vault-entry" style="flex-direction:column;align-items:stretch;gap:14px;padding:18px;background:rgba(6,10,18,0.95);border-color:var(--primary);">
+            <div class="grid-2">
+              <div class="form-group"><label>Tên Dịch Vụ (Service)</label><input class="terminal-input" id="edit-service" value="${esc(state.editForm.service)}"/></div>
+              <div class="form-group"><label>Danh Mục (Category)</label><select class="terminal-input" id="edit-cat"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}</select></div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group"><label>Tên đăng nhập / Email</label><input class="terminal-input" id="edit-user" value="${esc(state.editForm.username)}"/></div>
+              <div class="form-group"><label>Mật Khẩu</label><div style="display:flex;gap:8px;"><div style="position:relative;flex:1;"><input class="terminal-input" id="edit-pass" type="password" value="${esc(state.editForm.password)}" style="padding-right:40px !important;"/><button type="button" class="eye-toggle-btn" data-input="edit-pass" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button></div><button class="btn btn-terminal btn-sm" id="gen-edit">${SVG.dice} TẠO MỚI</button></div></div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:4px;">
+              <button class="btn btn-terminal btn-sm" id="cancel-edit">HỦY</button>
+              <button class="btn btn-terminal-primary btn-sm" id="save-edit">LƯU CẬP NHẬT</button>
+            </div>
+          </div>`
+        }
+        return `<div class="vault-entry" data-id="${i.id}">
+          <div class="icon-letter" style="background:${bg};color:#000000;">${letter}</div>
+          <span class="service">${esc(i.service)}</span>
+          <span class="username">${esc(i.username)}</span>
+          <span class="pass">${state.showPasswords[i.id]?esc(i.password):'••••••••••••'}</span>
+          <span class="cat">${esc(i.category||'other')}</span>
+          <div class="actions">
+            <button class="btn btn-terminal btn-sm" data-copy-id="${i.id}">${SVG.copy} COPY</button>
+            <button class="btn btn-terminal btn-sm" data-show="${i.id}">${state.showPasswords[i.id]?SVG.eyeOff+' ẨN':SVG.eye+' XEM'}</button>
+            <button class="btn btn-terminal btn-sm" data-edit="${i.id}">${SVG.edit} SỬA</button>
+            <button class="btn btn-danger btn-sm" data-del="${i.id}">${SVG.trash} XOÁ</button>
+          </div>
+        </div>`
+      }).join('')
+    }
+    const allCats=Array.from(catCount.entries()).sort((a,b)=>b[1]-a[1])
+    const pillsHtml=allCats.map(([c,n])=>`<span class="pill${state.activeCategory===c?' active':''}" data-cat="${c}">${esc(c.toUpperCase())} (${n})</span>`).join('')
+    html=`
+      <div class="terminal-section">
+        <div class="title-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="lbl"><b>FEAR · VAULT</b> &nbsp;|&nbsp; ${SVG.lock} ${state.items.length} tài khoản${has2FA?`<span class="badge-2fa">${SVG.shield} 2FA ĐANG BẬT</span>`:''}</span>
+        </div>
+        <div class="body">
+          <div class="flex justify-between items-center mb-16" style="flex-wrap:wrap;gap:14px;">
+            <div class="prompt-line" style="flex:1;min-width:260px;position:relative;">
+              <input type="search" class="terminal-input" id="search-input" style="padding-left:38px;" placeholder="Tìm kiếm dịch vụ, email... (Nhấn / hoặc Ctrl+F)" value="${esc(state.search)}"/>
+              <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;">${SVG.search}</span>
+            </div>
+            <div class="flex gap-10">
+              <button class="btn btn-terminal" id="lock-btn">${SVG.lock} KHÓA VAULT</button>
+              <button class="btn btn-terminal-primary" id="add-btn">${SVG.plus} THÊM MỤC MỚI</button>
+            </div>
+          </div>
+          ${allCats.length>1?`<div class="pills"><span class="pill${!state.activeCategory?' active':''}" data-cat="">TẤT CẢ (${state.items.length})</span>${pillsHtml}</div>`:''}
+          ${state.showAdd?`
+          <div style="margin-bottom:20px;border:1px solid var(--primary);padding:20px;border-radius:12px;background:rgba(6,10,18,0.95);box-shadow:0 8px 30px rgba(0,240,255,0.15);">
+            <h4 style="font-size:15px;font-weight:700;color:var(--primary-hover);margin-bottom:14px;display:flex;align-items:center;gap:8px;">${SVG.plus} THÊM TÀI KHOẢN MỚI</h4>
+            <div class="grid-2 mb-12">
+              <div class="form-group"><label>Tên Dịch Vụ (Google, GitHub, Facebook...)</label><input class="terminal-input" id="new-service" placeholder="VD: GitHub" value="${esc(state.newItem.service)}"/></div>
+              <div class="form-group"><label>Danh Mục</label><select class="terminal-input" id="new-cat"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}</select></div>
+            </div>
+            <div class="grid-2 mb-12">
+              <div class="form-group"><label>Tên Đăng Nhập / Email</label><input class="terminal-input" id="new-user" placeholder="user@domain.com" value="${esc(state.newItem.username)}"/></div>
+              <div class="form-group"><label>Mật Khẩu</label><div style="display:flex;gap:8px;"><div style="position:relative;flex:1;"><input class="terminal-input" id="new-pass" type="password" placeholder="••••••••" value="${esc(state.newItem.password)}" style="padding-right:40px !important;"/><button type="button" class="eye-toggle-btn" data-input="new-pass" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button></div><button class="btn btn-terminal btn-sm" id="gen-new">${SVG.dice} TẠO MK</button></div></div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+              <button class="btn btn-terminal btn-sm" id="cancel-add">HỦY</button>
+              <button class="btn btn-terminal-primary btn-sm" id="save-add">LƯU MỤC MỚI</button>
+            </div>
+          </div>`:''
+          }
+          <div style="display:flex;flex-direction:column;gap:8px;">${entriesHtml}</div>
+          <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(0,240,255,0.15);padding-top:20px;">
+            <button class="btn btn-terminal btn-sm" id="export-btn">${SVG.export} XUẤT SAO LƯU (EXPORT)</button>
+            <button class="btn btn-terminal btn-sm" id="import-btn">${SVG.import} NHẬP DỮ LIỆU (IMPORT)</button>
+            <button class="btn btn-terminal btn-sm" id="change-pw-btn">${SVG.key} ĐỔI MẬT KHẨU CHÍNH</button>
+            ${has2FA
+              ?`<button class="btn btn-danger btn-sm" id="disable-2fa-btn">${SVG.shield} TẮT 2FA</button>`
+              :`<button class="btn btn-terminal btn-sm" id="setup-2fa-btn" style="color:var(--success);border-color:rgba(16,185,129,0.4);">${SVG.shield} BẬT XÁC THỰC 2FA (QR)</button>`}
+          </div>
+        </div>
+      </div>`
+  }
+
+  // ── Change password modal ──
+  if(state.showChangePw){
+    html+=`<div class="modal-overlay" id="cpw-overlay"><div class="modal">
+      <h3>${SVG.key} ĐỔI MẬT KHẨU CHÍNH</h3>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="form-group"><label>Mật khẩu hiện tại</label><div style="position:relative;"><input type="password" class="terminal-input" id="cpw-current" value="${esc(state.changePwForm.current)}" style="padding-right:40px !important;"/><button type="button" class="eye-toggle-btn" data-input="cpw-current" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button></div></div>
+        <div class="form-group"><label>Mật khẩu mới (≥6 ký tự)</label><div style="position:relative;"><input type="password" class="terminal-input" id="cpw-new" value="${esc(state.changePwForm.newPw)}" style="padding-right:40px !important;"/><button type="button" class="eye-toggle-btn" data-input="cpw-new" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button></div></div>
+        <div class="form-group"><label>Xác nhận mật khẩu mới</label><div style="position:relative;"><input type="password" class="terminal-input" id="cpw-confirm" value="${esc(state.changePwForm.confirm)}" style="padding-right:40px !important;"/><button type="button" class="eye-toggle-btn" data-input="cpw-confirm" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button></div></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+          <button class="btn btn-terminal btn-sm" id="cpw-cancel">HỦY</button>
+          <button class="btn btn-terminal-primary btn-sm" id="cpw-submit">CẬP NHẬT MẬT KHẨU</button>
+        </div>
+      </div>
+    </div></div>`
+  }
+
+  // ── 2FA setup modal ──
+  if(state.show2FASetup){
+    html+=`<div class="modal-overlay" id="2fa-overlay"><div class="modal" style="max-width:480px;">
+      <h3>${SVG.shield} THIẾT LẬP XÁC THỰC 2 BƯỚC (2FA)</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.5;">Quét mã QR bên dưới bằng ứng dụng <b>Google Authenticator</b>, <b>Authy</b> hoặc <b>Microsoft Authenticator</b> trên điện thoại.</p>
+      <div id="qr-container" style="display:flex;justify-content:center;margin-bottom:16px;"></div>
+      <div style="margin-bottom:16px;padding:12px;border:1px solid var(--border);border-radius:10px;text-align:center;background:rgba(4,7,14,0.6);">
+        <p style="font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600;">SECRET KEY (NHẬP THỦ CÔNG NẾU KHÔNG QUÉT ĐƯỢC QR)</p>
+        <p style="font-family:var(--font-mono);font-size:14px;color:var(--primary-hover);letter-spacing:2px;word-break:break-all;user-select:text;">${esc(state.setup2FASecret)}</p>
+        <button class="btn btn-terminal btn-sm" style="margin-top:8px;" id="copy-2fa-secret">${SVG.copy} SAO CHÉP SECRET KEY</button>
+      </div>
+      <div class="form-group" style="margin-bottom:16px;">
+        <label>Nhập mã 6 chữ số từ App Authenticator để xác nhận</label>
+        <div class="otp-group">
+          ${[0,1,2,3,4,5].map(i=>`<input type="text" maxlength="1" class="setup-otp-box" data-idx="${i}" inputmode="numeric" value="${esc(state.setup2FACode[i]||'')}"/>`).join('')}
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button class="btn btn-terminal btn-sm" id="2fa-cancel">HỦY</button>
+        <button class="btn btn-terminal-primary btn-sm" id="2fa-verify">XÁC NHẬN & BẬT 2FA</button>
+      </div>
+    </div></div>`
+  }
+
+  if(state.loading)html=html.replace('</div>','<div style="text-align:center;padding:14px;font-size:13px;color:var(--primary-hover);font-weight:600;">⌛ ĐANG XỬ LÝ MÃ HÓA...</div></div>')
+
+  if(state.toast){
+    html+=`<div class="toast ${state.toast.type}">[${state.toast.type.toUpperCase()}] ${esc(state.toast.title)}</div>`
+  }
+
+  app.innerHTML=html
+  bindEvents()
+}
+
+function esc(s){if(typeof s!=='string')return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+// ─── EVENTS ──────────────────────────────────────────
+let totpInterval=null, warnTimer=null
+
+function bindEvents(){
+  const data=loadData()
+
+  if(state.page==='locked'||state.page==='totp-verify'){
+    const pw=document.getElementById('pw-input')
+    if(pw){
+      pw.focus()
+      pw.addEventListener('input',e=>{
+        const raw=e.target.value
+        const filtered=raw.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+        if(raw!==filtered){
+          e.target.value=filtered
+          const warn=document.getElementById('pw-warn-msg')
+          if(warn){
+            warn.style.display='block'
+            if(warnTimer)clearTimeout(warnTimer)
+            warnTimer=setTimeout(()=>{const w=document.getElementById('pw-warn-msg');if(w)w.style.display='none'},2800)
+          }
+        }
+        state.masterPassword=filtered
+      })
+    }
+    
+    // 6 OTP Squircle Boxes handling
+    const otpBoxes=document.querySelectorAll('.otp-box')
+    if(otpBoxes.length>0){
+      otpBoxes.forEach((box, idx)=>{
+        box.addEventListener('input', e=>{
+          const val=e.target.value.replace(/\D/g,'')
+          e.target.value=val
+          let code=''
+          otpBoxes.forEach(b=>code+=b.value)
+          state.totpCode=code
+          if(val && idx < 5){
+            otpBoxes[idx+1].focus()
+          }
+          if(code.length===6 && state.masterPassword){
+            handleUnlock()
+          }
+        })
+        box.addEventListener('keydown', e=>{
+          if(e.key==='Backspace'){
+            if(!box.value && idx > 0){
+              otpBoxes[idx-1].focus()
+              otpBoxes[idx-1].value=''
+              let code=''
+              otpBoxes.forEach(b=>code+=b.value)
+              state.totpCode=code
+            }
+          }
+          if(e.key==='Enter'){
+            handleUnlock()
+          }
+        })
+        box.addEventListener('paste', e=>{
+          e.preventDefault()
+          const pasted=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6)
+          if(pasted){
+            for(let i=0;i<6;i++){
+              if(otpBoxes[i]) otpBoxes[i].value = pasted[i] || ''
+            }
+            state.totpCode=pasted
+            if(pasted.length===6){
+              otpBoxes[5].focus()
+              if(state.masterPassword) handleUnlock()
+            }
+          }
+        })
+      })
+    }
+
+    // Direct OTP Group Mousemove Wave Ripple
+    document.querySelectorAll('.otp-group').forEach(group=>{
+      const boxes=group.querySelectorAll('.otp-box, .setup-otp-box')
+      if(boxes.length===0)return
+      group.addEventListener('mousemove',e=>{
+        boxes.forEach(box=>{
+          if(document.activeElement===box)return
+          const rect=box.getBoundingClientRect()
+          const boxCenterX=rect.left+rect.width/2
+          const boxCenterY=rect.top+rect.height/2
+          const dist=Math.hypot(e.clientX-boxCenterX,e.clientY-boxCenterY)
+          const maxDist=140
+          if(dist<maxDist){
+            const factor=Math.pow(1-dist/maxDist,1.5)
+            const scale=1+factor*0.18
+            const translateY=-factor*6
+            box.style.transform=`scale(${scale}) translateY(${translateY}px)`
+            box.style.borderColor=`rgba(0, 240, 255, ${0.35+factor*0.65})`
+            box.style.boxShadow=`0 ${4*factor}px ${14*factor}px rgba(0, 240, 255, ${0.25*factor})`
+            box.style.zIndex='10'
+          }else{
+            box.style.transform='scale(1) translateY(0)'
+            box.style.borderColor='var(--border)'
+            box.style.boxShadow='none'
+            box.style.zIndex='1'
+          }
+        })
+      })
+      group.addEventListener('mouseleave',()=>{
+        boxes.forEach(box=>{
+          if(document.activeElement===box)return
+          box.style.transform='scale(1) translateY(0)'
+          box.style.borderColor='var(--border)'
+          box.style.boxShadow='none'
+          box.style.zIndex='1'
+        })
+      })
+    })
+
+    // Live TOTP countdown timer
+    const timerEl=document.getElementById('totp-timer')
+    if(timerEl){
+      if(totpInterval) clearInterval(totpInterval)
+      const updateTimer=()=>{
+        const rem=30-(Math.floor(Date.now()/1000)%30)
+        timerEl.textContent=`${rem}s`
+      }
+      updateTimer()
+      totpInterval=setInterval(updateTimer,1000)
+    }
+
+    document.getElementById('toggle-master-pw')?.addEventListener('click',e=>{
+      e.preventDefault()
+      const inp=document.getElementById('pw-input')
+      const btn=document.getElementById('toggle-master-pw')
+      if(!inp||!btn)return
+      state.showMasterPw=!state.showMasterPw
+      inp.type=state.showMasterPw?'text':'password'
+      btn.innerHTML=state.showMasterPw?SVG.eyeOff:SVG.eye
+      btn.title=state.showMasterPw?'Ẩn mật khẩu':'Hiển thị mật khẩu'
+    })
+    document.getElementById('unlock-btn')?.addEventListener('click',handleUnlock)
+    pw?.addEventListener('keydown',e=>{if(e.key==='Enter')handleUnlock()})
+    document.getElementById('recover-btn')?.addEventListener('click',e=>{e.preventDefault();state.page='recovery';state.masterPassword='';state.recoveryKeyInput='';render()})
+    document.getElementById('reset-btn')?.addEventListener('click',()=>{if(confirm('Xoá toàn bộ dữ liệu Vault? Hành động này không thể hoàn tác!')){localStorage.removeItem(STORAGE_KEY);state.page='locked';state.masterPassword='';render()}})
+    document.getElementById('totp-verify-btn')?.addEventListener('click',handleTOTPVerify)
+    document.getElementById('totp-back-btn')?.addEventListener('click',()=>{state.page='locked';state.masterPassword='';state.vaultKey='';state._totpSecret='';state.totpCode='';render()})
+  }
+
+  if(state.page==='create'){
+    document.getElementById('pw-input')?.addEventListener('input',e=>{
+      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+      if(e.target.value!==f)e.target.value=f
+      state.masterPassword=f
+    })
+    document.getElementById('pw-confirm')?.addEventListener('input',e=>{
+      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+      if(e.target.value!==f)e.target.value=f
+      state.confirmPassword=f
+    })
+    document.getElementById('pw-confirm')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleCreateVault()})
+    document.getElementById('create-btn')?.addEventListener('click',handleCreateVault)
+  }
+
+  if(state.page==='recovery-show'){
+    document.getElementById('copy-rk-btn')?.addEventListener('click',()=>{navigator.clipboard.writeText(state.recoveryKey).then(()=>toast('success','Đã sao chép Recovery Key'))})
+    document.getElementById('enter-vault-btn')?.addEventListener('click',()=>{state.page='unlocked';render();resetLockTimer()})
+  }
+
+  if(state.page==='recovery'){
+    const ri=document.getElementById('recover-input')
+    if(ri){ri.focus();ri.addEventListener('input',e=>{state.recoveryKeyInput=e.target.value})}
+    document.getElementById('recover-submit')?.addEventListener('click',handleRecover)
+    ri?.addEventListener('keydown',e=>{if(e.key==='Enter')handleRecover()})
+    document.getElementById('back-to-lock')?.addEventListener('click',()=>{state.page='locked';state.recoveryKeyInput='';render()})
+  }
+
+  if(state.page==='recovery-reset'){
+    document.getElementById('pw-input')?.addEventListener('input',e=>{
+      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+      if(e.target.value!==f)e.target.value=f
+      state.masterPassword=f
+    })
+    document.getElementById('pw-confirm')?.addEventListener('input',e=>{
+      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+      if(e.target.value!==f)e.target.value=f
+      state.confirmPassword=f
+    })
+    document.getElementById('pw-confirm')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleRecoverReset()})
+    document.getElementById('recover-reset-btn')?.addEventListener('click',handleRecoverReset)
+    document.getElementById('back-to-lock')?.addEventListener('click',()=>{state.page='locked';state.masterPassword='';state.confirmPassword='';state.vaultKey='';state.recoveryKeyInput='';render()})
+  }
+
+  if(state.page==='unlocked'){
+    if(totpInterval){clearInterval(totpInterval);totpInterval=null}
+    document.getElementById('lock-btn')?.addEventListener('click',lockVault)
+    document.getElementById('add-btn')?.addEventListener('click',()=>{state.showAdd=!state.showAdd;render()})
+    const si=document.getElementById('search-input')
+    if(si){
+      si.addEventListener('input',e=>{
+        state.search=e.target.value
+        const pos=e.target.selectionStart
+        render()
+        const nsi=document.getElementById('search-input')
+        if(nsi){nsi.focus();nsi.setSelectionRange(pos,pos)}
+      })
+    }
+    document.querySelectorAll('.pill[data-cat]').forEach(el=>{el.addEventListener('click',()=>{state.activeCategory=el.dataset.cat===''?'':el.dataset.cat;render()})})
+
+    // Add form
+    document.getElementById('new-service')?.addEventListener('input',e=>{state.newItem.service=e.target.value})
+    document.getElementById('new-user')?.addEventListener('input',e=>{state.newItem.username=e.target.value})
+    document.getElementById('new-pass')?.addEventListener('input',e=>{state.newItem.password=e.target.value})
+    document.getElementById('new-cat')?.addEventListener('change',e=>{state.newItem.category=e.target.value})
+    document.getElementById('gen-new')?.addEventListener('click',()=>{state.newItem.password=genPassword();render()})
+    document.getElementById('save-add')?.addEventListener('click',addItem)
+    document.getElementById('cancel-add')?.addEventListener('click',()=>{state.showAdd=false;state.newItem={service:'',username:'',password:'',category:''};render()})
+
+    // Edit form
+    document.getElementById('edit-service')?.addEventListener('input',e=>{state.editForm.service=e.target.value})
+    document.getElementById('edit-user')?.addEventListener('input',e=>{state.editForm.username=e.target.value})
+    document.getElementById('edit-pass')?.addEventListener('input',e=>{state.editForm.password=e.target.value})
+    document.getElementById('edit-cat')?.addEventListener('change',e=>{state.editForm.category=e.target.value})
+    document.getElementById('gen-edit')?.addEventListener('click',()=>{state.editForm.password=genPassword();render()})
+    document.getElementById('save-edit')?.addEventListener('click',saveEdit)
+    document.getElementById('cancel-edit')?.addEventListener('click',()=>{state.editingId=null;render()})
+
+    // Entry actions
+    document.querySelectorAll('[data-copy-id]').forEach(el=>{el.addEventListener('click',()=>{const item=state.items.find(i=>i.id===el.dataset.copyId);if(item)copyText(item.password)})})
+    document.querySelectorAll('[data-show]').forEach(el=>{
+      el.addEventListener('click',()=>{
+        const id=el.dataset.show
+        state.showPasswords[id]=!state.showPasswords[id]
+        const entry=el.closest('.vault-entry')
+        if(entry){
+          const item=state.items.find(i=>i.id===id)
+          const passSpan=entry.querySelector('.pass')
+          if(passSpan&&item){
+            passSpan.textContent=state.showPasswords[id]?item.password:'••••••••••••'
+            el.innerHTML=state.showPasswords[id]?SVG.eyeOff+' ẨN':SVG.eye+' XEM'
+          }
+        }
+      })
+    })
+    document.querySelectorAll('[data-edit]').forEach(el=>{el.addEventListener('click',()=>{const id=el.dataset.edit;const item=state.items.find(i=>i.id===id);if(item){state.editingId=id;state.editForm={service:item.service,username:item.username,password:item.password,category:item.category||''};render()}})})
+    document.querySelectorAll('[data-del]').forEach(el=>{el.addEventListener('click',()=>{if(confirm('Xoá mục này?')){deleteItem(el.dataset.del);render()}})})
+
+    document.getElementById('export-btn')?.addEventListener('click',handleExport)
+    document.getElementById('import-btn')?.addEventListener('click',handleImport)
+    document.getElementById('change-pw-btn')?.addEventListener('click',()=>{state.showChangePw=true;state.changePwForm={current:'',newPw:'',confirm:''};render()})
+    document.getElementById('setup-2fa-btn')?.addEventListener('click',handleSetup2FAStart)
+    document.getElementById('disable-2fa-btn')?.addEventListener('click',handleDisable2FA)
+  }
+
+  // Change password modal
+  if(state.showChangePw){
+    document.getElementById('cpw-current')?.addEventListener('input',e=>{
+      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+      if(e.target.value!==f)e.target.value=f
+      state.changePwForm.current=f
+    })
+    document.getElementById('cpw-new')?.addEventListener('input',e=>{
+      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+      if(e.target.value!==f)e.target.value=f
+      state.changePwForm.newPw=f
+    })
+    document.getElementById('cpw-confirm')?.addEventListener('input',e=>{
+      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
+      if(e.target.value!==f)e.target.value=f
+      state.changePwForm.confirm=f
+    })
+    document.getElementById('cpw-confirm')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleChangePassword()})
+    document.getElementById('cpw-submit')?.addEventListener('click',handleChangePassword)
+    document.getElementById('cpw-cancel')?.addEventListener('click',()=>{state.showChangePw=false;render()})
+    document.getElementById('cpw-overlay')?.addEventListener('click',e=>{if(e.target.id==='cpw-overlay'){state.showChangePw=false;render()}})
+  }
+
+  // 2FA setup modal
+  if(state.show2FASetup){
+    const setupOtpBoxes=document.querySelectorAll('.setup-otp-box')
+    if(setupOtpBoxes.length>0){
+      setupOtpBoxes.forEach((box, idx)=>{
+        box.addEventListener('input', e=>{
+          const val=e.target.value.replace(/\D/g,'')
+          e.target.value=val
+          let code=''
+          setupOtpBoxes.forEach(b=>code+=b.value)
+          state.setup2FACode=code
+          if(val && idx < 5){
+            setupOtpBoxes[idx+1].focus()
+          }
+          if(code.length===6){
+            handleVerify2FASetup()
+          }
+        })
+        box.addEventListener('keydown', e=>{
+          if(e.key==='Backspace' && !box.value && idx > 0){
+            setupOtpBoxes[idx-1].focus()
+            setupOtpBoxes[idx-1].value=''
+            let code=''
+            setupOtpBoxes.forEach(b=>code+=b.value)
+            state.setup2FACode=code
+          }
+        })
+      })
+    }
+    document.getElementById('2fa-verify')?.addEventListener('click',handleVerify2FASetup)
+    document.getElementById('2fa-cancel')?.addEventListener('click',()=>{state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';render()})
+    document.getElementById('2fa-overlay')?.addEventListener('click',e=>{if(e.target.id==='2fa-overlay'){state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';render()}})
+    document.getElementById('copy-2fa-secret')?.addEventListener('click',()=>{copyText(state.setup2FASecret)})
+  }
+  document.querySelectorAll('.eye-toggle-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault()
+      const targetId=btn.dataset.input
+      const inp=document.getElementById(targetId)
+      if(!inp)return
+      const isPass=inp.type==='password'
+      inp.type=isPass?'text':'password'
+      btn.innerHTML=isPass?SVG.eyeOff:SVG.eye
+    })
+  })
+  if(document.getElementById('fp-card-canvas')){
+    initLockCardFingerprintCanvas()
+  }
+}
+
+// ─── CYBER HUD MATRIX CANVAS & 3D CARD TILT ─────────
+function initCyberHUDCanvas(){
+  const canvas=document.getElementById('cosmic-canvas')
+  if(!canvas)return
+  const ctx=canvas.getContext('2d')
+  let width=canvas.width=window.innerWidth
+  let height=canvas.height=window.innerHeight
+  window.addEventListener('resize',()=>{width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight})
+
+  const charSet='0123456789ABCDEF0147INF22424735RANGEREGIONAREA'
+  const fontSize=12
+  const columns=Math.floor(width/fontSize)
+  const drops=Array(columns).fill(1).map(()=>Math.floor(Math.random()*-50))
+
+  const nodes=[]
+  for(let i=0;i<35;i++){
+    nodes.push({
+      x:Math.random()*width,
+      y:Math.random()*height,
+      vx:(Math.random()-0.5)*0.4,
+      vy:(Math.random()-0.5)*0.4,
+      r:Math.random()*2+1
+    })
+  }
+
+  let scanY=0
+  let hudTime=0
+
+  function drawHUD(){
+    ctx.fillStyle='#000000'
+    ctx.fillRect(0,0,width,height)
+
+    // 1. Draw Red Grid Lines (Nền đen tuyền)
+    ctx.strokeStyle='rgba(239, 68, 68, 0.08)'
+    ctx.lineWidth=1
+    const gridSize=40
+    for(let x=0;x<width;x+=gridSize){
+      ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,height);ctx.stroke()
+    }
+    for(let y=0;y<height;y+=gridSize){
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke()
+    }
+
+    // 2. Draw Falling Crimson Matrix Code Telemetry
+    ctx.font=`${fontSize}px 'JetBrains Mono', monospace`
+    for(let i=0;i<drops.length;i+=2){
+      const text=charSet[Math.floor(Math.random()*charSet.length)]
+      const x=i*fontSize
+      const y=drops[i]*fontSize
+      
+      ctx.fillStyle=Math.random()>0.88?'#ffffff':'rgba(239, 68, 68, 0.28)'
+      ctx.fillText(text,x,y)
+
+      if(y>height&&Math.random()>0.975){
+        drops[i]=0
+      }
+      drops[i]++
+    }
+
+    // 3. Draw Connecting Circuit Nodes (Electric Cyan glowing nodes)
+    for(let i=0;i<nodes.length;i++){
+      const n=nodes[i]
+      n.x+=n.vx;n.y+=n.vy
+      if(n.x<0||n.x>width)n.vx*=-1
+      if(n.y<0||n.y>height)n.vy*=-1
+
+      ctx.fillStyle='#00f0ff'
+      ctx.shadowBlur=6
+      ctx.shadowColor='#00f0ff'
+      ctx.beginPath()
+      ctx.arc(n.x,n.y,n.r,0,Math.PI*2)
+      ctx.fill()
+
+      for(let j=i+1;j<nodes.length;j++){
+        const n2=nodes[j]
+        const d=Math.hypot(n.x-n2.x,n.y-n2.y)
+        if(d<120){
+          ctx.strokeStyle=`rgba(0, 240, 255, ${(1-d/120)*0.15})`
+          ctx.beginPath()
+          ctx.moveTo(n.x,n.y)
+          ctx.lineTo(n2.x,n2.y)
+          ctx.stroke()
+        }
+      }
+    }
+
+    // 4. Red Laser Scan Line (Biometric Laser)
+    scanY=(scanY+1.2)%height
+    const grad=ctx.createLinearGradient(0,scanY-15,0,scanY+15)
+    grad.addColorStop(0,'rgba(239, 68, 68, 0)')
+    grad.addColorStop(0.5,'rgba(239, 68, 68, 0.22)')
+    grad.addColorStop(1,'rgba(239, 68, 68, 0)')
+    ctx.fillStyle=grad
+    ctx.fillRect(0,scanY-15,width,30)
+
+    requestAnimationFrame(drawHUD)
+  }
+
+  drawHUD()
+
+  // 3D Card Tilt on Mousemove
+  document.addEventListener('mousemove',e=>{
+    const card=document.querySelector('.lock-screen')
+    if(card){
+      const rect=card.getBoundingClientRect()
+      const x=e.clientX-rect.left-rect.width/2
+      const y=e.clientY-rect.top-rect.height/2
+      const tiltX=(y/(rect.height/2))*-7
+      const tiltY=(x/(rect.width/2))*7
+      card.style.transform=`perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.015,1.015,1.015)`
+    }
+  })
+
+  document.addEventListener('mouseleave',()=>{
+    const card=document.querySelector('.lock-screen')
+    if(card)card.style.transform='perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
+  })
+}
+
+// ─── LOCK SCREEN CARD FINGERPRINT CANVAS ──────────────
+function initLockCardFingerprintCanvas(){
+  const canvas=document.getElementById('fp-card-canvas')
+  if(!canvas)return
+  const ctx=canvas.getContext('2d')
+  const rect=canvas.getBoundingClientRect()
+  let width=canvas.width=rect.width || 440
+  let height=canvas.height=rect.height || 540
+
+  let fpTime=0
+
+  function drawCardFP(){
+    if(!document.getElementById('fp-card-canvas'))return
+    ctx.clearRect(0,0,width,height)
+
+    fpTime+=0.03
+    const fpX=width*0.5
+    const fpY=height*0.44
+    const fpRadius=Math.min(width,height)*0.26
+
+    ctx.save()
+
+    // HUD Target Brackets [ ]
+    const boxSize=fpRadius*1.35
+    const cLen=22
+    ctx.strokeStyle='rgba(0, 240, 255, 0.85)'
+    ctx.lineWidth=2.5
+    ctx.shadowColor='#00f0ff'
+    ctx.shadowBlur=12
+
+    // Corner Brackets
+    ctx.beginPath(); ctx.moveTo(fpX - boxSize, fpY - boxSize + cLen); ctx.lineTo(fpX - boxSize, fpY - boxSize); ctx.lineTo(fpX - boxSize + cLen, fpY - boxSize); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(fpX + boxSize - cLen, fpY - boxSize); ctx.lineTo(fpX + boxSize, fpY - boxSize); ctx.lineTo(fpX + boxSize, fpY - boxSize + cLen); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(fpX - boxSize, fpY + boxSize - cLen); ctx.lineTo(fpX - boxSize, fpY + boxSize); ctx.lineTo(fpX - boxSize + cLen, fpY + boxSize); ctx.stroke()
+    ctx.beginPath(); ctx.moveTo(fpX + boxSize - cLen, fpY + boxSize); ctx.lineTo(fpX + boxSize, fpY + boxSize); ctx.lineTo(fpX + boxSize, fpY + boxSize - cLen); ctx.stroke()
+
+    // Reticle Ticks & Grid Dots
+    ctx.fillStyle='rgba(0, 240, 255, 0.6)'
+    ctx.shadowBlur=4
+    for(let gx = -1; gx <= 1; gx += 2){
+      for(let gy = -1; gy <= 1; gy += 2){
+        ctx.fillRect(fpX + gx * (boxSize - 10) - 2.5, fpY + gy * (boxSize - 10) - 2.5, 5, 5)
+      }
+    }
+
+    // Fingerprint Whorls & Circuit Tracks
+    ctx.lineWidth=2
+    const numRings=9
+    for(let i=1;i<=numRings;i++){
+      const rX=(i/numRings)*fpRadius*0.72
+      const rY=(i/numRings)*fpRadius*1.05
+      
+      const alpha=0.48+Math.sin(fpTime*2+i*0.4)*0.25
+      ctx.strokeStyle=`rgba(0, 240, 255, ${alpha})`
+      ctx.shadowColor='#00f0ff'
+      ctx.shadowBlur=10
+
+      ctx.beginPath()
+      const startAngle=(i%2===0?0.3:0.7)+Math.sin(i+fpTime*0.4)*0.1
+      const endAngle=Math.PI*2-(i%3===0?0.6:0.3)
+      ctx.ellipse(fpX,fpY,rX,rY,0,startAngle,endAngle)
+      ctx.stroke()
+
+      // Circuit node terminals
+      if(i%2===1){
+        const midAngle=startAngle+(endAngle-startAngle)*0.45
+        const px=fpX+Math.cos(midAngle)*rX
+        const py=fpY+Math.sin(midAngle)*rY
+        ctx.fillStyle='#00f0ff'
+        ctx.beginPath()
+        ctx.arc(px,py,2.5,0,Math.PI*2)
+        ctx.fill()
+      }
+    }
+
+    // Glowing White Pulse Hotspot Nodes (Exact match to User Image!)
+    const p1Time=(fpTime*2)%(Math.PI*2)
+    const p2Time=(fpTime*1.6+2)%(Math.PI*2)
+
+    // Top White Node
+    const n1X=fpX+Math.cos(fpTime*0.7)*(fpRadius*0.22)
+    const n1Y=fpY-fpRadius*0.4+Math.sin(fpTime*0.5)*(fpRadius*0.1)
+    ctx.fillStyle='#ffffff'
+    ctx.shadowColor='#ffffff'
+    ctx.shadowBlur=24
+    ctx.beginPath()
+    ctx.arc(n1X,n1Y,8+Math.sin(p1Time)*2.5,0,Math.PI*2)
+    ctx.fill()
+
+    // Bottom White Node
+    const n2X=fpX-fpRadius*0.28+Math.sin(fpTime*0.6)*(fpRadius*0.08)
+    const n2Y=fpY+fpRadius*0.42+Math.cos(fpTime*0.5)*(fpRadius*0.08)
+    ctx.fillStyle='#ffffff'
+    ctx.shadowColor='#00f0ff'
+    ctx.shadowBlur=22
+    ctx.beginPath()
+    ctx.arc(n2X,n2Y,7+Math.cos(p2Time)*2.5,0,Math.PI*2)
+    ctx.fill()
+
+    // Dedicated Fingerprint Scanning Laser
+    const fpLaserY=fpY-boxSize+((fpTime*60)%(boxSize*2))
+    const fpLaserGrad=ctx.createLinearGradient(fpX-boxSize,fpLaserY,fpX+boxSize,fpLaserY)
+    fpLaserGrad.addColorStop(0,'rgba(0,240,255,0)')
+    fpLaserGrad.addColorStop(0.5,'rgba(255,255,255,0.98)')
+    fpLaserGrad.addColorStop(1,'rgba(0,240,255,0)')
+    
+    ctx.strokeStyle=fpLaserGrad
+    ctx.lineWidth=3
+    ctx.shadowColor='#00f0ff'
+    ctx.shadowBlur=16
+    ctx.beginPath()
+    ctx.moveTo(fpX-boxSize,fpLaserY)
+    ctx.lineTo(fpX+boxSize,fpLaserY)
+    ctx.stroke()
+
+    // Laser Beam Glow
+    const fpBeamGrad=ctx.createLinearGradient(0,fpLaserY-12,0,fpLaserY+12)
+    fpBeamGrad.addColorStop(0,'rgba(0,240,255,0)')
+    fpBeamGrad.addColorStop(0.5,'rgba(0,240,255,0.3)')
+    fpBeamGrad.addColorStop(1,'rgba(0,240,255,0)')
+    ctx.fillStyle=fpBeamGrad
+    ctx.fillRect(fpX-boxSize,fpLaserY-12,boxSize*2,24)
+
+    // Telemetry Status & Audio Spectrum Waves
+    ctx.shadowBlur=0
+    ctx.font="10px 'JetBrains Mono', monospace"
+    ctx.fillStyle='#00f0ff'
+    ctx.fillText("BIOMETRIC FINGERPRINT SCANNER", fpX - boxSize, fpY + boxSize + 18)
+
+    for(let b=0;b<9;b++){
+      const bh=3+Math.abs(Math.sin(fpTime*5+b*0.8))*12
+      ctx.fillRect(fpX+boxSize-38+b*4.5,fpY+boxSize+16-bh,3,bh)
+    }
+
+    ctx.restore()
+    requestAnimationFrame(drawCardFP)
+  }
+
+  drawCardFP()
+}
+
+// ─── INIT ────────────────────────────────────────────
+document.addEventListener('click',resetLockTimer)
+document.addEventListener('keydown',e=>{
+  resetLockTimer()
+  if(state.page==='unlocked'){
+    if((e.key==='/'||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'))&&document.activeElement?.tagName!=='INPUT'&&document.activeElement?.tagName!=='SELECT'){
+      e.preventDefault()
+      document.getElementById('search-input')?.focus()
+    }
+    if(e.key==='Escape'){
+      if(state.showChangePw){state.showChangePw=false;render()}
+      else if(state.show2FASetup){state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';render()}
+      else if(state.editingId){state.editingId=null;render()}
+      else if(state.showAdd){state.showAdd=false;render()}
+    }
+  }
+})
+
+const data=loadData()
+state.page='locked';state.masterPassword=''
+render()
+initCyberHUDCanvas()
+</script>
+</body>
+</html>
