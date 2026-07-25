@@ -5,7 +5,7 @@
 ![Architecture](https://img.shields.io/badge/Architecture-Zero--Knowledge-10b981?style=for-the-badge)
 ![UI Theme](https://img.shields.io/badge/UI-Cyberpunk_HUD-38bdf8?style=for-the-badge)
 
-**FEAR-Vault** là ứng dụng quản lý mật khẩu cá nhân thế hệ mới với giao diện **Cyberpunk HUD Matrix** đẳng cấp, áp dụng mô hình kiến trúc **Zero-Knowledge 100% Client-Side**. Toàn bộ dữ liệu được mã hóa quân sự trực tiếp trên trình duyệt của bạn trước khi lưu trữ.
+**FEAR-Vault** là ứng dụng quản lý mật khẩu cá nhân thế hệ mới với giao diện **Cyberpunk HUD Matrix**, áp dụng mô hình kiến trúc **Zero-Knowledge 100% Client-Side**. Toàn bộ dữ liệu được mã hóa quân sự trực tiếp trên trình duyệt của bạn trước khi lưu trữ.
 
 ---
 
