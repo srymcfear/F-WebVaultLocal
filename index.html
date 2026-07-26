@@ -981,6 +981,8 @@ html, body{
 }
 .toggle-opt input{accent-color:var(--primary);cursor:pointer}
 
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
 /* ─── MOBILE RESPONSIVE ─── */
 @media (max-width: 768px){
   html{font-size:15px}
@@ -1033,6 +1035,19 @@ html, body{
   .dashboard-grid{gap:16px}
   /* Lock screen buttons */
   #unlock-btn{height:46px!important;font-size:14px!important}
+  /* Title bar telemetry wrap */
+  .terminal-section .title-bar .lbl{flex-wrap:wrap;gap:6px;font-size:12px}
+  .terminal-section .title-bar .lbl b{font-size:14px}
+  /* Audit item rows */
+  .audit-item{flex-wrap:wrap;gap:8px}
+  /* Guide external link buttons */
+  .guide-grid a.btn.w-full{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* Section headers wrap */
+  /* Sidebar card padding */
+  .sidebar-card{padding:14px}
+  .sidebar-panel{gap:12px}
+  /* Audit modal stats collapse */
+  .grid-3{grid-template-columns:1fr}
 }
 @media (max-width: 480px){
   html{font-size:14px}
@@ -1043,6 +1058,7 @@ html, body{
   .dock-btn{width:38px;height:38px}
   .left-dock{height:52px;padding:4px 8px}
   .container{padding-bottom:52px}
+  .sidebar-panel{display:none}
   .vault-entry{padding:12px}
   .icon-letter{width:40px;height:40px;font-size:16px}
   .hud-num{font-size:18px}
@@ -1050,6 +1066,24 @@ html, body{
   .otp-box,.setup-otp-box{width:34px;height:40px;font-size:15px;border-radius:10px}
   .otp-group{gap:4px}
   .toast{bottom:66px;right:8px;left:8px;font-size:12px;padding:10px 14px}
+  /* Icon-only action buttons */
+  .vault-entry .actions .btn-sm{font-size:0;padding:0;width:36px;height:36px;gap:0;border-radius:8px}
+  .vault-entry .actions .btn-sm svg{width:16px;height:16px}
+  /* Category add row wrap */
+  .cat-add-row{flex-wrap:wrap;gap:8px!important}
+  .cat-add-row .terminal-input{min-width:160px}
+  /* Category card action gap */
+  .cat-card-actions{gap:8px!important}
+  /* Settings: card padding tighter */
+  .settings-card{padding:12px!important}
+  .settings-card h4{font-size:12.5px!important}
+  /* Settings: cloud button rows wrap */
+  .settings-card .cloud-push-row,.settings-card .cloud-pull-row{flex-wrap:wrap}
+  .settings-card .cloud-push-row .btn-sm{flex:1 1 100%!important}
+  .settings-card .cloud-pull-row .terminal-input{min-width:120px}
+  .settings-card .cloud-pull-row .btn-sm{white-space:nowrap}
+  .settings-card .auth-row{flex-wrap:wrap;gap:8px}
+  .settings-card .auth-row .btn-sm{flex-shrink:0}
 }
 </style>
 </head>
@@ -2624,7 +2658,7 @@ function render(){
           <!-- Add New Category Card -->
           <div style="padding:18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);margin-bottom:24px;">
             <h4 style="font-size:14px;font-weight:800;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;">${SVG.plus} TẠO DANH MỤC MỚI</h4>
-            <div style="display:flex;gap:10px;">
+            <div class="cat-add-row" style="display:flex;gap:10px;">
               <input class="terminal-input" id="new-cat-tab-input" placeholder="Tên danh mục mới (Vd: Work, Personal, Crypto...)" style="flex:1;height:46px;" />
               <button class="btn btn-terminal-primary" id="new-cat-tab-btn">${SVG.plus} THÊM DANH MỤC</button>
             </div>
@@ -2643,7 +2677,7 @@ function render(){
                   </div>
                   <span style="font-size:11px;padding:3px 10px;border-radius:12px;background:var(--badge-bg);color:var(--accent);font-weight:800;">${count} mục</span>
                 </div>
-                <div style="display:flex;gap:8px;justify-flex-end;">
+                <div class="cat-card-actions" style="display:flex;gap:8px;justify-flex-end;">
                   <button class="btn btn-terminal btn-sm" data-rename-cat="${esc(c)}" style="font-size:11px;" title="Đổi tên danh mục">${SVG.edit} ĐỔI TÊN</button>
                   ${!isDefault ? `<button class="btn btn-danger btn-sm" data-del-cat="${esc(c)}" style="font-size:11px;" title="Xóa danh mục">${SVG.trash} XOÁ</button>` : ''}
                 </div>
@@ -2670,7 +2704,7 @@ function render(){
               <p style="font-size:13px;margin-top:4px;">Bạn có thể thêm Ghi chú khi tạo mới hoặc chỉnh sửa tài khoản.</p>
             </div>
           ` : `
-            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:16px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:14px;">
               ${noteItems.map(i => `
                 <div style="padding:18px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;display:flex;flex-direction:column;gap:12px;">
                   <div style="display:flex;align-items:center;justify-content:space-between;">
@@ -2719,7 +2753,7 @@ function render(){
             ${[...new Set([...weak, ...re])].map(i => {
               const isW = calcPasswordStrength(i.password).score < 40
               const isR = state.items.filter(j => j.password === i.password).length > 1
-              return `<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;">
+              return `<div class="audit-item" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;">
                 <div>
                   <b style="font-family:var(--font-display);font-size:14px;color:var(--foreground);">${esc(i.service)}</b>
                   <span style="font-size:12px;color:var(--muted);margin-left:10px;">${esc(i.username)}</span>
@@ -2745,7 +2779,7 @@ function render(){
             <button class="btn btn-terminal btn-sm" id="btn-back-to-settings">⚙️ SANG TAB CÀI ĐẶT</button>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));gap:16px;">
+          <div class="guide-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;">
             
             <!-- GITHUB GIST TOKEN GUIDE CARD -->
             <div style="padding:18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);display:flex;flex-direction:column;justify-content:space-between;">
@@ -2825,7 +2859,7 @@ function render(){
               📥 HƯỚNG DẪN KÉO & PHỤC HỒI KHO TỪ CLOUD VỀ MÁY (PULL / RESTORE)
             </h3>
 
-            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px;">
               
               <!-- CARD A: KÉO TỪ GOOGLE DRIVE -->
               <div style="padding:16px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
@@ -2871,17 +2905,17 @@ function render(){
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-content:start;">
+          <div class="grid-2" style="gap:14px;align-content:start;">
             
             <!-- CARD 1: CHANGE MASTER PASSWORD -->
-            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+            <div class="settings-card" style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
               <h4 style="font-size:13.5px;color:var(--accent);margin-bottom:12px;font-family:var(--font-display);display:flex;align-items:center;gap:6px;">${SVG.key} ĐỔI MẬT KHẨU CHÍNH</h4>
               <div style="display:flex;flex-direction:column;gap:10px;">
                 <div class="form-group">
                   <label style="font-size:11.5px;color:var(--muted);">Mật khẩu hiện tại</label>
                   <input type="password" class="terminal-input" id="tab-cpw-current" value="${esc(state.changePwForm.current)}" style="height:38px;font-size:13px;" placeholder="Nhập MK chính hiện tại..."/>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div class="grid-2" style="gap:10px;">
                   <div class="form-group">
                     <label style="font-size:11.5px;color:var(--muted);">Mật khẩu mới</label>
                     <input type="password" class="terminal-input" id="tab-cpw-new" value="${esc(state.changePwForm.newPw)}" style="height:38px;font-size:13px;" placeholder="MK mới..."/>
@@ -2896,11 +2930,11 @@ function render(){
             </div>
 
             <!-- CARD 2: SECURITY AUTHENTICATION (WEBAUTHN & 2FA) -->
-            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+            <div class="settings-card" style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
               <h4 style="font-size:13.5px;color:var(--accent);margin-bottom:12px;font-family:var(--font-display);display:flex;align-items:center;gap:6px;">${SVG.shield} XÁC THỰC BẢO MẬT NÂNG CAO</h4>
               <div style="display:flex;flex-direction:column;gap:10px;">
                 
-                <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);display:flex;align-items:center;justify-content:space-between;">
+                <div class="auth-row" style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);display:flex;align-items:center;justify-content:space-between;">
                   <div>
                     <b style="font-size:12.5px;color:var(--foreground);display:block;">VÂN TAY / FACEID (WEBAUTHN)</b>
                     <span style="font-size:11px;color:var(--muted);">Mở khóa bằng sinh trắc học thiết bị</span>
@@ -2910,7 +2944,7 @@ function render(){
                     :`<button class="btn btn-terminal-primary btn-sm" id="enable-webauthn-btn" style="height:34px;font-size:11.5px;">👆 BẬT VÂN TAY</button>`}
                 </div>
 
-                <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);display:flex;align-items:center;justify-content:space-between;">
+                <div class="auth-row" style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);display:flex;align-items:center;justify-content:space-between;">
                   <div>
                     <b style="font-size:12.5px;color:var(--foreground);display:block;">XÁC THỰC 2 BƯỚC 2FA (TOTP)</b>
                     <span style="font-size:11px;color:var(--muted);">Mã OTP 6 số (Google Authenticator)</span>
@@ -2924,7 +2958,7 @@ function render(){
             </div>
 
             <!-- CARD 3: ZERO-KNOWLEDGE CLOUD SYNC -->
-            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+            <div class="settings-card" style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                 <h4 style="font-size:13.5px;color:var(--accent);font-family:var(--font-display);display:flex;align-items:center;gap:6px;">☁️ ĐỒNG BỘ CLOUD (ZERO-KNOWLEDGE)</h4>
                 <button class="btn btn-terminal btn-sm" id="btn-goto-guide" style="font-size:10.5px;padding:3px 10px;color:#00f0ff;border-color:rgba(0,240,255,0.4);">📖 HƯỚNG DẪN TẠO TOKEN</button>
@@ -2933,7 +2967,7 @@ function render(){
                 
                 <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);">
                   <b style="font-size:12px;color:var(--primary);display:block;margin-bottom:8px;">📤 1. ĐẨY KHO MÃ HÓA LÊN CLOUD</b>
-                  <div style="display:flex;gap:8px;">
+                  <div class="cloud-push-row" style="display:flex;gap:8px;">
                     <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:34px;font-size:11px;" id="cloud-gdrive-push-btn">🟡 GOOGLE DRIVE</button>
                     <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:34px;font-size:11px;" id="cloud-gist-push-btn">🐙 GITHUB GIST</button>
                     <button class="btn btn-terminal btn-sm" style="flex:1;height:34px;font-size:11px;" id="cloud-gen-btn">${SVG.cloud} CHUỖI JSON</button>
@@ -2948,11 +2982,11 @@ function render(){
 
                 <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);">
                   <b style="font-size:12px;color:var(--primary);display:block;margin-bottom:8px;">📥 2. KÉO KHO TỪ CLOUD VỀ MÁY MỚI</b>
-                  <div style="display:flex;gap:8px;margin-bottom:8px;">
+                  <div class="cloud-pull-row" style="display:flex;gap:8px;margin-bottom:8px;">
                     <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:32px;font-size:11px;" id="cloud-gdrive-pull-btn">🟡 TỪ DRIVE</button>
                     <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:32px;font-size:11px;" id="cloud-gist-pull-btn">🐙 TỪ GIST</button>
                   </div>
-                  <div style="display:flex;gap:8px;">
+                  <div class="cloud-pull-row" style="display:flex;gap:8px;">
                     <input class="terminal-input" id="cloud-input-val" placeholder="Dán chuỗi JSON hoặc Gist ID vào đây..." value="${esc(state.cloudSyncInput)}" style="flex:1;height:34px;font-size:11px;"/>
                     <button class="btn btn-terminal btn-sm" id="cloud-restore-btn" style="height:34px;font-size:11px;">GIẢI MÃ KHO</button>
                   </div>
@@ -2962,7 +2996,7 @@ function render(){
             </div>
 
             <!-- CARD 4: LOCAL FILE IMPORT / EXPORT -->
-            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+            <div class="settings-card" style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
               <h4 style="font-size:13.5px;color:var(--accent);margin-bottom:12px;font-family:var(--font-display);display:flex;align-items:center;gap:6px;">📤 📥 SAO LƯU & PHỤC HỒI TỆP CỤC BỘ (CSV / JSON)</h4>
               <p style="font-size:11.5px;color:var(--muted);margin-bottom:12px;line-height:1.4;">Xuất tệp sao lưu kho cá nhân (JSON Envelope v2 mã hóa hoặc CSV) để lưu trữ an toàn trên thiết bị của bạn.</p>
               <div style="display:flex;flex-direction:column;gap:10px;">
@@ -3255,7 +3289,7 @@ function render(){
       <h3>${SVG.heartPulse} VAULT HEALTH AUDIT</h3>
       <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Phân tích và phát hiện các rủi ro bảo mật trong kho mật khẩu của bạn.</p>
       
-      <div class="grid-2 mb-16" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="grid-3 mb-16">
         <div style="padding:14px;border:1px solid ${reusedCount>0?'var(--error)':'var(--border)'};border-radius:12px;background:rgba(4,7,14,0.8);text-align:center;">
           <div style="font-size:24px;font-weight:900;color:${reusedCount>0?'var(--error)':'var(--success)'};">${reusedCount}</div>
           <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:4px;">DÙNG TRÙNG LẶP</div>
