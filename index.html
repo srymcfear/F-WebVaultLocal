@@ -1,56 +1,181 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi" data-theme="crimson">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://www.googleapis.com https://api.github.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; connect-src 'self' https://cdn.jsdelivr.net https://www.googleapis.com https://api.github.com;">
 <title>FEAR·VAULT · CYBER HUD</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js" async></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg-primary:#000000;
-  --bg-secondary:#05070c;
-  --surface:rgba(6,10,18,0.92);
-  --surface-hover:rgba(12,20,34,0.96);
-  --foreground:#ffffff;
-  --muted:#64748b;
-  --primary:#00f0ff;
-  --primary-hover:#38bdf8;
-  --primary-glow:rgba(0,240,255,0.35);
-  --accent:#00f0ff;
-  --accent-hover:#38bdf8;
-  --accent-glow:rgba(0,240,255,0.35);
-  --red-accent:#ef4444;
-  --red-glow:rgba(239,68,68,0.25);
-  --border:rgba(0,240,255,0.28);
-  --border-hover:rgba(0,240,255,0.55);
-  --success:#10b981;
-  --warning:#f59e0b;
-  --error:#ef4444;
-  --font-sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  --font-display:'Orbitron',sans-serif;
-  --font-mono:'JetBrains Mono',monospace;
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Chakra Petch', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* CRIMSON BATTLEDECK THEME (DEFAULT) */
+  --bg-dark: #05080f;
+  --bg-card: #0c0508;
+  --bg-card-hover: #17090e;
+  --border: rgba(255, 0, 60, 0.35);
+  --border-hover: #ff003c;
+  --primary: #ff003c;
+  --primary-hover: #ff3366;
+  --primary-glow: rgba(255, 0, 60, 0.4);
+  --accent: #ff003c;
+  --accent-hover: #ff3366;
+  --accent-glow: rgba(255, 0, 60, 0.4);
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --badge-bg: rgba(255, 0, 60, 0.15);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
 }
+
+[data-theme="purple"] {
+  /* DEEP NEON PURPLE THEME */
+  --bg-dark: #090d16;
+  --bg-card: #101426;
+  --bg-card-hover: #181d36;
+  --border: rgba(139, 92, 246, 0.35);
+  --border-hover: #8b5cf6;
+  --primary: #8b5cf6;
+  --primary-hover: #a78bfa;
+  --primary-glow: rgba(139, 92, 246, 0.4);
+  --accent: #8b5cf6;
+  --accent-hover: #a78bfa;
+  --accent-glow: rgba(139, 92, 246, 0.4);
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --badge-bg: rgba(139, 92, 246, 0.15);
+}
+
+[data-theme="cyan"] {
+  /* CYAN CYBERPUNK THEME */
+  --bg-dark: #040812;
+  --bg-card: #081020;
+  --bg-card-hover: #0e1b34;
+  --border: rgba(0, 240, 255, 0.35);
+  --border-hover: #00f0ff;
+  --primary: #00f0ff;
+  --primary-hover: #38bdf8;
+  --primary-glow: rgba(0, 240, 255, 0.4);
+  --accent: #00f0ff;
+  --accent-hover: #38bdf8;
+  --accent-glow: rgba(0, 240, 255, 0.4);
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --badge-bg: rgba(0, 240, 255, 0.15);
+}
+
+[data-theme="crimson"] {
+  --bg-dark: #05080f;
+  --bg-card: #0c0508;
+  --bg-card-hover: #17090e;
+  --border: rgba(255, 0, 60, 0.35);
+  --border-hover: #ff003c;
+  --primary: #ff003c;
+  --primary-hover: #ff3366;
+  --primary-glow: rgba(255, 0, 60, 0.4);
+  --accent: #ff003c;
+  --accent-hover: #ff3366;
+  --accent-glow: rgba(255, 0, 60, 0.4);
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --badge-bg: rgba(255, 0, 60, 0.15);
+}
+
 html, body{
-  background:#000000 !important;
-  background-color:#000000 !important;
-  width:100vw;
+  background-color:var(--bg-dark) !important;
+  width:100%;
   height:100vh;
   margin:0;
   padding:0;
-  overflow:hidden !important;
+  overflow:hidden;
   display:flex;
-  align-items:center;
-  justify-content:center;
   font-family:var(--font-sans);
   color:var(--foreground);
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
   position:relative;
+  user-select:none;
 }
 
-/* Background Particle Canvas */
+/* ─── LEFT VERTICAL NAVIGATION DOCK (IMAGE 2 INSPIRATION) ─── */
+.left-dock {
+  width: 68px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 0;
+  gap: 20px;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.dock-logo {
+  width: 42px;
+  height: 42px;
+  background: var(--badge-bg);
+  border: 1.5px solid var(--border-hover);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-weight: 900;
+  font-family: var(--font-display);
+  font-size: 18px;
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+.dock-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+  margin-top: 10px;
+}
+.dock-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.dock-btn:hover, .dock-btn.active {
+  background: var(--badge-bg);
+  border-color: var(--border-hover);
+  color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.dock-btn.active::before {
+  content: '';
+  position: absolute;
+  left: -11px;
+  width: 4px;
+  height: 24px;
+  background: var(--accent);
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* Background Canvas */
 #cosmic-canvas{
   position:fixed;
   inset:0;
@@ -58,129 +183,126 @@ html, body{
   height:100vh;
   pointer-events:none;
   z-index:0;
-  background-color:#000000 !important;
 }
 
 .container{
-  width:100%;
-  max-width:1080px;
+  flex:1;
   height:100vh;
-  max-height:100vh;
-  margin:0 auto;
   position:relative;
   z-index:1;
   display:flex;
   flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:16px;
+  overflow:hidden;
 }
 
-/* Header & Glass Section */
+/* Main App Shell & Top Telemetry Header */
 .terminal-section{
   width:100%;
-  max-height:calc(100vh - 32px);
+  height:100vh;
   display:flex;
   flex-direction:column;
+  background:transparent;
   overflow:hidden;
-  border-radius:20px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  backdrop-filter:blur(24px);
-  box-shadow:0 16px 48px 0 rgba(0,0,0,0.9), 0 0 20px rgba(0,240,255,0.1);
-  transition:all 0.3s ease;
 }
 .terminal-section .title-bar{
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:14px 22px;
-  border-bottom:1px solid rgba(0,240,255,0.2);
-  background:rgba(4,7,14,0.9);
+  justify-content:space-between;
+  padding:0 24px;
+  height:52px;
+  border-bottom:1px solid var(--border);
+  background:rgba(0, 0, 0, 0.75);
+  flex-shrink:0;
+  font-family:var(--font-mono);
+  font-size:12px;
 }
-.terminal-section .title-bar .dot{width:12px;height:12px;border-radius:50%}
+.terminal-section .title-bar .dot{width:12px;height:12px;border-radius:50%;}
 .terminal-section .title-bar .dot.r{background:var(--error)}
 .terminal-section .title-bar .dot.y{background:var(--warning)}
 .terminal-section .title-bar .dot.g{background:var(--success)}
 .terminal-section .title-bar .lbl{
-  margin-left:8px;
-  font-size:13px;
+  margin-left:12px;
+  font-size:14px;
   color:var(--muted);
   font-family:var(--font-mono);
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:14px;
+  flex:1;
 }
 .terminal-section .title-bar .lbl b{
   color:#00f0ff;
-  font-weight:800;
+  font-weight:900;
   font-family:var(--font-display);
-  letter-spacing:1px;
+  letter-spacing:1.5px;
+  font-size:16px;
 }
-.terminal-section .body{padding:24px;font-size:14px;overflow-y:auto;flex:1}
+.terminal-section .body{padding:20px 24px;font-size:15px;flex:1;overflow:hidden;display:flex;flex-direction:column;}
 
-/* Forms & Inputs */
+/* Forms & Chamfered Cut Inputs (Image 1 Style) */
 .terminal-input{
   width:100%;
-  height:46px;
-  padding:0 18px;
+  height:48px;
+  padding:0 20px;
   font-family:var(--font-sans);
-  font-size:14px;
-  background:rgba(4,7,14,0.9);
+  font-size:14.5px;
+  background:var(--bg-card);
   border:1px solid var(--border);
-  border-radius:10px;
   color:var(--foreground);
   outline:none;
-  transition:all 0.25s ease;
+  clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transition:border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 .terminal-input:focus{
   border-color:var(--accent);
-  box-shadow:0 0 0 2px rgba(0,240,255,0.35);
-  background:rgba(6,10,20,0.98);
+  box-shadow:0 0 14px var(--accent-glow);
+  background:var(--bg-card-hover);
 }
-.terminal-input::placeholder{color:#475569}
-select.terminal-input{cursor:pointer}
-
-/* Capsule / Pill Input for Login */
+.terminal-input::placeholder{color:#64748b}
+/* Capsule / Pill Input for Master Password */
 .input-pill{
   border-radius:9999px !important;
   height:52px !important;
   padding:0 26px !important;
   font-size:15px !important;
   background:rgba(4,7,14,0.94) !important;
-  border:1.5px solid rgba(0,240,255,0.4) !important;
+  border:1.5px solid var(--border) !important;
+  color:#ffffff !important;
+  outline:none !important;
+  clip-path:none !important;
 }
 .input-pill:focus{
   border-color:var(--accent) !important;
-  box-shadow:0 0 0 2px rgba(0,240,255,0.4) !important;
+  box-shadow:0 0 16px var(--accent-glow) !important;
 }
 
-/* 6 OTP Squircle Boxes for 2FA */
+/* 6 OTP Squircle Dark Cyber Boxes for 2FA */
 .otp-group{
   display:flex;
-  gap:12px;
+  gap:10px;
   justify-content:center;
-  margin:18px 0 12px 0;
+  margin:16px 0 12px 0;
 }
-.otp-box{
-  width:50px;
-  height:56px;
-  border-radius:16px;
+.otp-box, .setup-otp-box{
+  width:48px;
+  height:54px;
+  border-radius:14px;
   text-align:center;
   font-family:var(--font-mono);
-  font-size:24px;
-  font-weight:700;
+  font-size:22px;
+  font-weight:900;
   color:#ffffff;
-  background:rgba(4,7,14,0.92);
+  background:rgba(4,7,14,0.95);
   border:1.5px solid var(--border);
   outline:none;
-  transition:transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
-  box-shadow:inset 0 2px 4px rgba(0,0,0,0.7);
+  clip-path:none !important;
+  transition:all 0.15s ease;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.8);
 }
-.otp-box:focus{
+.otp-box:focus, .setup-otp-box:focus{
   border-color:var(--accent);
-  box-shadow:0 0 16px var(--accent-glow), inset 0 0 6px var(--accent-glow);
-  transform:scale(1.08) translateY(-2px);
+  box-shadow:0 0 16px var(--accent-glow);
+  transform:scale(1.06) translateY(-2px);
   background:rgba(8,14,26,0.98);
 }
 .otp-footer{
@@ -192,56 +314,72 @@ select.terminal-input{cursor:pointer}
   color:var(--muted);
 }
 
-.form-group{display:flex;flex-direction:column;gap:6px}
-.form-group label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+/* Theme Picker Component */
+.theme-picker {
+  display: flex;
+  gap: 6px;
+  background: rgba(0,0,0,0.6);
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  align-items: center;
+}
+.theme-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.theme-dot:hover { transform: scale(1.25); }
+.theme-dot.crimson { background: #ff003c; }
+.theme-dot.purple { background: #8b5cf6; }
+.theme-dot.cyan { background: #00f0ff; }
 
-/* Buttons */
+/* Buttons with Tactical Chamfered Geometry */
 .btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:8px;
-  height:42px;
+  height:44px;
   padding:0 20px;
-  font-family:var(--font-sans);
+  font-family:var(--font-display);
   font-size:13px;
-  font-weight:700;
-  border-radius:10px;
+  font-weight:800;
+  letter-spacing:0.8px;
   cursor:pointer;
-  transition:all 0.25s ease;
+  transition:all 0.2s ease;
   text-decoration:none;
   white-space:nowrap;
   border:none;
+  clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
 .btn-terminal{
-  background:rgba(0,240,255,0.08);
+  background:var(--bg-card);
   color:var(--foreground);
   border:1px solid var(--border);
 }
 .btn-terminal:hover{
   color:#ffffff;
-  border-color:var(--accent);
-  background:rgba(0,240,255,0.2);
+  border-color:var(--border-hover);
+  background:var(--bg-card-hover);
   transform:translateY(-2px);
   box-shadow:0 4px 16px var(--accent-glow);
 }
 .btn-terminal-primary{
-  background:linear-gradient(135deg, #00f0ff, #0284c7, #38bdf8);
-  background-size:200% 200%;
-  animation:gradientShift 4s ease infinite;
+  background:var(--accent);
   color:#000000;
-  font-weight:800;
-  box-shadow:0 6px 20px rgba(0,240,255,0.4);
-}
-@keyframes gradientShift{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
+  font-weight:900;
+  border:1px solid var(--accent);
+  box-shadow:0 4px 16px var(--accent-glow);
 }
 .btn-terminal-primary:hover{
-  box-shadow:0 8px 26px rgba(0,240,255,0.6);
-  filter:brightness(1.15);
+  background:var(--primary-hover);
+  box-shadow:0 0 20px var(--accent-glow);
   transform:translateY(-2px);
+  color:#000000;
 }
 .btn-danger{
   background:rgba(239,68,68,0.14);
@@ -254,7 +392,7 @@ select.terminal-input{cursor:pointer}
   color:#ffffff;
   transform:translateY(-2px);
 }
-.btn-sm{height:34px;padding:0 14px;font-size:12px;border-radius:8px}
+.btn-sm{height:36px;padding:0 14px;font-size:12px;}
 
 /* Toolbar & Layout */
 .prompt-line{display:flex;align-items:center;gap:10px}
@@ -281,24 +419,24 @@ select.terminal-input{cursor:pointer}
 }
 .pill:hover:not(.active){border-color:var(--border-hover);color:var(--foreground);transform:translateY(-1px)}
 
-/* 3D Cyber HUD Lock Screen Card (Nền đen tuyền, chữ Cyan/White) */
+/* 3D Cyber HUD Lock Screen Card */
 .lock-screen{
   position:relative;
   overflow:hidden;
   width:100%;
-  max-width:440px;
-  margin:0 auto;
-  padding:34px 28px;
+  max-width:480px;
+  margin:20px auto;
+  padding:42px 36px;
   text-align:center;
-  border:1px solid rgba(0,240,255,0.35);
-  border-radius:24px;
-  background:rgba(6,10,18,0.76);
-  backdrop-filter:blur(18px);
-  box-shadow:0 20px 60px rgba(0,0,0,0.92), inset 0 0 30px rgba(0,240,255,0.06);
+  border:1.5px solid rgba(0,240,255,0.4);
+  border-radius:28px;
+  background:rgba(6,11,22,0.85);
+  backdrop-filter:blur(24px);
+  box-shadow:0 24px 72px rgba(0,0,0,0.95), inset 0 0 40px rgba(0,240,255,0.08);
   transform-style:preserve-3d;
   transition:transform 0.15s ease-out;
 }
-#recover-btn:hover{
+#recover-btn:hover, #cloud-pull-lock-btn:hover{
   color:#ffffff !important;
   text-shadow:0 0 14px #00f0ff !important;
   transform:translateY(-1px);
@@ -486,224 +624,393 @@ select.terminal-input{cursor:pointer}
 }
 .lock-screen .hint{font-size:13px;color:var(--muted);margin-bottom:20px;position:relative;z-index:1}
 
-/* Vault Entries */
+/* Vault Entries - Zero-Lag Solid Dark Card Tiles */
 .vault-entry{
   display:flex;
   align-items:center;
-  gap:16px;
-  padding:16px 20px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background:rgba(6,10,18,0.75);
-  font-size:14px;
-  transition:all 0.25s ease;
+  gap:20px;
+  padding:18px 24px;
+  border-radius:16px;
+  border:1px solid rgba(0,240,255,0.25);
+  background:#091222;
+  font-size:15px;
+  transition:border-color 0.15s ease, background 0.15s ease;
   margin-bottom:12px;
 }
 .vault-entry:hover{
-  border-color:var(--accent);
-  background:var(--surface-hover);
-  transform:translateY(-3px) scale(1.005);
-  box-shadow:0 8px 28px rgba(0,240,255,0.2);
+  border-color:rgba(0,240,255,0.65);
+  background:#0e1b32;
 }
-.vault-entry .icon-letter{
-  width:44px;
+.icon-letter{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-family:var(--font-display);
+  font-size:20px;
+  flex-shrink:0;
+  box-shadow:0 6px 18px rgba(0,240,255,0.25);
+}
+.vault-entry .service{font-weight:800;color:#ffffff;min-width:140px;font-size:16px;letter-spacing:0.3px;}
+.vault-entry .username{color:#94a3b8;min-width:180px;font-family:var(--font-mono);font-size:14px;}
+.vault-entry .pass{font-family:var(--font-mono);color:#00f0ff;min-width:140px;letter-spacing:2px;font-size:14.5px;font-weight:700;}
+.vault-entry .cat{font-size:11.5px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:1px;padding:5px 14px;border-radius:9999px;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25)}
+.vault-entry .actions{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;}
+.btn-sm{height:38px;padding:0 16px;font-size:12.5px;border-radius:10px;font-weight:700;}
+
+/* Password Strength Meter Bar */
+.pw-meter{
+  width:100%;
+  height:5px;
+  background:rgba(255,255,255,0.1);
+  border-radius:3px;
+  overflow:hidden;
+  margin-top:6px;
+  position:relative;
+}
+.pw-meter-bar{
+  height:100%;
+  width:0%;
+  transition:width 0.3s ease, background-color 0.3s ease;
+  border-radius:3px;
+}
+.pw-strength-lbl{
+  font-family:var(--font-mono);
+  font-size:11px;
+  font-weight:700;
+  margin-top:4px;
+  display:flex;
+  justify-content:space-between;
+}
+
+/* Modals */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(10px);
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal{
+  width:100%;
+  max-width:560px;
+  background:rgba(6,12,24,0.96);
+  border:1.5px solid rgba(0,240,255,0.4);
+  border-radius:24px;
+  padding:32px;
+  box-shadow:0 24px 72px rgba(0,0,0,0.95), 0 0 40px rgba(0,240,255,0.18);
+  max-height:92vh;
+  overflow-y:auto;
+}
+.modal h3{
+  font-family:var(--font-display);
+  font-size:20px;
+  font-weight:800;
+  color:#ffffff;
+  margin-bottom:14px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* Toast */
+.toast{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  z-index:999;
+  padding:12px 20px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:700;
+  font-family:var(--font-mono);
+  box-shadow:0 10px 30px rgba(0,0,0,0.8);
+  animation:slideUp 0.3s ease;
+}
+.toast.success{background:rgba(16,185,129,0.9);color:#000000;border:1px solid #10b981}
+.toast.error{background:rgba(239,68,68,0.9);color:#ffffff;border:1px solid #ef4444}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.w-full{width:100%}
+.mb-4{margin-bottom:16px}
+.mb-12{margin-bottom:12px}
+.mb-16{margin-bottom:16px}
+
+/* ─── 2-COLUMN DASHBOARD GRID & FIXED INDEPENDENT SIDEBAR ─── */
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:24px;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+@media (max-width: 1080px){
+  .dashboard-grid{
+    grid-template-columns:1fr;
+    overflow-y:auto;
+  }
+}
+
+.main-column{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+.main-column-header{
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  padding-bottom:14px;
+  border-bottom:1px solid rgba(0,240,255,0.15);
+  margin-bottom:14px;
+}
+
+.main-column-feed{
+  flex:1;
+  overflow-y:auto;
+  padding-right:6px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.sidebar-panel{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  height:100%;
+  overflow-y:auto;
+  padding-right:4px;
+}
+
+.sidebar-card{
+  background:#0a1122;
+  border:1px solid rgba(0,240,255,0.25);
+  border-radius:16px;
+  padding:18px;
+  transition:border-color 0.15s ease;
+}
+.sidebar-card:hover{
+  border-color:rgba(0,240,255,0.6);
+}
+.sidebar-card .card-header{
+  font-family:var(--font-display);
+  font-size:13px;
+  font-weight:800;
+  color:#00f0ff;
+  letter-spacing:1.5px;
+  margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(0,240,255,0.18);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.stat-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+  color:#94a3b8;
+  margin-bottom:8px;
+}
+/* ─── SLEEK CUSTOM CYBER SCROLLBARS ─── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(4, 7, 14, 0.4);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.75);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 240, 255, 0.3) rgba(4, 7, 14, 0.4);
+}
+
+.sidebar-cat-list{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  width:100%;
+}
+.sidebar-cat-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:#091222;
+  border:1.5px solid rgba(0, 240, 255, 0.25);
+  border-radius:14px;
+  padding:6px;
+  cursor:pointer;
+  user-select:none;
+  transition:border-color 0.15s ease, background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.sidebar-cat-item:hover{
+  border-color:#00f0ff;
+  background:#0e1d38;
+  transform:translateY(-2px);
+  box-shadow:0 4px 16px rgba(0,240,255,0.2);
+}
+.sidebar-cat-item:hover .cat-title-text{
+  color:#ffffff;
+}
+.sidebar-cat-item.full-width{
+  grid-column:span 2;
+}
+
+/* Left Stacked Badge inside Card */
+.cat-left-block{
+  width:42px;
+  height:44px;
+  border-radius:10px;
+  background:rgba(0, 240, 255, 0.1);
+  border:1px solid rgba(0, 240, 255, 0.25);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  overflow:hidden;
+  transition:border-color 0.15s ease, background 0.15s ease;
+}
+.cat-count-num{
+  font-family:var(--font-mono);
+  font-size:13px;
+  font-weight:900;
+  color:#00f0ff;
+  line-height:1;
+  padding-top:2px;
+}
+.cat-icon-box{
+  font-size:14px;
+  padding-bottom:1px;
+}
+
+/* Right Name Area inside Card */
+.cat-right-block{
+  flex:1;
   height:44px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border-radius:12px;
-  font-weight:800;
-  font-size:19px;
-  flex-shrink:0;
-  border:1px solid rgba(255,255,255,0.18);
-  box-shadow:0 4px 16px rgba(0,0,0,0.6);
+  padding:0 4px;
+  text-align:center;
+  overflow:hidden;
+  container-type:inline-size;
 }
-.vault-entry .service{font-weight:700;font-size:16px;color:#ffffff;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vault-entry .username{color:var(--muted);font-size:13px;flex-shrink:0;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vault-entry .pass{
-  font-family:var(--font-mono);
-  font-size:13px;
-  color:#ffffff;
-  flex-shrink:0;
-  letter-spacing:2px;
-  padding:6px 14px;
-  background:rgba(0,0,0,0.7);
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,0.1);
-  min-width:120px;
+.cat-title-text{
+  font-size:clamp(9px, 12cqw, 12.5px);
+  font-weight:800;
+  color:#e2e8f0;
+  letter-spacing:0.3px;
+  line-height:1.15;
+  word-break:break-word;
+  max-height:36px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
   text-align:center;
 }
-.vault-entry .cat{
-  font-size:11px;
-  font-weight:700;
-  padding:4px 10px;
-  border-radius:6px;
-  border:1px solid var(--border);
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-  flex-shrink:0;
+  text-overflow:ellipsis;
+  overflow:hidden;
 }
-.vault-entry .actions{display:flex;gap:6px;flex-shrink:0}
 
-/* Utility Helpers */
+/* Active State for Unified Card */
+.sidebar-cat-item.active{
+  border-color:#00f0ff;
+  background:linear-gradient(135deg, rgba(0,240,255,0.25), rgba(56,189,248,0.15));
+  box-shadow:0 0 16px rgba(0,240,255,0.3);
+}
+.sidebar-cat-item.active .cat-left-block{
+  background:rgba(0, 240, 255, 0.25);
+  border-color:#00f0ff;
+}
+.sidebar-cat-item.active .cat-title-text{
+  color:#00f0ff;
+  font-weight:900;
+}
+  color:#00f0ff;
+}
+
+/* Hardware Accelerated Smooth Animations */
+.vault-entry, .btn, .terminal-input, .pill, .sidebar-card, .sidebar-cat-item{
+  will-change:transform, box-shadow;
+  transition:transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease;
+}
 .flex{display:flex}
-.flex-col{flex-direction:column}
 .items-center{align-items:center}
 .justify-between{justify-content:space-between}
-.gap-4{gap:4px}
 .gap-8{gap:8px}
-.gap-12{gap:12px}
-.mt-8{margin-top:8px}
-.mt-12{margin-top:12px}
-.mt-16{margin-top:16px}
-.mb-8{margin-bottom:8px}
-.mb-12{margin-bottom:12px}
-.mb-16{margin-bottom:16px}
-.w-full{width:100%}
-.text-center{text-align:center}
-.shrink-0{flex-shrink:0}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:640px){
-  .grid-2{grid-template-columns:1fr}
-  .vault-entry{flex-wrap:wrap}
-  .vault-entry .username{max-width:100%}
-  .vault-entry .actions{width:100%;justify-content:flex-end;margin-top:4px}
-  .otp-box{width:42px;height:48px;font-size:20px;border-radius:12px}
-  .ghost-typography{display:none}
-}
-.hidden{display:none}
+.gap-10{gap:10px}
+.badge-2fa{font-size:11px;font-weight:700;color:var(--success);background:rgba(16,185,129,0.15);padding:2px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.3);margin-left:8px;}
 
-/* Modals & Toasts */
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  z-index:50;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,0.88);
-  backdrop-filter:blur(14px);
-  padding:16px;
-}
-.modal{
-  width:100%;
-  max-width:460px;
-  border:1px solid rgba(0,240,255,0.4);
-  border-radius:20px;
-  background:rgba(6,10,18,0.98);
-  box-shadow:0 24px 64px rgba(0,0,0,0.95);
-  padding:32px;
-}
-.modal h3{font-size:18px;font-weight:700;color:#ffffff;margin-bottom:18px}
-.toast{
-  position:fixed;
-  bottom:30px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:100;
-  padding:12px 26px;
-  border-radius:12px;
-  font-size:13px;
-  font-weight:600;
-  font-family:var(--font-sans);
-  border:1px solid;
-  backdrop-filter:blur(20px);
-  box-shadow:0 12px 36px rgba(0,0,0,0.7);
-  transition:all 0.3s ease;
-}
-.toast.success{border-color:rgba(16,185,129,0.5);background:rgba(16,185,129,0.2);color:var(--success)}
-.toast.error{border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.2);color:var(--error)}
-.toast.fade{opacity:0;transform:translate(-50%,12px)}
-.totp-input{text-align:center;letter-spacing:14px;font-size:28px;font-weight:700;font-family:var(--font-mono);padding:14px}
-.badge-2fa{
+/* Custom Checkbox Pill */
+.toggle-opt{
   display:inline-flex;
   align-items:center;
   gap:6px;
-  padding:3px 10px;
-  border-radius:6px;
-  font-size:11px;
-  font-weight:700;
-  color:var(--success);
-  border:1px solid rgba(16,185,129,0.4);
-  background:rgba(16,185,129,0.12);
-  margin-left:8px;
+  font-size:12px;
+  color:var(--muted);
+  cursor:pointer;
+  user-select:none;
 }
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-input[type="search"]::-webkit-search-cancel-button{filter:invert(0.7);cursor:pointer}
-svg{display:inline-block;vertical-align:middle}
-
-/* ─── ANIMATIONS & DYNAMIC MICRO-INTERACTIONS ─── */
-@keyframes fadeInScale {
-  0% { opacity: 0; transform: scale(0.94) translateY(12px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-@keyframes floatIcon {
-  0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(2deg); }
-  100% { transform: translateY(0) rotate(0deg); }
-}
-
-@keyframes pulseGlow {
-  0% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.95); }
-  50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.08); }
-  100% { opacity: 0.1; transform: translate(-50%, -50%) scale(0.95); }
-}
-
-@keyframes popIn {
-  0% { opacity: 0; transform: scale(0.7) translateY(16px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-@keyframes slideUpFade {
-  0% { opacity: 0; transform: translateY(16px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes toastBounce {
-  0% { opacity: 0; transform: translate(-50%, 28px) scale(0.85); }
-  60% { opacity: 1; transform: translate(-50%, -4px) scale(1.03); }
-  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
-}
-
-@keyframes modalSlide {
-  0% { opacity: 0; transform: translateY(28px) scale(0.92); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.lock-screen {
-  animation: fadeInScale 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.lock-screen .glow {
-  animation: pulseGlow 5.5s ease-in-out infinite alternate;
-}
-.lock-screen .icon-wrapper {
-  animation: floatIcon 3.5s ease-in-out infinite alternate;
-}
-.modal-overlay .modal {
-  animation: modalSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.toast {
-  animation: toastBounce 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.otp-box:nth-child(1) { animation: popIn 0.35s 0.04s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-.otp-box:nth-child(2) { animation: popIn 0.35s 0.08s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-.otp-box:nth-child(3) { animation: popIn 0.35s 0.12s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-.otp-box:nth-child(4) { animation: popIn 0.35s 0.16s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-.otp-box:nth-child(5) { animation: popIn 0.35s 0.20s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-.otp-box:nth-child(6) { animation: popIn 0.35s 0.24s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-
-.btn:active {
-  transform: scale(0.96) !important;
-}
-.pill:active {
-  transform: scale(0.93);
-}
+.toggle-opt input{accent-color:var(--primary);cursor:pointer}
 </style>
 </head>
 <body>
+
+<!-- LEFT VERTICAL NAVIGATION DOCK (IMAGE 2 INSPIRATION) -->
+<aside class="left-dock">
+  <div class="dock-logo">F</div>
+  <div class="dock-menu">
+    <button class="dock-btn active" data-dock="hud" title="HUD Dashboard">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    </button>
+    <button class="dock-btn" data-dock="vault" title="Kho Mật Khẩu">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+    </button>
+    <button class="dock-btn" data-dock="categories" title="Quản Lý Danh Mục">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+    </button>
+    <button class="dock-btn" data-dock="notes" title="Ghi Chú Bảo Mật">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+    </button>
+    <button class="dock-btn" data-dock="audit" title="Báo Cáo Bảo Mật (Health Audit)">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+    </button>
+    <button class="dock-btn" data-dock="guide" title="Hướng Dẫn Tạo Token Cloud">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+    </button>
+    <button class="dock-btn" data-dock="settings" title="Cài Đặt & Đồng Bộ Cloud">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    </button>
+  </div>
+</aside>
 
 <canvas id="cosmic-canvas"></canvas>
 
@@ -724,7 +1031,11 @@ const SVG={
   key:`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="m21 2-9.6 9.6"></path><path d="m15.5 7.5 3 3"></path></svg>`,
   dice:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><circle cx="15.5" cy="8.5" r="1.5"></circle><circle cx="15.5" cy="15.5" r="1.5"></circle><circle cx="8.5" cy="15.5" r="1.5"></circle></svg>`,
   export:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`,
-  import:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>`
+  import:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>`,
+  globe:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
+  heartPulse:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path><path d="M12 5v14"></path></svg>`,
+  fileText:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>`,
+  cloud:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>`
 }
 
 // ─── CONSTANTS ───────────────────────────────────────
@@ -738,10 +1049,80 @@ const STORAGE_KEY = 'fear_vault'
 const TOTP_PERIOD = 30
 const TOTP_DIGITS = 6
 
+// ─── INDEXEDDB PERSISTENT STORAGE ENGINE ─────────────
+const DB_NAME = 'FearVaultDB', DB_STORE = 'vault_store', DB_VERSION = 1
+
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    const req = indexedDB.open(DB_NAME, DB_VERSION)
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result
+      if(!db.objectStoreNames.contains(DB_STORE)) db.createObjectStore(DB_STORE)
+    }
+    req.onsuccess = () => resolve(req.result)
+    req.onerror = () => reject(req.error)
+  })
+}
+
+async function setDBItem(key, val){
+  try{
+    const db = await openDB()
+    return new Promise((resolve)=>{
+      const tx = db.transaction(DB_STORE, 'readwrite')
+      tx.objectStore(DB_STORE).put(val, key)
+      tx.oncomplete = () => resolve(true)
+      tx.onerror = () => resolve(false)
+    })
+  }catch{ return false }
+}
+
+async function getDBItem(key){
+  try{
+    const db = await openDB()
+    return new Promise((resolve)=>{
+      const tx = db.transaction(DB_STORE, 'readonly')
+      const req = tx.objectStore(DB_STORE).get(key)
+      req.onsuccess = () => resolve(req.result)
+      req.onerror = () => resolve(null)
+    })
+  }catch{ return null }
+}
+
+async function requestPersistentStorage(){
+  if(navigator.storage && navigator.storage.persist){
+    try{
+      const isPersisted = await navigator.storage.persisted()
+      if(!isPersisted) await navigator.storage.persist()
+    }catch{}
+  }
+}
+
+async function initIndexedDBAutoRestore(){
+  await requestPersistentStorage()
+  const localData = localStorage.getItem(STORAGE_KEY)
+  if(!localData || localData === '{}'){
+    const dbData = await getDBItem(STORAGE_KEY)
+    if(dbData){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dbData))
+      if(state.page === 'locked') render()
+    }
+  }
+}
+
 // ─── CRYPTO UTILITIES ────────────────────────────────
 function b64ToBuf(b64){const b=atob(b64);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u.buffer}
 function bufToB64(buf){const u=new Uint8Array(buf);let b='';for(let i=0;i<u.byteLength;i++)b+=String.fromCharCode(u[i]);return btoa(b)}
 function randBytes(n){return crypto.getRandomValues(new Uint8Array(n))}
+
+function getSecureRandomInt(max){
+  if(!max || max <= 0) return 0
+  const limit = 256 - (256 % max)
+  let val
+  do {
+    val = randBytes(1)[0]
+  } while (val >= limit)
+  return val % max
+}
 
 async function deriveKey(pw,salt){
   const enc=new TextEncoder()
@@ -773,7 +1154,6 @@ async function verifyPassword(pw,stored){
 function generateVaultKey(){return bufToB64(randBytes(32).buffer)}
 function generateRecoveryKey(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let k='FEAR-';const r=randBytes(8);for(let i=0;i<8;i++){if(i===4)k+='-';k+=c[r[i]%c.length]}return k}
 
-// PBKDF2-based encrypt/decrypt — ONLY for vault_key_encrypted & vault_key_recovery
 async function aesEncrypt(pt,pw){
   const salt=randBytes(SALT_LENGTH);const iv=randBytes(IV_LENGTH)
   const key=await deriveKey(pw,salt)
@@ -790,7 +1170,6 @@ async function aesDecrypt(ct,pw){
   return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},key,d))
 }
 
-// Direct AES-256-GCM — for entry data & TOTP secret
 async function directEncrypt(plaintext, rawKeyB64){
   const keyBytes=new Uint8Array(b64ToBuf(rawKeyB64))
   const iv=randBytes(IV_LENGTH)
@@ -895,21 +1274,55 @@ async function importVault(env,pw){
   return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv},encKey,ct))
 }
 
-// ─── PASSWORD GENERATOR (Fisher-Yates + CSPRNG) ─────
-function genPassword(){
-  const u='ABCDEFGHIJKLMNOPQRSTUVWXYZ',l='abcdefghijklmnopqrstuvwxyz',d='0123456789',s='!@#$%^&*()_-+=<>?',a=u+l+d+s
+// ─── PASSWORD GENERATOR (CSPRNG Rejection Sampling) ─
+function genPassword(opts){
+  const options = opts || state.genOpts || {len:20, upper:true, lower:true, digits:true, symbols:true}
+  const u='ABCDEFGHIJKLMNOPQRSTUVWXYZ',l='abcdefghijklmnopqrstuvwxyz',d='0123456789',s='!@#$%^&*()_-+=<>?'
+  let charset=''
   const arr=[]
-  arr.push(u[randBytes(1)[0]%u.length])
-  arr.push(l[randBytes(1)[0]%l.length])
-  arr.push(d[randBytes(1)[0]%d.length])
-  arr.push(s[randBytes(1)[0]%s.length])
-  for(let i=4;i<20;i++)arr.push(a[randBytes(1)[0]%a.length])
-  const rnd=randBytes(arr.length)
-  for(let i=arr.length-1;i>0;i--){const j=rnd[i]%(i+1);[arr[i],arr[j]]=[arr[j],arr[i]]}
+  if(options.upper) { charset += u; arr.push(u[getSecureRandomInt(u.length)]); }
+  if(options.lower) { charset += l; arr.push(l[getSecureRandomInt(l.length)]); }
+  if(options.digits) { charset += d; arr.push(d[getSecureRandomInt(d.length)]); }
+  if(options.symbols) { charset += s; arr.push(s[getSecureRandomInt(s.length)]); }
+  if(!charset) { charset = u+l+d+s; arr.push(u[getSecureRandomInt(u.length)]); }
+  
+  const targetLen = Math.max(8, options.len || 20)
+  while(arr.length < targetLen){
+    arr.push(charset[getSecureRandomInt(charset.length)])
+  }
+  for(let i=arr.length-1;i>0;i--){
+    const j=getSecureRandomInt(i+1);
+    [arr[i],arr[j]]=[arr[j],arr[i]]
+  }
   return arr.join('')
 }
 
+// ─── PASSWORD STRENGTH METER ────────────────────────
+function calcPasswordStrength(pw){
+  if(!pw) return {score:0, text:'RẤT YẾU', color:'#ef4444', percent:0}
+  let score = 0
+  if(pw.length >= 8) score += 20
+  if(pw.length >= 12) score += 15
+  if(pw.length >= 16) score += 15
+  if(/[a-z]/.test(pw)) score += 12
+  if(/[A-Z]/.test(pw)) score += 13
+  if(/[0-9]/.test(pw)) score += 12
+  if(/[^a-zA-Z0-9]/.test(pw)) score += 13
+  
+  score = Math.min(100, score)
+  if(score < 40) return {score, text:'YẾU', color:'#ef4444', percent:score}
+  if(score < 70) return {score, text:'TRUNG BÌNH', color:'#f59e0b', percent:score}
+  if(score < 90) return {score, text:'MẠNH', color:'#10b981', percent:score}
+  return {score, text:'CYBER-TIER 🩵', color:'#00f0ff', percent:score}
+}
+
 // ─── STORAGE ─────────────────────────────────────────
+function getAllCategories(){
+  const defaults=['email','social','dev','finance','shopping','work','other']
+  const itemCats=(state.items || []).map(i => (i.category || 'other').trim().toLowerCase()).filter(Boolean)
+  return Array.from(new Set([...defaults, ...(state.categories||[]), ...itemCats]))
+}
+
 function loadData(){
   try{
     const d=JSON.parse(localStorage.getItem(STORAGE_KEY))||{}
@@ -922,8 +1335,10 @@ function loadData(){
 }
 function saveData(d){
   const defaults=['email','social','dev','finance','shopping','work','other']
+  state.categories=getAllCategories()
   d.custom_categories=state.categories.filter(c=>!defaults.includes(c))
   localStorage.setItem(STORAGE_KEY,JSON.stringify(d))
+  setDBItem(STORAGE_KEY, d)
 }
 
 function addCustomCategory(rawName){
@@ -938,8 +1353,65 @@ function addCustomCategory(rawName){
   return clean
 }
 
+async function renameCategory(oldCat, newCatRaw){
+  const clean = (newCatRaw || '').trim().toLowerCase()
+  if(!clean || clean === oldCat) return
+  if(state.categories.includes(clean)){
+    toast('error', 'Danh mục "' + clean.toUpperCase() + '" đã tồn tại!')
+    return
+  }
+  const idx = state.categories.indexOf(oldCat)
+  if(idx >= 0) state.categories[idx] = clean
+  else state.categories.push(clean)
+
+  const ek = state.vaultKey || state.masterPassword
+  const data = loadData()
+  for(const i of state.items){
+    if((i.category || 'other') === oldCat){
+      i.category = clean
+      if(ek && data.entries){
+        const match = data.entries.find(e => e.id === i.id)
+        if(match) match.encrypted = await encryptEntry(i, ek)
+      }
+    }
+  }
+  if(state.activeCategory === oldCat) state.activeCategory = clean
+  saveData(data)
+  toast('success', `Đã đổi tên danh mục thành "${clean.toUpperCase()}"`)
+  render()
+}
+
+async function deleteCategory(cat){
+  const defaults = ['email','social','dev','finance','shopping','work','other']
+  if(defaults.includes(cat)){
+    toast('error', 'Không thể xóa danh mục mặc định của hệ thống!')
+    return
+  }
+  if(!confirm(`Bạn có chắc muốn xóa danh mục "${cat.toUpperCase()}"? Các tài khoản thuộc danh mục này sẽ chuyển về "OTHER".`)) return
+
+  state.categories = state.categories.filter(c => c !== cat)
+  const ek = state.vaultKey || state.masterPassword
+  const data = loadData()
+  for(const i of state.items){
+    if(i.category === cat){
+      i.category = 'other'
+      if(ek && data.entries){
+        const match = data.entries.find(e => e.id === i.id)
+        if(match) match.encrypted = await encryptEntry(i, ek)
+      }
+    }
+  }
+  if(state.activeCategory === cat) state.activeCategory = ''
+  saveData(data)
+  toast('success', `Đã xóa danh mục "${cat.toUpperCase()}"`)
+  render()
+}
+
 // ─── STATE ───────────────────────────────────────────
 let state={
+  theme: localStorage.getItem('fear_vault_theme') || 'crimson',
+  activeDockTab: 'hud',
+  showCatManager: false,
   page:'locked', // locked|create|recovery-show|recovery|recovery-reset|totp-verify|unlocked
   masterPassword:'',
   confirmPassword:'',
@@ -950,13 +1422,14 @@ let state={
   search:'',
   activeCategory:'',
   editingId:null,
-  editForm:{service:'',username:'',password:'',category:''},
+  editForm:{service:'',username:'',password:'',category:'',notes:'',url:''},
   showAdd:false,
-  newItem:{service:'',username:'',password:'',category:''},
+  newItem:{service:'',username:'',password:'',category:'',notes:'',url:''},
   loading:false,
   toast:null,
   categories:['email','social','dev','finance','shopping','work','other'],
   showPasswords:{},
+  showNotes:{},
   showChangePw:false,
   changePwForm:{current:'',newPw:'',confirm:''},
   totpCode:'',
@@ -964,7 +1437,12 @@ let state={
   show2FASetup:false,
   setup2FASecret:'',
   showMasterPw:false,
-  setup2FACode:''
+  setup2FACode:'',
+  showHealthCheck:false,
+  showCloudSync:false,
+  cloudSyncInput:'',
+  cloudEncryptedOutput:'',
+  genOpts:{len:20, upper:true, lower:true, digits:true, symbols:true}
 }
 let lockTimer=null,toastTimer=null,clipboardTimer=null
 
@@ -978,26 +1456,101 @@ function resetLockTimer(){
   if(state.page==='unlocked')lockTimer=setTimeout(lockVault,AUTO_LOCK_MS)
 }
 
+function setupClipboardAutoClear(){
+  const clearCB=()=>{
+    if(clipboardTimer){
+      clearTimeout(clipboardTimer)
+      clipboardTimer=null
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText('').catch(()=>{})
+      }
+    }
+  }
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='hidden')clearCB()
+  })
+  window.addEventListener('blur',clearCB)
+}
+setupClipboardAutoClear()
+
 // ─── ENTRY HELPERS ───────────────────────────────────
 async function decryptEntries(entries,effectiveKey){
   const results=await Promise.all((entries||[]).map(async(e)=>{
     try{
-      if(e.encrypted){const json=await directDecrypt(e.encrypted,effectiveKey);const p=JSON.parse(json);return{item:{id:e.id,...p},legacy:false}}
-      else{const pt=await aesDecrypt(e.password,effectiveKey);return{item:{id:e.id,service:e.service,username:e.username,password:pt,category:e.category||''},legacy:true}}
-    }catch{return{item:{id:e.id,service:e.service||'???',username:e.username||'',password:'[decrypt error]',category:e.category||''},legacy:false,error:true}}
+      if(e.encrypted){
+        const json=await directDecrypt(e.encrypted,effectiveKey)
+        const p=JSON.parse(json)
+        return{
+          item:{
+            id:e.id,
+            service:p.service||'',
+            username:p.username||'',
+            password:p.password||'',
+            category:p.category||'',
+            notes:p.notes||'',
+            url:p.url||'',
+            createdAt:p.createdAt||Date.now(),
+            updatedAt:p.updatedAt||Date.now()
+          },
+          legacy:false
+        }
+      }
+      else{
+        const pt=await aesDecrypt(e.password,effectiveKey)
+        return{
+          item:{
+            id:e.id,
+            service:e.service,
+            username:e.username,
+            password:pt,
+            category:e.category||'',
+            notes:'',
+            url:'',
+            createdAt:Date.now(),
+            updatedAt:Date.now()
+          },
+          legacy:true
+        }
+      }
+    }catch{
+      return{
+        item:{
+          id:e.id,
+          service:e.service||'???',
+          username:e.username||'',
+          password:'[decrypt error]',
+          category:e.category||'',
+          notes:'',
+          url:'',
+          createdAt:Date.now(),
+          updatedAt:Date.now()
+        },
+        legacy:false,
+        error:true
+      }
+    }
   }))
   return{items:results.map(r=>r.item),needsMigration:results.some(r=>r.legacy)}
 }
 
 async function migrateEntries(items,effectiveKey){
   return Promise.all(items.filter(i=>i.password!=='[decrypt error]').map(async(item)=>{
-    const json=JSON.stringify({service:item.service,username:item.username,password:item.password,category:item.category})
+    const json=JSON.stringify({service:item.service,username:item.username,password:item.password,category:item.category,notes:item.notes||'',url:item.url||'',createdAt:item.createdAt||Date.now(),updatedAt:item.updatedAt||Date.now()})
     return{id:item.id,encrypted:await directEncrypt(json,effectiveKey)}
   }))
 }
 
 async function encryptEntry(item,effectiveKey){
-  const json=JSON.stringify({service:item.service,username:item.username,password:item.password,category:item.category})
+  const json=JSON.stringify({
+    service:item.service,
+    username:item.username,
+    password:item.password,
+    category:item.category,
+    notes:item.notes||'',
+    url:item.url||'',
+    createdAt:item.createdAt||Date.now(),
+    updatedAt:Date.now()
+  })
   return directEncrypt(json,effectiveKey)
 }
 
@@ -1005,7 +1558,9 @@ async function encryptEntry(item,effectiveKey){
 async function completeUnlock(effectiveKey,data){
   const{items,needsMigration}=await decryptEntries(data.entries,effectiveKey)
   if(needsMigration){data.entries=await migrateEntries(items,effectiveKey);saveData(data)}
-  state.items=items;state.page='unlocked';state.loading=false;state._totpSecret=''
+  state.items=items
+  state.categories=getAllCategories()
+  state.page='unlocked';state.loading=false;state._totpSecret=''
   render();resetLockTimer()
 }
 
@@ -1087,42 +1642,119 @@ async function handleRecoverReset(){
 }
 
 function lockVault(){
-  state.page='locked';state.masterPassword='';state.confirmPassword='';state.vaultKey='';state.showMasterPw=false;state.items=[];state.search='';state.activeCategory='';state.showAdd=false;state.editingId=null;state.showPasswords={};state.showChangePw=false;state.changePwForm={current:'',newPw:'',confirm:''};state.totpCode='';state._totpSecret='';state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode=''
+  state.page='locked';state.masterPassword='';state.confirmPassword='';state.vaultKey='';state.showMasterPw=false;state.items=[];state.search='';state.activeCategory='';state.showAdd=false;state.editingId=null;state.showPasswords={};state.showNotes={};state.showChangePw=false;state.changePwForm={current:'',newPw:'',confirm:''};state.totpCode='';state._totpSecret='';state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';state.showHealthCheck=false;state.showCloudSync=false
   render()
 }
 
 async function addItem(){
   if(!state.newItem.service||!state.newItem.password)return
   const ek=state.vaultKey||state.masterPassword;if(!ek)return
-  const enc=await encryptEntry(state.newItem,ek)
+  const now=Date.now()
+  const fullItem={...state.newItem, createdAt:now, updatedAt:now}
+  const enc=await encryptEntry(fullItem,ek)
   const data=loadData();const entry={id:crypto.randomUUID(),encrypted:enc}
   data.entries.push(entry);saveData(data)
-  state.items.unshift({id:entry.id,service:state.newItem.service,username:state.newItem.username,password:state.newItem.password,category:state.newItem.category||''})
-  state.newItem={service:'',username:'',password:'',category:''};state.showAdd=false
-  toast('success','Đã thêm mục mới');resetLockTimer()
+  state.items.unshift({id:entry.id, ...fullItem})
+  state.newItem={service:'',username:'',password:'',category:'',notes:'',url:''};state.showAdd=false
+  toast('success','Đã thêm mục mới');resetLockTimer();renderEntries()
 }
 
 async function saveEdit(){
   if(!state.editingId)return
   const ek=state.vaultKey||state.masterPassword;if(!ek)return
-  const enc=await encryptEntry(state.editForm,ek)
+  const now=Date.now()
+  const fullItem={...state.editForm, id:state.editingId, updatedAt:now}
+  const enc=await encryptEntry(fullItem,ek)
   const data=loadData();const idx=data.entries.findIndex(e=>e.id===state.editingId);if(idx===-1)return
   data.entries[idx]={id:state.editingId,encrypted:enc};saveData(data)
-  state.items=state.items.map(i=>i.id===state.editingId?{...state.editForm,id:state.editingId}:i)
-  state.editingId=null;toast('success','Đã cập nhật');resetLockTimer()
+  state.items=state.items.map(i=>i.id===state.editingId?{...i, ...fullItem}:i)
+  state.editingId=null;toast('success','Đã cập nhật');resetLockTimer();renderEntries()
 }
 
 function deleteItem(id){
   const data=loadData();data.entries=data.entries.filter(e=>e.id!==id);saveData(data)
-  state.items=state.items.filter(i=>i.id!==id);toast('success','Đã xoá mục')
+  state.items=state.items.filter(i=>i.id!==id);toast('success','Đã xoá mục');renderEntries()
 }
 
 function copyText(t){
   if(clipboardTimer)clearTimeout(clipboardTimer)
-  navigator.clipboard.writeText(t).then(()=>{
-    toast('success','Đã sao chép vào bộ nhớ đệm (xoá sau 30s)')
-    clipboardTimer=setTimeout(()=>navigator.clipboard.writeText('').catch(()=>{}),CLIPBOARD_CLEAR_MS)
-  }).catch(()=>{})
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(()=>{
+      toast('success','Đã sao chép vào bộ nhớ đệm (xoá sau 30s hoặc khi rời app)')
+      clipboardTimer=setTimeout(()=>{
+        navigator.clipboard.writeText('').catch(()=>{})
+        clipboardTimer=null
+      },CLIPBOARD_CLEAR_MS)
+    }).catch(()=>{
+      toast('error','Không thể sao chép tự động')
+    })
+  }
+}
+
+function parseCSV(text){
+  const lines = []
+  let row = [], field = '', inQuotes = false
+  for(let i=0; i<text.length; i++){
+    const c = text[i]
+    const next = text[i+1]
+    if(c === '"'){
+      if(inQuotes && next === '"'){ field += '"'; i++; }
+      else { inQuotes = !inQuotes }
+    } else if(c === ',' && !inQuotes){
+      row.push(field.trim())
+      field = ''
+    } else if((c === '\r' || c === '\n') && !inQuotes){
+      if(c === '\r' && next === '\n') i++
+      row.push(field.trim())
+      if(row.some(f => f)) lines.push(row)
+      row = []
+      field = ''
+    } else {
+      field += c
+    }
+  }
+  if(field || row.length > 0){
+    row.push(field.trim())
+    if(row.some(f => f)) lines.push(row)
+  }
+  return lines
+}
+
+async function handleCSVImport(csvText){
+  const rows = parseCSV(csvText)
+  if(rows.length < 2) throw new Error('File CSV không chứa dòng tiêu đề hoặc dữ liệu!')
+  const headers = rows[0].map(h => h.toLowerCase().replace(/[^a-z0-9_]/g, ''))
+  const findCol = (keys) => headers.findIndex(h => keys.some(k => h.includes(k)))
+  
+  const titleIdx = findCol(['name', 'title', 'service', 'folder', 'app'])
+  const userIdx = findCol(['user', 'username', 'email', 'login_username'])
+  const passIdx = findCol(['pass', 'password', 'login_password'])
+  const urlIdx = findCol(['url', 'uri', 'website', 'link'])
+  const notesIdx = findCol(['note', 'notes', 'extra', 'comment'])
+
+  const ek = state.vaultKey || state.masterPassword
+  const data = loadData()
+  let count = 0
+
+  for(let i=1; i<rows.length; i++){
+    const r = rows[i]
+    const pass = passIdx >= 0 ? r[passIdx] : ''
+    if(!pass) continue
+
+    const service = (titleIdx >= 0 ? r[titleIdx] : '') || (urlIdx >= 0 ? r[urlIdx] : '') || 'Imported Service'
+    const username = userIdx >= 0 ? r[userIdx] : ''
+    const url = urlIdx >= 0 ? r[urlIdx] : ''
+    const notes = notesIdx >= 0 ? r[notesIdx] : ''
+
+    const id = crypto.randomUUID()
+    const full = { service, username, password: pass, category: 'other', notes, url, createdAt: Date.now(), updatedAt: Date.now() }
+    const enc = await encryptEntry(full, ek)
+    data.entries.push({ id, encrypted: enc })
+    state.items.push({ id, ...full })
+    count++
+  }
+  saveData(data)
+  return count
 }
 
 async function handleExport(){
@@ -1130,7 +1762,7 @@ async function handleExport(){
   if(!rk)return
   const data=loadData()
   if(data.vault_key_recovery){try{await aesDecrypt(data.vault_key_recovery,rk)}catch{toast('error','Sai Recovery Key');return}}
-  const plainData=state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category}))
+  const plainData=state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
   const env=await exportVault(JSON.stringify(plainData),rk)
   const blob=new Blob([JSON.stringify(env,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fear-vault-export.json';a.click();URL.revokeObjectURL(a.href)
@@ -1138,18 +1770,345 @@ async function handleExport(){
 }
 
 async function handleImport(){
-  const inp=document.createElement('input');inp.type='file';inp.accept='.json'
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json,.csv'
   inp.onchange=async()=>{
     const f=inp.files[0];if(!f)return
-    const rk=prompt('Nhập Recovery Key để giải mã file:');if(!rk)return
+    if(f.name.toLowerCase().endsWith('.csv')){
+      try{
+        const text = await f.text()
+        const count = await handleCSVImport(text)
+        toast('success', `Đã nhập thành công ${count} tài khoản từ file CSV!`)
+        renderEntries()
+      }catch(e){
+        toast('error', 'Lỗi nhập CSV: ' + e.message)
+      }
+      return
+    }
+    const rk=prompt('Nhập Recovery Key để giải mã file JSON:');if(!rk)return
     try{
       const envelope=JSON.parse(await f.text());const json=await importVault(envelope,rk)
       if(!json){toast('error','Sai Recovery Key hoặc file không hợp lệ');return}
       const imported=JSON.parse(json);const ek=state.vaultKey||state.masterPassword;const data=loadData()
-      for(const item of imported){const id=crypto.randomUUID();const enc=await encryptEntry(item,ek);data.entries.push({id,encrypted:enc});state.items.push({id:id,service:item.service,username:item.username,password:item.password,category:item.category||''})}
-      saveData(data);toast('success','Import '+imported.length+' mục thành công');render()
+      for(const item of imported){
+        const id=crypto.randomUUID();
+        const full={service:item.service||'',username:item.username||'',password:item.password||'',category:item.category||'',notes:item.notes||'',url:item.url||'',createdAt:Date.now(),updatedAt:Date.now()}
+        const enc=await encryptEntry(full,ek)
+        data.entries.push({id,encrypted:enc})
+        state.items.push({id,...full})
+      }
+      saveData(data);toast('success','Import '+imported.length+' mục thành công');renderEntries()
     }catch(e){toast('error','Lỗi import: '+e.message)}
   };inp.click()
+}
+
+// ─── WEBAUTHN BIOMETRIC OPS ──────────────────────────
+async function handleEnableWebAuthn(){
+  if(!window.PublicKeyCredential){
+    toast('error', 'Trình duyệt hoặc thiết bị không hỗ trợ Sinh trắc học WebAuthn!')
+    return
+  }
+  const ek = state.vaultKey || state.masterPassword
+  if(!ek){ toast('error', 'Cần mở khóa vault trước khi bật sinh trắc học'); return }
+
+  try{
+    const challenge = randBytes(32)
+    const userId = randBytes(16)
+    const cred = await navigator.credentials.create({
+      publicKey: {
+        challenge,
+        rp: { name: "FEAR-Vault Cyber HUD" },
+        user: {
+          id: userId,
+          name: "fear-vault-user",
+          displayName: "FEAR Vault Owner"
+        },
+        pubKeyCredParams: [{ alg: -7, type: "public-key" }, { alg: -257, type: "public-key" }],
+        authenticatorSelection: { userVerification: "preferred" },
+        timeout: 60000
+      }
+    })
+
+    if(!cred){ toast('error', 'Xác thực sinh trắc học bị hủy'); return }
+
+    const rawCredId = bufToB64(cred.rawId)
+    const encKey = await aesEncrypt(ek, rawCredId)
+    const data = loadData()
+    data.webauthn_enabled = true
+    data.webauthn_cred_id = rawCredId
+    data.webauthn_key_enc = encKey
+    saveData(data)
+    toast('success', 'Đã bật mở khóa bằng Vân tay / FaceID thành công!')
+    render()
+  }catch(e){
+    toast('error', 'Lỗi thiết lập sinh trắc học: ' + e.message)
+  }
+}
+
+async function handleDisableWebAuthn(){
+  const data = loadData()
+  data.webauthn_enabled = false
+  delete data.webauthn_cred_id
+  delete data.webauthn_key_enc
+  saveData(data)
+  toast('success', 'Đã tắt mở khóa bằng Vân tay / FaceID')
+  render()
+}
+
+async function handleWebAuthnUnlock(){
+  const data = loadData()
+  if(!data.webauthn_enabled || !data.webauthn_cred_id || !data.webauthn_key_enc){
+    toast('error', 'Vân tay chưa được bật. Hãy bật trong Settings sau khi mở khóa!')
+    return
+  }
+  if(!window.PublicKeyCredential){
+    toast('error', 'Trình duyệt không hỗ trợ WebAuthn!')
+    return
+  }
+
+  state.loading = true; render()
+  try{
+    const challenge = randBytes(32)
+    const credIdBuf = b64ToBuf(data.webauthn_cred_id)
+    const assertion = await navigator.credentials.get({
+      publicKey: {
+        challenge,
+        allowCredentials: [{
+          id: credIdBuf,
+          type: 'public-key'
+        }],
+        userVerification: "preferred",
+        timeout: 60000
+      }
+    })
+
+    if(!assertion){
+      toast('error', 'Xác thực sinh trắc học thất bại!')
+      state.loading = false; render(); return
+    }
+
+    const effectiveKey = await aesDecrypt(data.webauthn_key_enc, data.webauthn_cred_id)
+    state.vaultKey = effectiveKey
+    await completeUnlock(effectiveKey, data)
+    toast('success', 'Mở khóa Vân tay thành công!')
+  }catch(e){
+    toast('error', 'Lỗi xác thực vân tay: ' + e.message)
+    state.loading = false; render()
+  }
+}
+
+// ─── CLOUD SYNC OPS ──────────────────────────────────
+async function handleCloudGeneratePayload(){
+  const rk=prompt('Nhập Recovery Key để đóng gói bản mã hóa Cloud:')
+  if(!rk)return
+  const data=loadData()
+  if(data.vault_key_recovery){
+    try{await aesDecrypt(data.vault_key_recovery,rk)}catch{toast('error','Sai Recovery Key');return}
+  }
+  const plainData=state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
+  const env=await exportVault(JSON.stringify(plainData),rk)
+  state.cloudEncryptedOutput=JSON.stringify(env)
+  toast('success','Đã tạo bản đóng gói mã hóa Cloud (Zero-Knowledge AES-256-GCM)')
+  render()
+}
+
+async function handleCloudRestoreFromPayload(){
+  if(!state.cloudSyncInput){toast('error','Vui lòng nhập chuỗi hoặc JSON Cloud!');return}
+  const rk=prompt('Nhập Recovery Key để giải mã dữ liệu Cloud:')
+  if(!rk)return
+  try{
+    let envelope
+    try{ envelope=JSON.parse(state.cloudSyncInput) }catch{ toast('error','Chuỗi JSON không hợp lệ'); return }
+    const json=await importVault(envelope, rk)
+    if(!json){toast('error','Sai Recovery Key hoặc chữ ký HMAC không hợp lệ');return}
+    const imported=JSON.parse(json)
+    
+    // If not initialized vault yet or resetting vault to imported
+    const data=loadData()
+    if(!data.vault_hash){
+      // Initialize vault for new device
+      const vk=generateVaultKey()
+      const vh=await hashPassword(rk)
+      const evk=await aesEncrypt(vk,rk)
+      const erk=await aesEncrypt(vk,rk)
+      const rh=await hashPassword(rk)
+      const entries=[]
+      for(const item of imported){
+        const id=crypto.randomUUID()
+        const full={service:item.service||'',username:item.username||'',password:item.password||'',category:item.category||'',notes:item.notes||'',url:item.url||'',createdAt:Date.now(),updatedAt:Date.now()}
+        entries.push({id, encrypted:await encryptEntry(full, vk)})
+      }
+      saveData({vault_hash:vh, vault_key_encrypted:evk, vault_key_recovery:erk, recovery_hash:rh, entries})
+      state.vaultKey=vk
+      state.masterPassword=rk
+      toast('success','Đã phục hồi kho từ Cloud thành công trên thiết bị mới!')
+      await completeUnlock(vk, {vault_hash:vh, vault_key_encrypted:evk, vault_key_recovery:erk, recovery_hash:rh, entries})
+      return
+    }
+
+    const ek=state.vaultKey||state.masterPassword
+    for(const item of imported){
+      const id=crypto.randomUUID()
+      const full={service:item.service||'',username:item.username||'',password:item.password||'',category:item.category||'',notes:item.notes||'',url:item.url||'',createdAt:Date.now(),updatedAt:Date.now()}
+      const enc=await encryptEntry(full,ek)
+      data.entries.push({id,encrypted:enc})
+      state.items.push({id,...full})
+    }
+    saveData(data)
+    toast('success','Đã kéo thành công '+imported.length+' mục từ Cloud vào Vault!')
+    state.showCloudSync=false
+    render()
+  }catch(e){toast('error','Lỗi giải mã Cloud: '+e.message)}
+}
+
+async function handleCloudPushGDrive(){
+  const rk = prompt('Nhập Recovery Key để mã hóa bản đóng gói Google Drive:')
+  if(!rk) return
+  const data = loadData()
+  if(data.vault_key_recovery){
+    try{ await aesDecrypt(data.vault_key_recovery, rk) }catch{ toast('error','Sai Recovery Key'); return }
+  }
+  
+  state.loading = true; render()
+  try {
+    const plainData = state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
+    const env = await exportVault(JSON.stringify(plainData), rk)
+    const envString = JSON.stringify(env, null, 2)
+    state.cloudEncryptedOutput = envString
+
+    const token = prompt('Nhập Google Drive OAuth Access Token (hoặc nhấn HỦY để tải file mã hóa lưu vào Google Drive thủ công):')
+    if(token && token.trim()){
+      try{
+        const metadata = { name: 'fear-vault-backup.json', mimeType: 'application/json' }
+        const formData = new FormData()
+        formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }))
+        formData.append('file', new Blob([envString], { type: 'application/json' }))
+
+        const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token.trim()}` },
+          body: formData
+        })
+        const resData = await res.json()
+        if(resData.id){
+          state.cloudSyncInput = resData.id
+          toast('success', `Đã đẩy thành công lên Google Drive! File ID: ${resData.id}`)
+        }else{
+          toast('error', 'Lỗi Google Drive API: ' + (resData.error?.message || 'Kiểm tra lại Token'))
+        }
+      }catch(e){
+        toast('error', 'Lỗi tải lên Google Drive: ' + e.message)
+      }
+    }else{
+      const blob = new Blob([envString], {type: 'application/json'})
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'fear-vault-google-drive.json'; a.click(); URL.revokeObjectURL(a.href)
+      toast('success', 'Đã tải tệp mã hóa Google Drive! Hãy lưu tệp này vào Google Drive của bạn.')
+    }
+  } catch(err) {
+    toast('error', 'Lỗi thực thi GDrive: ' + err.message)
+  } finally {
+    state.loading = false; render()
+  }
+}
+
+async function handleCloudPullGDrive(){
+  const fileIdOrToken = prompt('Nhập Google Drive File ID (hoặc chọn tệp json mã hóa đã tải về):')
+  if(!fileIdOrToken) return
+  if(fileIdOrToken.trim().length > 10 && !fileIdOrToken.includes('{')){
+    const token = prompt('Nhập Google Drive Access Token để tải tệp:')
+    if(token){
+      state.loading = true; render()
+      try{
+        const res = await fetch(`https://www.googleapis.com/drive/v3/files/${fileIdOrToken.trim()}?alt=media`, {
+          headers: { 'Authorization': `Bearer ${token.trim()}` }
+        })
+        const text = await res.text()
+        state.cloudSyncInput = text
+        state.loading = false; render()
+        await handleCloudRestoreFromPayload()
+        return
+      }catch(e){
+        toast('error', 'Lỗi tải từ Google Drive: ' + e.message)
+      }finally{
+        state.loading = false; render()
+      }
+      return
+    }
+  }
+  state.cloudSyncInput = fileIdOrToken
+  await handleCloudRestoreFromPayload()
+}
+
+async function handleCloudPushGist(){
+  const rk = prompt('Nhập Recovery Key để mã hóa bản đóng gói GitHub Gist:')
+  if(!rk) return
+  const data = loadData()
+  if(data.vault_key_recovery){
+    try{ await aesDecrypt(data.vault_key_recovery, rk) }catch{ toast('error','Sai Recovery Key'); return }
+  }
+  
+  state.loading = true; render()
+  try {
+    const plainData = state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
+    const env = await exportVault(JSON.stringify(plainData), rk)
+    const envString = JSON.stringify(env, null, 2)
+    state.cloudEncryptedOutput = envString
+
+    const token = prompt('Nhập GitHub Personal Access Token (với quyền gist):')
+    if(!token || !token.trim()){
+      toast('info', 'Đã tạo chuỗi mã hóa Zero-Knowledge JSON bên dưới!')
+      return
+    }
+
+    try{
+      const res = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token.trim()}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github+json'
+        },
+        body: JSON.stringify({
+          description: 'FEAR-Vault Zero-Knowledge Encrypted Backup',
+          public: false,
+          files: { 'fear_vault_backup.json': { content: envString } }
+        })
+      })
+      const resData = await res.json()
+      if(resData.id){
+        state.cloudSyncInput = resData.id
+        toast('success', `Đã tạo GitHub Gist thành công! Gist ID: ${resData.id}`)
+      } else {
+        toast('error', 'Lỗi GitHub Gist API: ' + (resData.message || 'Token không hợp lệ'))
+      }
+    }catch(e){
+      toast('error', 'Lỗi đẩy GitHub Gist: ' + e.message)
+    }
+  } catch(err) {
+    toast('error', 'Lỗi mã hóa Gist: ' + err.message)
+  } finally {
+    state.loading = false; render()
+  }
+}
+
+async function handleCloudPullGist(gistIdArg){
+  const gistId = gistIdArg || prompt('Nhập GitHub Gist ID:')
+  if(!gistId || !gistId.trim()) return
+  state.loading = true; render()
+  try{
+    const res = await fetch(`https://api.github.com/gists/${gistId.trim()}`)
+    const resData = await res.json()
+    if(resData.files && resData.files['fear_vault_backup.json']){
+      state.cloudSyncInput = resData.files['fear_vault_backup.json'].content
+      state.loading = false; render()
+      await handleCloudRestoreFromPayload()
+    } else {
+      toast('error', 'Không tìm thấy tệp fear_vault_backup.json trong Gist này')
+    }
+  }catch(e){
+    toast('error', 'Lỗi kéo Gist từ GitHub: ' + e.message)
+  }finally{
+    state.loading = false; render()
+  }
 }
 
 async function handleChangePassword(){
@@ -1210,38 +2169,249 @@ function catColors(){
   }
 }
 
+// ─── NO-FLICKER ENTRIES RENDERER ─────────────────────
+function renderEntries(){
+  const container=document.getElementById('entries-container')
+  const pillsContainer=document.getElementById('cat-pills-container')
+  if(!container) return
+
+  const filtered=state.items.filter(i=>{
+    if(state.search){
+      const q=state.search.toLowerCase()
+      if(!i.service.toLowerCase().includes(q)&&!i.username.toLowerCase().includes(q)&&!(i.notes||'').toLowerCase().includes(q)) return false
+    }
+    if(state.activeCategory&&(i.category||'other')!==state.activeCategory) return false
+    return true
+  })
+
+  const catCount=new Map()
+  for(const i of state.items){const c=i.category||'other';catCount.set(c,(catCount.get(c)||0)+1)}
+  const allCats=Array.from(catCount.entries()).sort((a,b)=>b[1]-a[1])
+
+  if(pillsContainer&&allCats.length>1){
+    const pillsHtml=allCats.map(([c,n])=>`<span class="pill${state.activeCategory===c?' active':''}" data-cat="${c}">${esc(c.toUpperCase())} (${n})</span>`).join('')
+    pillsContainer.innerHTML=`<span class="pill${!state.activeCategory?' active':''}" data-cat="">TẤT CẢ (${state.items.length})</span>${pillsHtml}`
+    pillsContainer.querySelectorAll('.pill[data-cat]').forEach(el=>{
+      el.addEventListener('click',()=>{state.activeCategory=el.dataset.cat===''?'':el.dataset.cat;renderEntries()})
+    })
+  }
+
+  const getCatIcon = (c) => {
+    const s = (c||'').toLowerCase()
+    if(s.includes('email')||s.includes('mail')) return '🌐'
+    if(s.includes('social')||s.includes('fb')||s.includes('ig')) return '💬'
+    if(s.includes('dev')||s.includes('code')||s.includes('git')) return '💻'
+    if(s.includes('finan')||s.includes('bank')||s.includes('money')||s.includes('donate')) return '💳'
+    if(s.includes('shop')||s.includes('buy')) return '🛒'
+    if(s.includes('work')||s.includes('job')) return '🏢'
+    if(s.includes('game')||s.includes('penk')||s.includes('riot')) return '🎮'
+    if(s.includes('vpn')) return '🛡️'
+    return '📂'
+  }
+
+  const getCatFontSize = (c) => {
+    const len = (c||'').length
+    if(len > 14) return '9.5px'
+    if(len > 10) return '10.5px'
+    if(len > 8) return '11.5px'
+    return '12.5px'
+  }
+
+  const sidebarCatList = document.getElementById('sidebar-cat-list')
+  if(sidebarCatList){
+    const sidebarHtml = allCats.map(([c,n]) => `
+      <div class="sidebar-cat-item${state.activeCategory===c?' active':''}" data-cat="${c}">
+        <div class="cat-left-block">
+          <span class="cat-count-num">${n}</span>
+          <span class="cat-icon-box">${getCatIcon(c)}</span>
+        </div>
+        <div class="cat-right-block">
+          <span class="cat-title-text" style="font-size:${getCatFontSize(c)}">${esc(c.toUpperCase())}</span>
+        </div>
+      </div>
+    `).join('')
+    sidebarCatList.innerHTML = `
+      <div class="sidebar-cat-item full-width${!state.activeCategory?' active':''}" data-cat="">
+        <div class="cat-left-block" style="width:48px;">
+          <span class="cat-count-num">${state.items.length}</span>
+          <span class="cat-icon-box">⚡</span>
+        </div>
+        <div class="cat-right-block">
+          <span class="cat-title-text">TẤT CẢ TÀI KHOẢN</span>
+        </div>
+      </div>
+    ` + sidebarHtml
+    sidebarCatList.querySelectorAll('.sidebar-cat-item[data-cat]').forEach(el => {
+      el.addEventListener('click', () => {
+        state.activeCategory = el.dataset.cat === '' ? '' : el.dataset.cat
+        renderEntries()
+      })
+    })
+  }
+
+  const totalEl = document.getElementById('sidebar-total-count')
+  if(totalEl) totalEl.textContent = state.items.length
+
+  if(filtered.length===0&&state.items.length===0){
+    container.innerHTML='<div style="text-align:center;padding:56px 20px;color:var(--muted);font-size:14px;border:1px dashed var(--border);border-radius:12px;">Kho trống — Bấm nút <b>+ THÊM MỤC MỚI</b> để lưu tài khoản đầu tiên.</div>'
+    return
+  }
+  if(filtered.length===0){
+    container.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">Không tìm thấy mục nào khớp với "<b>'+esc(state.search)+'</b>"</div>'
+    return
+  }
+
+  container.innerHTML=filtered.map(i=>{
+    const isEdit=state.editingId===i.id
+    const letter=i.service.charAt(0).toUpperCase()
+    const ccs=catColors()
+    const cat=(i.category||'other').toLowerCase()
+    const bg=ccs[cat]||'linear-gradient(135deg, #00f0ff, #0284c7)'
+    
+    if(isEdit){
+      const st=calcPasswordStrength(state.editForm.password)
+      return `<div class="vault-entry" style="flex-direction:column;align-items:stretch;gap:14px;padding:20px;background:rgba(6,10,18,0.95);border-color:var(--primary);">
+        <div class="grid-2">
+          <div class="form-group"><label>Tên Dịch Vụ (Service)</label><input class="terminal-input" id="edit-service" value="${esc(state.editForm.service)}"/></div>
+          <div class="form-group"><label>Danh Mục (Category)</label><div style="display:flex;gap:8px;"><select class="terminal-input" id="edit-cat" style="flex:1;"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}<option value="__new__">+ TẠO DANH MỤC MỚI...</option></select><button type="button" class="btn btn-terminal btn-sm" id="btn-add-cat-edit" title="Tạo danh mục mới">${SVG.plus} MỚI</button></div></div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label>Tên đăng nhập / Email</label><input class="terminal-input" id="edit-user" value="${esc(state.editForm.username)}"/></div>
+          <div class="form-group">
+            <label>Mật Khẩu</label>
+            <div style="display:flex;gap:8px;">
+              <div style="position:relative;flex:1;">
+                <input class="terminal-input" id="edit-pass" type="password" value="${esc(state.editForm.password)}" style="padding-right:40px !important;"/>
+                <button type="button" class="eye-toggle-btn" data-input="edit-pass" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button>
+              </div>
+              <button class="btn btn-terminal btn-sm" id="gen-edit">${SVG.dice} TẠO MỚI</button>
+            </div>
+            <div class="pw-meter"><div class="pw-meter-bar" style="width:${st.percent}%;background-color:${st.color};"></div></div>
+            <div class="pw-strength-lbl"><span style="color:var(--muted);">ĐỘ MẠNH:</span><span style="color:${st.color}">${st.text} (${st.score}/100)</span></div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label>Địa chỉ Web (URL)</label><input class="terminal-input" id="edit-url" placeholder="https://..." value="${esc(state.editForm.url||'')}"/></div>
+          <div class="form-group"><label>Ghi chú bảo mật (Secure Notes)</label><textarea class="terminal-input" id="edit-notes" rows="2" placeholder="Mã PIN, câu hỏi bảo mật...">${esc(state.editForm.notes||'')}</textarea></div>
+        </div>
+        <div style="display:flex;gap:10px;justify-flex-end;margin-top:4px;">
+          <button class="btn btn-terminal btn-sm" id="cancel-edit">HỦY</button>
+          <button class="btn btn-terminal-primary btn-sm" id="save-edit">LƯU CẬP NHẬT</button>
+        </div>
+      </div>`
+    }
+
+    const hasNotes = !!i.notes
+    const hasUrl = !!i.url
+    const showNote = state.showNotes[i.id]
+
+    return `<div class="vault-entry" data-id="${i.id}" style="flex-direction:column;align-items:stretch;gap:10px;">
+      <div style="display:flex;align-items:center;gap:14px;width:100%;">
+        <div class="icon-letter" style="background:${bg};color:#000000;">${letter}</div>
+        <div style="display:flex;flex-direction:column;flex:1;min-width:140px;">
+          <span class="service">${esc(i.service)}</span>
+          ${hasUrl ? `<a href="${esc(i.url.startsWith('http')?i.url:'https://'+i.url)}" target="_blank" rel="noopener" style="font-size:11px;color:var(--primary);text-decoration:none;display:inline-flex;align-items:center;gap:4px;margin-top:2px;">${SVG.globe} ${esc(i.url)}</a>` : ''}
+        </div>
+        <span class="username">${esc(i.username)}</span>
+        <span class="pass">${state.showPasswords[i.id]?esc(i.password):'••••••••••••'}</span>
+        <span class="cat">${esc(i.category||'other')}</span>
+        <div class="actions">
+          ${hasNotes ? `<button class="btn btn-terminal btn-sm" data-note="${i.id}">${SVG.fileText} ${showNote?'ẨN NOTE':'NOTE'}</button>` : ''}
+          <button class="btn btn-terminal btn-sm" data-copy-id="${i.id}">${SVG.copy} COPY</button>
+          <button class="btn btn-terminal btn-sm" data-show="${i.id}">${state.showPasswords[i.id]?SVG.eyeOff+' ẨN':SVG.eye+' XEM'}</button>
+          <button class="btn btn-terminal btn-sm" data-edit="${i.id}">${SVG.edit} SỬA</button>
+          <button class="btn btn-danger btn-sm" data-del="${i.id}">${SVG.trash} XOÁ</button>
+        </div>
+      </div>
+      ${hasNotes && showNote ? `
+        <div style="padding:10px 14px;border-radius:8px;background:rgba(4,7,14,0.9);border:1px solid rgba(0,240,255,0.2);font-family:var(--font-mono);font-size:12px;color:var(--primary-hover);white-space:pre-wrap;">
+          📝 <b>GHI CHÚ BẢO MẬT:</b>\n${esc(i.notes)}
+        </div>
+      ` : ''}
+    </div>`
+  }).join('')
+
+  bindEntryEvents()
+}
+
+function bindEntryEvents(){
+  document.querySelectorAll('[data-copy-id]').forEach(el=>{el.addEventListener('click',()=>{const item=state.items.find(i=>i.id===el.dataset.copyId);if(item)copyText(item.password)})})
+  document.querySelectorAll('[data-show]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const id=el.dataset.show
+      state.showPasswords[id]=!state.showPasswords[id]
+      renderEntries()
+    })
+  })
+  document.querySelectorAll('[data-note]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const id=el.dataset.note
+      state.showNotes[id]=!state.showNotes[id]
+      renderEntries()
+    })
+  })
+  document.querySelectorAll('[data-edit]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const id=el.dataset.edit;const item=state.items.find(i=>i.id===id);
+      if(item){
+        state.editingId=id;
+        state.editForm={service:item.service,username:item.username,password:item.password,category:item.category||'',notes:item.notes||'',url:item.url||''};
+        renderEntries()
+      }
+    })
+  })
+  document.querySelectorAll('[data-del]').forEach(el=>{el.addEventListener('click',()=>{if(confirm('Xoá mục này?')){deleteItem(el.dataset.del)}})})
+
+  document.getElementById('edit-service')?.addEventListener('input',e=>{state.editForm.service=e.target.value})
+  document.getElementById('edit-user')?.addEventListener('input',e=>{state.editForm.username=e.target.value})
+  document.getElementById('edit-pass')?.addEventListener('input',e=>{
+    state.editForm.password=e.target.value
+    const st=calcPasswordStrength(e.target.value)
+    const meter=document.querySelector('.pw-meter-bar')
+    const lbl=document.querySelector('.pw-strength-lbl')
+    if(meter) { meter.style.width=st.percent+'%'; meter.style.backgroundColor=st.color; }
+    if(lbl) { lbl.innerHTML=`<span style="color:var(--muted);">ĐỘ MẠNH:</span><span style="color:${st.color}">${st.text} (${st.score}/100)</span>` }
+  })
+  document.getElementById('edit-url')?.addEventListener('input',e=>{state.editForm.url=e.target.value})
+  document.getElementById('edit-notes')?.addEventListener('input',e=>{state.editForm.notes=e.target.value})
+  document.getElementById('edit-cat')?.addEventListener('change',e=>{
+    if(e.target.value==='__new__') triggerAddCategory('edit')
+    else state.editForm.category=e.target.value
+  })
+  document.getElementById('gen-edit')?.addEventListener('click',()=>{
+    state.editForm.password=genPassword()
+    renderEntries()
+  })
+  document.getElementById('save-edit')?.addEventListener('click',saveEdit)
+  document.getElementById('cancel-edit')?.addEventListener('click',()=>{state.editingId=null;renderEntries()})
+}
+
 // ─── RENDER ──────────────────────────────────────────
 function render(){
+  document.documentElement.setAttribute('data-theme', state.theme || 'crimson')
   const app=document.getElementById('app');let html='';const data=loadData()
   const has2FA=!!data.totp_encrypted
 
   if(state.page==='locked'){
     html=`
       <div class="lock-screen">
-        <!-- Biometric Circuit Fingerprint Scanner Card Background -->
         <canvas id="fp-card-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.45;border-radius:24px;"></canvas>
-
         <div class="glow"></div>
-
-        <!-- Cyber HUD Corner Brackets -->
         <div class="hud-corner top-left"></div>
         <div class="hud-corner top-right"></div>
         <div class="hud-corner bottom-left"></div>
         <div class="hud-corner bottom-right"></div>
         
-        <!-- Cyber HUD Telemetry Header (Cyan & White) -->
         <div class="hud-telemetry">
           <span class="hud-tag">■ RANGE REGION AREA ■</span>
           <span class="hud-num">0147 - <span>INF</span> .0215</span>
         </div>
 
-        <!-- Cyber HUD Progress Bar -->
         <div class="hud-progress">
           <div class="hud-progress-bar"></div>
           <span class="hud-progress-txt">LOADING 100</span>
         </div>
 
-        <!-- Spinning Circular Stamp Badge -->
         <div class="spinning-stamp-container">
           <svg class="spinning-stamp" viewBox="0 0 160 160">
             <path id="stampPath" d="M 80, 80 m -60, 0 a 60,60 0 1,1 120,0 a 60,60 0 1,1 -120,0" fill="none" />
@@ -1252,7 +2422,6 @@ function render(){
           <div class="stamp-center-icon">${SVG.lock}</div>
         </div>
 
-        <!-- Ghost Typography -->
         <div class="ghost-typography">
           <span class="ghost-text-primary">SECURITY</span>
           <span class="ghost-text-outline">WITHOUT LIMITS</span>
@@ -1268,7 +2437,7 @@ function render(){
             </button>
           </div>
           <div id="pw-warn-msg" style="display:none;font-size:11.5px;color:#ef4444;font-weight:600;margin-top:-6px;text-align:left;padding-left:14px;animation:slideUpFade 0.2s ease-out both;">
-            ⚠️ Chỉ nhận chữ Tiếng Anh (A-Z, a-z), số (0-9) &amp; ký tự: @ ! # &amp; -
+            ⚠️ Lưu ý: Phát hiện ký tự Tiếng Việt có dấu. Hãy tắt Unikey/Telex nếu gặp lỗi!
           </div>
           <div class="form-group mb-4">
             <div class="otp-group">
@@ -1276,12 +2445,16 @@ function render(){
             </div>
             <div class="otp-footer">
               <span id="totp-timer" style="font-family:var(--font-mono);font-size:12px;color:${has2FA?'#00f0ff':'var(--muted)'};font-weight:700;">${has2FA?'30s':'2FA (TOTP)'}</span>
-              ${data.vault_hash?`<a href="#" id="recover-btn" style="color:#00f0ff;text-decoration:none;font-weight:700;font-size:12px;letter-spacing:0.3px;transition:all 0.2s ease;text-shadow:0 0 10px rgba(0,240,255,0.6);">Quên mật khẩu?</a>`:''}
+              ${data.vault_hash
+                ? `<a href="#" id="recover-btn" style="color:#00f0ff;text-decoration:none;font-weight:700;font-size:12px;letter-spacing:0.3px;transition:all 0.2s ease;">Quên mật khẩu?</a>`
+                : `<a href="#" id="cloud-pull-lock-btn" style="color:#00f0ff;text-decoration:none;font-weight:700;font-size:12px;letter-spacing:0.3px;">☁️ Tải kho từ Cloud</a>`}
             </div>
           </div>
           <button class="btn btn-terminal-primary w-full" style="height:50px;border-radius:9999px;font-size:15px;margin-top:6px;" id="unlock-btn">${SVG.lock} MỞ KHÓA VAULT</button>
+          ${data.webauthn_enabled ? `<button class="btn btn-terminal-primary w-full" style="height:48px;border-radius:9999px;font-size:14px;background:linear-gradient(135deg,#10b981,#06b6d4);color:#000;margin-top:8px;" id="webauthn-unlock-btn">👆 MỞ KHÓA BẰNG VÂN TAY (WEBAUTHN)</button>` : ''}
         </div>
-        <div style="margin-top:22px;text-align:center;position:relative;z-index:2;">
+        <div style="margin-top:22px;display:flex;justify-content:center;gap:12px;position:relative;z-index:2;">
+          <button class="btn btn-terminal btn-sm" id="cloud-sync-lock-btn" style="font-size:11px;">${SVG.cloud} Đồng bộ Cloud</button>
           <button class="btn btn-terminal btn-sm" id="reset-btn" style="font-size:11px;">Reset Kho</button>
         </div>
       </div>`
@@ -1296,6 +2469,7 @@ function render(){
           <input type="password" class="terminal-input input-pill" id="pw-input" placeholder="Mật khẩu chính" value="${esc(state.masterPassword)}"/>
           <input type="password" class="terminal-input input-pill" id="pw-confirm" placeholder="Xác nhận mật khẩu chính" value="${esc(state.confirmPassword)}"/>
           <button class="btn btn-terminal-primary w-full" style="height:50px;border-radius:9999px;" id="create-btn">${SVG.shield} KHỞI TẠO VAULT</button>
+          <button class="btn btn-terminal w-full" style="border-radius:9999px;" id="create-cloud-pull-btn">${SVG.cloud} KÉO KHO TỪ CLOUD CÓ SẴN</button>
         </div>
         <div style="margin-top:18px;font-size:12px;color:var(--muted);">Mã hoá AES-256-GCM & PBKDF2 trực tiếp trên trình duyệt.</div>
       </div>`
@@ -1359,104 +2533,595 @@ function render(){
         </div>
       </div>`
   }else if(state.page==='unlocked'){
-    const filtered=state.items.filter(i=>{
-      if(state.search){const q=state.search.toLowerCase();if(!i.service.toLowerCase().includes(q)&&!i.username.toLowerCase().includes(q))return false}
-      if(state.activeCategory&&(i.category||'other')!==state.activeCategory)return false
-      return true
-    })
-    const catCount=new Map()
-    for(const i of state.items){const c=i.category||'other';catCount.set(c,(catCount.get(c)||0)+1)}
-    let entriesHtml=''
-    if(filtered.length===0&&state.items.length===0){
-      entriesHtml='<div style="text-align:center;padding:56px 20px;color:var(--muted);font-size:14px;border:1px dashed var(--border);border-radius:12px;">Kho trống — Bấm nút <b>+ THÊM MỤC MỚI</b> để lưu tài khoản đầu tiên.</div>'
-    }else if(filtered.length===0){
-      entriesHtml='<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">Không tìm thấy mật khẩu nào khớp với "<b>'+esc(state.search)+'</b>"</div>'
-    }else{
-      entriesHtml=filtered.map(i=>{
-        const isEdit=state.editingId===i.id
-        const letter=i.service.charAt(0).toUpperCase()
-        const ccs=catColors()
-        const cat=(i.category||'other').toLowerCase()
-        const bg=ccs[cat]||'linear-gradient(135deg, #00f0ff, #0284c7)'
-        if(isEdit){
-          return `<div class="vault-entry" style="flex-direction:column;align-items:stretch;gap:14px;padding:18px;background:rgba(6,10,18,0.95);border-color:var(--primary);">
-            <div class="grid-2">
-              <div class="form-group"><label>Tên Dịch Vụ (Service)</label><input class="terminal-input" id="edit-service" value="${esc(state.editForm.service)}"/></div>
-              <div class="form-group"><label>Danh Mục (Category)</label><div style="display:flex;gap:8px;"><select class="terminal-input" id="edit-cat" style="flex:1;"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.editForm.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}<option value="__new__">+ TẠO DANH MỤC MỚI...</option></select><button type="button" class="btn btn-terminal btn-sm" id="btn-add-cat-edit" title="Tạo danh mục mới">${SVG.plus} MỚI</button></div></div>
+    state.categories = getAllCategories()
+    const addSt=calcPasswordStrength(state.newItem.password)
+    
+    // Determine main body markup based on activeDockTab
+    let bodyTabContent = ''
+
+    if(state.activeDockTab === 'categories'){
+      bodyTabContent = `
+        <div style="flex:1;overflow-y:auto;padding:12px 6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+            <div>
+              <h2 style="font-family:var(--font-display);font-size:20px;color:var(--foreground);display:flex;align-items:center;gap:10px;">📂 QUẢN LÝ DANH MỤC TÀI KHOẢN</h2>
+              <p style="font-size:13px;color:var(--muted);margin-top:4px;">Tạo mới, đổi tên hoặc xóa các danh mục trong kho dữ liệu của bạn.</p>
             </div>
-            <div class="grid-2">
-              <div class="form-group"><label>Tên đăng nhập / Email</label><input class="terminal-input" id="edit-user" value="${esc(state.editForm.username)}"/></div>
-              <div class="form-group"><label>Mật Khẩu</label><div style="display:flex;gap:8px;"><div style="position:relative;flex:1;"><input class="terminal-input" id="edit-pass" type="password" value="${esc(state.editForm.password)}" style="padding-right:40px !important;"/><button type="button" class="eye-toggle-btn" data-input="edit-pass" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button></div><button class="btn btn-terminal btn-sm" id="gen-edit">${SVG.dice} TẠO MỚI</button></div></div>
+            <span style="font-size:12px;font-weight:700;color:var(--accent);background:var(--badge-bg);padding:6px 14px;border-radius:20px;border:1px solid var(--border-hover);">${state.categories.length} DANH MỤC</span>
+          </div>
+
+          <!-- Add New Category Card -->
+          <div style="padding:18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);margin-bottom:24px;">
+            <h4 style="font-size:14px;font-weight:800;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;">${SVG.plus} TẠO DANH MỤC MỚI</h4>
+            <div style="display:flex;gap:10px;">
+              <input class="terminal-input" id="new-cat-tab-input" placeholder="Tên danh mục mới (Vd: Work, Personal, Crypto...)" style="flex:1;height:46px;" />
+              <button class="btn btn-terminal-primary" id="new-cat-tab-btn">${SVG.plus} THÊM DANH MỤC</button>
             </div>
-            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:4px;">
-              <button class="btn btn-terminal btn-sm" id="cancel-edit">HỦY</button>
-              <button class="btn btn-terminal-primary btn-sm" id="save-edit">LƯU CẬP NHẬT</button>
-            </div>
-          </div>`
-        }
-        return `<div class="vault-entry" data-id="${i.id}">
-          <div class="icon-letter" style="background:${bg};color:#000000;">${letter}</div>
-          <span class="service">${esc(i.service)}</span>
-          <span class="username">${esc(i.username)}</span>
-          <span class="pass">${state.showPasswords[i.id]?esc(i.password):'••••••••••••'}</span>
-          <span class="cat">${esc(i.category||'other')}</span>
-          <div class="actions">
-            <button class="btn btn-terminal btn-sm" data-copy-id="${i.id}">${SVG.copy} COPY</button>
-            <button class="btn btn-terminal btn-sm" data-show="${i.id}">${state.showPasswords[i.id]?SVG.eyeOff+' ẨN':SVG.eye+' XEM'}</button>
-            <button class="btn btn-terminal btn-sm" data-edit="${i.id}">${SVG.edit} SỬA</button>
-            <button class="btn btn-danger btn-sm" data-del="${i.id}">${SVG.trash} XOÁ</button>
+          </div>
+
+          <!-- Categories Grid -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:14px;">
+            ${state.categories.map(c => {
+              const count = state.items.filter(i => (i.category || 'other') === c).length
+              const isDefault = ['email','social','dev','finance','shopping','work','other'].includes(c)
+              return `<div style="padding:16px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;display:flex;flex-direction:column;justify-content:space-between;gap:14px;transition:all 0.2s ease;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-size:18px;">📁</span>
+                    <span style="font-family:var(--font-display);font-weight:800;font-size:15px;color:var(--foreground);">${esc(c.toUpperCase())}</span>
+                  </div>
+                  <span style="font-size:11px;padding:3px 10px;border-radius:12px;background:var(--badge-bg);color:var(--accent);font-weight:800;">${count} mục</span>
+                </div>
+                <div style="display:flex;gap:8px;justify-flex-end;">
+                  <button class="btn btn-terminal btn-sm" data-rename-cat="${esc(c)}" style="font-size:11px;" title="Đổi tên danh mục">${SVG.edit} ĐỔI TÊN</button>
+                  ${!isDefault ? `<button class="btn btn-danger btn-sm" data-del-cat="${esc(c)}" style="font-size:11px;" title="Xóa danh mục">${SVG.trash} XOÁ</button>` : ''}
+                </div>
+              </div>`
+            }).join('')}
           </div>
         </div>`
-      }).join('')
+    } else if(state.activeDockTab === 'notes'){
+      const noteItems = state.items.filter(i => !!i.notes)
+      bodyTabContent = `
+        <div style="flex:1;overflow-y:auto;padding:12px 6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+            <div>
+              <h2 style="font-family:var(--font-display);font-size:20px;color:var(--foreground);display:flex;align-items:center;gap:10px;">📝 GHI CHÚ BẢO MẬT (SECURE NOTES)</h2>
+              <p style="font-size:13px;color:var(--muted);margin-top:4px;">Danh sách tất cả các ghi chú, mã khôi phục và thông tin bảo mật quan trọng trong kho.</p>
+            </div>
+            <span style="font-size:12px;font-weight:700;color:var(--accent);background:var(--badge-bg);padding:6px 14px;border-radius:20px;border:1px solid var(--border-hover);">${noteItems.length} GHI CHÚ</span>
+          </div>
+
+          ${noteItems.length === 0 ? `
+            <div style="text-align:center;padding:60px 20px;color:var(--muted);">
+              <div style="font-size:40px;margin-bottom:12px;">📝</div>
+              <p style="font-size:15px;font-weight:600;">Chưa có ghi chú bảo mật nào trong kho.</p>
+              <p style="font-size:13px;margin-top:4px;">Bạn có thể thêm Ghi chú khi tạo mới hoặc chỉnh sửa tài khoản.</p>
+            </div>
+          ` : `
+            <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:16px;">
+              ${noteItems.map(i => `
+                <div style="padding:18px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;display:flex;flex-direction:column;gap:12px;">
+                  <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <b style="font-family:var(--font-display);font-size:15px;color:var(--accent);">${esc(i.service)}</b>
+                    <span style="font-size:11px;color:var(--muted);">${esc(i.username)}</span>
+                  </div>
+                  <div style="padding:12px;background:rgba(4,7,14,0.9);border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-family:var(--font-mono);font-size:12.5px;color:var(--foreground);white-space:pre-wrap;max-height:160px;overflow-y:auto;">${esc(i.notes)}</div>
+                  <div style="display:flex;gap:8px;justify-flex-end;">
+                    <button class="btn btn-terminal btn-sm" data-copy-note="${esc(i.notes)}" style="font-size:11px;">${SVG.copy} SAO CHÉP NOTE</button>
+                    <button class="btn btn-terminal btn-sm" data-edit="${i.id}" style="font-size:11px;">${SVG.edit} SỬA</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          `}
+        </div>`
+    } else if(state.activeDockTab === 'audit'){
+      const weak = state.items.filter(i => calcPasswordStrength(i.password).score < 40)
+      const re = state.items.filter(i => state.items.filter(j => j.password === i.password).length > 1)
+      bodyTabContent = `
+        <div style="flex:1;overflow-y:auto;padding:12px 6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+            <div>
+              <h2 style="font-family:var(--font-display);font-size:20px;color:var(--foreground);display:flex;align-items:center;gap:10px;">📊 BÁO CÁO BẢO MẬT & SỨC KHỎE MẬT KHẨU</h2>
+              <p style="font-size:13px;color:var(--muted);margin-top:4px;">Phân tích toàn diện độ mạnh và mức độ rủi ro mật khẩu trong kho dữ liệu của bạn.</p>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;margin-bottom:24px;">
+            <div style="padding:18px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:14px;text-align:center;">
+              <div style="font-size:12px;color:var(--muted);font-weight:700;">TỔNG TÀI KHOẢN</div>
+              <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent);margin-top:6px;">${state.items.length}</div>
+            </div>
+            <div style="padding:18px;background:var(--bg-card);border:1.5px solid ${weak.length?'var(--error)':'var(--border)'};border-radius:14px;text-align:center;">
+              <div style="font-size:12px;color:var(--muted);font-weight:700;">MẬT KHẨU YẾU</div>
+              <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:${weak.length?'var(--error)':'var(--success)'};margin-top:6px;">${weak.length}</div>
+            </div>
+            <div style="padding:18px;background:var(--bg-card);border:1.5px solid ${re.length?'var(--warning)':'var(--border)'};border-radius:14px;text-align:center;">
+              <div style="font-size:12px;color:var(--muted);font-weight:700;">DÙNG LẠI MẬT KHẨU</div>
+              <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:${re.length?'var(--warning)':'var(--success)'};margin-top:6px;">${re.length}</div>
+            </div>
+          </div>
+
+          <h4 style="font-size:15px;font-weight:800;color:var(--foreground);margin-bottom:14px;">MỤC CẦN KHẮC PHỤC NGAY:</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            ${[...new Set([...weak, ...re])].map(i => {
+              const isW = calcPasswordStrength(i.password).score < 40
+              const isR = state.items.filter(j => j.password === i.password).length > 1
+              return `<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;">
+                <div>
+                  <b style="font-family:var(--font-display);font-size:14px;color:var(--foreground);">${esc(i.service)}</b>
+                  <span style="font-size:12px;color:var(--muted);margin-left:10px;">${esc(i.username)}</span>
+                  <div style="display:flex;gap:6px;margin-top:4px;">
+                    ${isW?'<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(239,68,68,0.2);color:#ef4444;font-weight:700;">⚠️ YẾU</span>':''}
+                    ${isR?'<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:rgba(245,158,11,0.2);color:#f59e0b;font-weight:700;">🔄 DÙNG LẠI</span>':''}
+                  </div>
+                </div>
+                <button class="btn btn-terminal btn-sm" data-edit="${i.id}">${SVG.edit} SỬA / ĐỔI MK</button>
+              </div>`
+            }).join('')}
+            ${weak.length===0 && re.length===0 ? '<p style="color:var(--success);font-weight:700;">🎉 Tất cả mật khẩu trong kho đều đạt chuẩn an toàn!</p>' : ''}
+          </div>
+        </div>`
+    } else if(state.activeDockTab === 'guide'){
+      bodyTabContent = `
+        <div style="flex:1;overflow-y:auto;padding:12px 6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+            <div>
+              <h2 style="font-family:var(--font-display);font-size:18px;color:var(--foreground);display:flex;align-items:center;gap:8px;">📖 HƯỚNG DẪN TẠO TOKEN CLOUD (GITHUB & GOOGLE DRIVE)</h2>
+              <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">Hướng dẫn từng bước lấy Token để đẩy/kéo kho mã hóa Zero-Knowledge lên Cloud.</p>
+            </div>
+            <button class="btn btn-terminal btn-sm" id="btn-back-to-settings">⚙️ SANG TAB CÀI ĐẶT</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));gap:16px;">
+            
+            <!-- GITHUB GIST TOKEN GUIDE CARD -->
+            <div style="padding:18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);display:flex;flex-direction:column;justify-content:space-between;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                  <span style="font-size:24px;">🐙</span>
+                  <div>
+                    <h3 style="font-family:var(--font-display);font-size:15px;color:var(--accent);">1. GITHUB PERSONAL ACCESS TOKEN</h3>
+                    <span style="font-size:11.5px;color:var(--muted);">Dùng cho tính năng Đẩy / Kéo kho với GitHub Gist</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:10px;font-size:12.5px;color:var(--foreground);line-height:1.5;">
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 1:</b> Đăng nhập <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--primary);text-decoration:underline;">GitHub.com</a> ➔ Nhấp vào Avatar ➔ Chọn <b>Settings</b>.
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 2:</b> Chọn <b>Developer Settings</b> (cuộn xuống góc dưới trái) ➔ <b>Personal access tokens</b> ➔ <b>Tokens (classic)</b>.
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 3:</b> Nhấp <b>Generate new token (classic)</b> ➔ Đặt tên Note (Vd: <i>FEAR-Vault Sync</i>).
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 4:</b> Đánh dấu tick duy nhất vào ô <b><code style="color:var(--accent);font-weight:700;">gist</code></b> <i>(Create gists)</i>.
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 5:</b> Bấm nút <b>Generate token</b> màu xanh lá cuối trang ➔ <b>Sao chép mã Token 'ghp_...'</b> vừa tạo và dán vào FEAR-Vault!
+                  </div>
+                </div>
+              </div>
+
+              <a href="https://github.com/settings/tokens" target="_blank" class="btn btn-terminal-primary btn-sm w-full" style="margin-top:16px;text-align:center;text-decoration:none;">
+                🔗 MỞ TRANG GITHUB TOKEN (TAB MỚI)
+              </a>
+            </div>
+
+            <!-- GOOGLE DRIVE OAUTH TOKEN GUIDE CARD -->
+            <div style="padding:18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);display:flex;flex-direction:column;justify-content:space-between;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+                  <span style="font-size:24px;">🟡</span>
+                  <div>
+                    <h3 style="font-family:var(--font-display);font-size:15px;color:var(--warning);">2. GOOGLE DRIVE OAUTH ACCESS TOKEN</h3>
+                    <span style="font-size:11.5px;color:var(--muted);">Dùng cho tính năng Đẩy / Kéo kho trực tiếp với Google Drive</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:10px;font-size:12.5px;color:var(--foreground);line-height:1.5;">
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 1:</b> Mở trang <a href="https://developers.google.com/oauthplayground" target="_blank" style="color:var(--warning);text-decoration:underline;">Google OAuth 2.0 Playground</a>.
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 2:</b> Ở danh sách bên trái, cuộn tìm <b>Drive API v3</b> ➔ Tick chọn ô <b><code style="color:var(--warning);font-weight:700;">https://www.googleapis.com/auth/drive.file</code></b>.
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 3:</b> Bấm nút <b>Authorize APIs</b> (màu xanh lá) ➔ Đăng nhập tài khoản Google của bạn và bấm <b>Cho phép / Allow</b>.
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 4:</b> Nhấp nút <b>Exchange authorization code for tokens</b>.
+                  </div>
+                  <div style="padding:10px;background:rgba(4,7,14,0.6);border:1px solid var(--border);border-radius:8px;">
+                    <b>Bước 5:</b> <b>Sao chép chuỗi 'Access token' ('ya29...')</b> màu đen hiển thị ở bên phải và dán vào FEAR-Vault!
+                  </div>
+                </div>
+              </div>
+
+              <a href="https://developers.google.com/oauthplayground" target="_blank" class="btn btn-terminal-primary btn-sm w-full" style="margin-top:16px;text-align:center;text-decoration:none;background:var(--warning);border-color:var(--warning);color:#000;">
+                🔗 MỞ GOOGLE OAUTH PLAYGROUND (TAB MỚI)
+              </a>
+            </div>
+
+          </div>
+
+          <!-- SECTION 2: HƯỚNG DẪN KÉO & PHỤC HỒI KHO TỪ CLOUD VỀ MÁY MỚI -->
+          <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);">
+            <h3 style="font-family:var(--font-display);font-size:16px;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+              📥 HƯỚNG DẪN KÉO & PHỤC HỒI KHO TỪ CLOUD VỀ MÁY (PULL / RESTORE)
+            </h3>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+              
+              <!-- CARD A: KÉO TỪ GOOGLE DRIVE -->
+              <div style="padding:16px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+                <h4 style="font-size:14px;color:var(--warning);margin-bottom:10px;display:flex;align-items:center;gap:6px;">🟡 1. KÉO KHO TỪ GOOGLE DRIVE</h4>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--foreground);line-height:1.5;">
+                  <div><b>Bước 1:</b> Vào Tab <b>Settings ➔ Đồng Bộ Cloud</b> (hoặc bấm nút Cloud ở màn hình đăng nhập).</div>
+                  <div><b>Bước 2:</b> Bấm nút <b>🟡 TỪ DRIVE</b>. Nhập Access Token ('ya29...') khi ứng dụng yêu cầu.</div>
+                  <div><b>Bước 3:</b> Nhập <b>Mật Khẩu Chính (Master Password)</b> của kho đó để giải mã dữ liệu về máy mới!</div>
+                </div>
+              </div>
+
+              <!-- CARD B: KÉO TỪ GITHUB GIST -->
+              <div style="padding:16px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+                <h4 style="font-size:14px;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;">🐙 2. KÉO KHO TỪ GITHUB GIST</h4>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--foreground);line-height:1.5;">
+                  <div><b>Bước 1:</b> Copy <b>Gist ID</b> (chuỗi ký tự ở cuối link Gist cá nhân của bạn, VD: <i>a1b2c3d4e5f6...</i>).</div>
+                  <div><b>Bước 2:</b> Dán Gist ID vào ô Cloud Input ➔ Bấm <b>🐙 TỪ GIST ID</b>.</div>
+                  <div><b>Bước 3:</b> Nhập <b>Mật Khẩu Chính (Master Password)</b> của kho để giải mã toàn bộ dữ liệu!</div>
+                </div>
+              </div>
+
+              <!-- CARD C: RESTORE TỪ CHUỖI JSON -->
+              <div style="padding:16px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+                <h4 style="font-size:14px;color:var(--success);margin-bottom:10px;display:flex;align-items:center;gap:6px;">📋 3. GIẢI MÃ CHUỖI MÃ HÓA JSON</h4>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--foreground);line-height:1.5;">
+                  <div><b>Bước 1:</b> Dán toàn bộ chuỗi mã hóa JSON (bắt đầu bằng <i>{"version":"2.0"...}</i>) vào ô Cloud Input.</div>
+                  <div><b>Bước 2:</b> Bấm nút <b>GIẢI MÃ KHO VỀ MÁY</b>.</div>
+                  <div><b>Bước 3:</b> Nhập <b>Mật Khẩu Chính</b> để giải mã và phục hồi dữ liệu vào thiết bị mới!</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>`
+    } else if(state.activeDockTab === 'settings' || state.activeDockTab === 'cloud'){
+      bodyTabContent = `
+        <div style="flex:1;display:flex;flex-direction:column;padding:12px 6px;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);flex-shrink:0;">
+            <div>
+              <h2 style="font-family:var(--font-display);font-size:18px;color:var(--foreground);display:flex;align-items:center;gap:8px;">⚙️ BẢNG CÀI ĐẶT & BẢO MẬT HỆ THỐNG</h2>
+              <p style="font-size:12px;color:var(--muted);margin-top:2px;">Quản lý mật khẩu chính, sinh trắc học, 2FA và đồng bộ dữ liệu Cloud Zero-Knowledge.</p>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;align-content:start;">
+            
+            <!-- CARD 1: CHANGE MASTER PASSWORD -->
+            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+              <h4 style="font-size:13.5px;color:var(--accent);margin-bottom:12px;font-family:var(--font-display);display:flex;align-items:center;gap:6px;">${SVG.key} ĐỔI MẬT KHẨU CHÍNH</h4>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div class="form-group">
+                  <label style="font-size:11.5px;color:var(--muted);">Mật khẩu hiện tại</label>
+                  <input type="password" class="terminal-input" id="tab-cpw-current" value="${esc(state.changePwForm.current)}" style="height:38px;font-size:13px;" placeholder="Nhập MK chính hiện tại..."/>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                  <div class="form-group">
+                    <label style="font-size:11.5px;color:var(--muted);">Mật khẩu mới</label>
+                    <input type="password" class="terminal-input" id="tab-cpw-new" value="${esc(state.changePwForm.newPw)}" style="height:38px;font-size:13px;" placeholder="MK mới..."/>
+                  </div>
+                  <div class="form-group">
+                    <label style="font-size:11.5px;color:var(--muted);">Xác nhận mật khẩu</label>
+                    <input type="password" class="terminal-input" id="tab-cpw-confirm" value="${esc(state.changePwForm.confirm)}" style="height:38px;font-size:13px;" placeholder="Xác nhận MK mới..."/>
+                  </div>
+                </div>
+                <button class="btn btn-terminal-primary btn-sm" id="tab-cpw-submit" style="height:38px;margin-top:2px;font-size:12px;">CẬP NHẬT MẬT KHẨU CHÍNH</button>
+              </div>
+            </div>
+
+            <!-- CARD 2: SECURITY AUTHENTICATION (WEBAUTHN & 2FA) -->
+            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+              <h4 style="font-size:13.5px;color:var(--accent);margin-bottom:12px;font-family:var(--font-display);display:flex;align-items:center;gap:6px;">${SVG.shield} XÁC THỰC BẢO MẬT NÂNG CAO</h4>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                
+                <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);display:flex;align-items:center;justify-content:space-between;">
+                  <div>
+                    <b style="font-size:12.5px;color:var(--foreground);display:block;">VÂN TAY / FACEID (WEBAUTHN)</b>
+                    <span style="font-size:11px;color:var(--muted);">Mở khóa bằng sinh trắc học thiết bị</span>
+                  </div>
+                  ${data.webauthn_enabled
+                    ?`<button class="btn btn-terminal btn-sm" id="disable-webauthn-btn" style="color:var(--success);border-color:rgba(16,185,129,0.5);height:34px;font-size:11.5px;">👆 ĐANG BẬT (TẮT)</button>`
+                    :`<button class="btn btn-terminal-primary btn-sm" id="enable-webauthn-btn" style="height:34px;font-size:11.5px;">👆 BẬT VÂN TAY</button>`}
+                </div>
+
+                <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);display:flex;align-items:center;justify-content:space-between;">
+                  <div>
+                    <b style="font-size:12.5px;color:var(--foreground);display:block;">XÁC THỰC 2 BƯỚC 2FA (TOTP)</b>
+                    <span style="font-size:11px;color:var(--muted);">Mã OTP 6 số (Google Authenticator)</span>
+                  </div>
+                  ${has2FA
+                    ?`<button class="btn btn-danger btn-sm" id="disable-2fa-btn" style="height:34px;font-size:11.5px;">${SVG.shield} TẮT 2FA</button>`
+                    :`<button class="btn btn-terminal-primary btn-sm" id="setup-2fa-btn" style="height:34px;font-size:11.5px;">${SVG.shield} BẬT 2FA (QR)</button>`}
+                </div>
+
+              </div>
+            </div>
+
+            <!-- CARD 3: ZERO-KNOWLEDGE CLOUD SYNC -->
+            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <h4 style="font-size:13.5px;color:var(--accent);font-family:var(--font-display);display:flex;align-items:center;gap:6px;">☁️ ĐỒNG BỘ CLOUD (ZERO-KNOWLEDGE)</h4>
+                <button class="btn btn-terminal btn-sm" id="btn-goto-guide" style="font-size:10.5px;padding:3px 10px;color:#00f0ff;border-color:rgba(0,240,255,0.4);">📖 HƯỚNG DẪN TẠO TOKEN</button>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                
+                <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);">
+                  <b style="font-size:12px;color:var(--primary);display:block;margin-bottom:8px;">📤 1. ĐẨY KHO MÃ HÓA LÊN CLOUD</b>
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:34px;font-size:11px;" id="cloud-gdrive-push-btn">🟡 GOOGLE DRIVE</button>
+                    <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:34px;font-size:11px;" id="cloud-gist-push-btn">🐙 GITHUB GIST</button>
+                    <button class="btn btn-terminal btn-sm" style="flex:1;height:34px;font-size:11px;" id="cloud-gen-btn">${SVG.cloud} CHUỖI JSON</button>
+                  </div>
+                  ${state.cloudEncryptedOutput?`
+                    <div style="margin-top:8px;">
+                      <textarea class="terminal-input" rows="2" readonly style="font-size:10.5px;font-family:var(--font-mono);">${esc(state.cloudEncryptedOutput)}</textarea>
+                      <button class="btn btn-terminal btn-sm w-full" style="margin-top:4px;height:28px;font-size:10.5px;" id="cloud-copy-output">${SVG.copy} SAO CHÉP CHUỖI CLOUD</button>
+                    </div>
+                  `:''}
+                </div>
+
+                <div style="padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:rgba(4,7,14,0.6);">
+                  <b style="font-size:12px;color:var(--primary);display:block;margin-bottom:8px;">📥 2. KÉO KHO TỪ CLOUD VỀ MÁY MỚI</b>
+                  <div style="display:flex;gap:8px;margin-bottom:8px;">
+                    <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:32px;font-size:11px;" id="cloud-gdrive-pull-btn">🟡 TỪ DRIVE</button>
+                    <button class="btn btn-terminal-primary btn-sm" style="flex:1;height:32px;font-size:11px;" id="cloud-gist-pull-btn">🐙 TỪ GIST</button>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <input class="terminal-input" id="cloud-input-val" placeholder="Dán chuỗi JSON hoặc Gist ID vào đây..." value="${esc(state.cloudSyncInput)}" style="flex:1;height:34px;font-size:11px;"/>
+                    <button class="btn btn-terminal btn-sm" id="cloud-restore-btn" style="height:34px;font-size:11px;">GIẢI MÃ KHO</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- CARD 4: LOCAL FILE IMPORT / EXPORT -->
+            <div style="padding:16px 18px;border:1.5px solid var(--border);border-radius:14px;background:var(--bg-card);">
+              <h4 style="font-size:13.5px;color:var(--accent);margin-bottom:12px;font-family:var(--font-display);display:flex;align-items:center;gap:6px;">📤 📥 SAO LƯU & PHỤC HỒI TỆP CỤC BỘ (CSV / JSON)</h4>
+              <p style="font-size:11.5px;color:var(--muted);margin-bottom:12px;line-height:1.4;">Xuất tệp sao lưu kho cá nhân (JSON Envelope v2 mã hóa hoặc CSV) để lưu trữ an toàn trên thiết bị của bạn.</p>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <button class="btn btn-terminal btn-sm w-full" id="import-btn" style="height:38px;font-size:12px;">${SVG.import} NHẬP TỆP SAO LƯU (CSV / JSON)</button>
+                <button class="btn btn-terminal-primary btn-sm w-full" id="export-btn" style="height:38px;font-size:12px;">${SVG.export} XUẤT TỆP SAO LƯU (VAULT EXPORT)</button>
+              </div>
+            </div>
+
+          </div>
+        </div>`
+    } else {
+      // DEFAULT: 'hud' or 'vault' -> Standard 2-column feed and sidebar layout
+      bodyTabContent = `
+          <div class="dashboard-grid">
+            
+            <!-- LEFT MAIN COLUMN -->
+            <div class="main-column">
+              <!-- FIXED TOP CONTROL HEADER (NEVER SCROLLS) -->
+              <div class="main-column-header">
+                <div class="flex justify-between items-center" style="flex-wrap:wrap;gap:16px;">
+                  <div class="prompt-line" style="flex:1;min-width:280px;position:relative;">
+                    <input type="search" class="terminal-input" id="search-input" style="padding-left:46px;height:50px;font-size:15px;" placeholder="🔍 Tìm kiếm dịch vụ, tài khoản, ghi chú... (Ctrl+F)" value="${esc(state.search)}"/>
+                    <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;">${SVG.search}</span>
+                  </div>
+                  <div class="flex gap-10">
+                    <button class="btn btn-terminal" id="lock-btn" style="height:50px;padding:0 22px;font-size:14px;">${SVG.lock} KHÓA VAULT</button>
+                    <button class="btn btn-terminal-primary" id="add-btn" style="height:50px;padding:0 24px;font-size:14px;">${SVG.plus} THÊM MỤC MỚI</button>
+                  </div>
+                </div>
+
+                <div class="pills" id="cat-pills-container"></div>
+              </div>
+              
+              <!-- INDEPENDENT SCROLLABLE FEED -->
+              <div class="main-column-feed">
+                ${state.showAdd?`
+                <div style="margin-bottom:24px;border:1.5px solid var(--primary);padding:24px;border-radius:16px;background:rgba(6,12,24,0.96);box-shadow:0 12px 40px rgba(0,240,255,0.2);">
+                  <h4 style="font-size:16px;font-weight:800;color:var(--primary-hover);margin-bottom:16px;display:flex;align-items:center;gap:8px;">${SVG.plus} THÊM TÀI KHOẢN MỚI</h4>
+                  <div class="grid-2 mb-12">
+                    <div class="form-group"><label>Tên Dịch Vụ (Google, GitHub...)</label><input class="terminal-input" id="new-service" placeholder="VD: GitHub" value="${esc(state.newItem.service)}"/></div>
+                    <div class="form-group"><label>Danh Mục</label><div style="display:flex;gap:8px;"><select class="terminal-input" id="new-cat" style="flex:1;"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}<option value="__new__">+ TẠO DANH MỤC MỚI...</option></select><button type="button" class="btn btn-terminal btn-sm" id="btn-add-cat-new" title="Tạo danh mục mới">${SVG.plus} MỚI</button></div></div>
+                  </div>
+                  <div class="grid-2 mb-12">
+                    <div class="form-group"><label>Tên Đăng Nhập / Email</label><input class="terminal-input" id="new-user" placeholder="user@domain.com" value="${esc(state.newItem.username)}"/></div>
+                    <div class="form-group">
+                      <label>Mật Khẩu</label>
+                      <div style="display:flex;gap:8px;">
+                        <div style="position:relative;flex:1;">
+                          <input class="terminal-input" id="new-pass" type="password" placeholder="••••••••" value="${esc(state.newItem.password)}" style="padding-right:40px !important;"/>
+                          <button type="button" class="eye-toggle-btn" data-input="new-pass" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button>
+                        </div>
+                        <button class="btn btn-terminal btn-sm" id="gen-new">${SVG.dice} TẠO MK</button>
+                      </div>
+                      <div class="pw-meter"><div class="pw-meter-bar" style="width:${addSt.percent}%;background-color:${addSt.color};"></div></div>
+                      <div class="pw-strength-lbl"><span style="color:var(--muted);">ĐỘ MẠNH:</span><span style="color:${addSt.color}">${addSt.text} (${addSt.score}/100)</span></div>
+                    </div>
+                  </div>
+                  
+                  <div class="grid-2 mb-12">
+                    <div class="form-group"><label>Địa chỉ Web (URL)</label><input class="terminal-input" id="new-url" placeholder="https://github.com/login" value="${esc(state.newItem.url)}"/></div>
+                    <div class="form-group"><label>Ghi chú bảo mật (Secure Notes)</label><textarea class="terminal-input" id="new-notes" rows="2" placeholder="Mã PIN, câu hỏi bảo mật, recovery codes...">${esc(state.newItem.notes)}</textarea></div>
+                  </div>
+
+                  <!-- Custom Generator Controls -->
+                  <div style="margin-top:10px;padding:12px 16px;border:1px dashed var(--border);border-radius:12px;background:rgba(4,7,14,0.6);display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+                    <span style="font-size:12px;font-weight:800;color:var(--primary);">TÙY CHỈNH MK:</span>
+                    <label class="toggle-opt">Độ dài: <input type="number" id="gen-len" min="8" max="64" value="${state.genOpts.len}" style="width:55px;height:28px;background:rgba(0,0,0,0.8);border:1px solid var(--border);color:#fff;text-align:center;border-radius:6px;font-weight:700;"/></label>
+                    <label class="toggle-opt"><input type="checkbox" id="gen-upper" ${state.genOpts.upper?'checked':''}/> A-Z</label>
+                    <label class="toggle-opt"><input type="checkbox" id="gen-lower" ${state.genOpts.lower?'checked':''}/> a-z</label>
+                    <label class="toggle-opt"><input type="checkbox" id="gen-digits" ${state.genOpts.digits?'checked':''}/> 0-9</label>
+                    <label class="toggle-opt"><input type="checkbox" id="gen-symbols" ${state.genOpts.symbols?'checked':''}/> !@#$</label>
+                  </div>
+
+                  <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:16px;">
+                    <button class="btn btn-terminal btn-sm" id="cancel-add">HỦY</button>
+                    <button class="btn btn-terminal-primary btn-sm" id="save-add">LƯU MỤC MỚI</button>
+                  </div>
+                </div>`:''
+                }
+
+                <div id="entries-container" style="display:flex;flex-direction:column;gap:12px;"></div>
+              </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR COLUMN -->
+            <aside class="sidebar-panel">
+              <!-- 1. Stats & Telemetry Card -->
+              <div class="sidebar-card">
+                <div class="card-header">📊 QUẢN LÝ VAULT</div>
+                <div class="stat-row">
+                  <span>Tổng số tài khoản:</span>
+                  <strong style="color:var(--primary);font-size:15px;">${state.items.length}</strong>
+                </div>
+                <div class="stat-row">
+                  <span>Bộ lưu trữ vĩnh viễn:</span>
+                  <strong style="color:var(--success);">IndexedDB Active</strong>
+                </div>
+                <button class="btn btn-terminal btn-sm w-full" id="health-btn" style="margin-top:10px;color:#00f0ff;border-color:rgba(0,240,255,0.4);height:38px;">
+                  ${SVG.heartPulse} VAULT HEALTH AUDIT
+                </button>
+              </div>
+
+              <!-- 2. Categories Sidebar Quick Filter -->
+              <div class="sidebar-card">
+                <div class="card-header">📂 DANH MỤC TÀI KHOẢN</div>
+                <div class="sidebar-cat-list" id="sidebar-cat-list"></div>
+              </div>
+
+              <!-- 3. Vault Settings Quick Panel -->
+              <div class="sidebar-card">
+                <div class="card-header">⚙️ BẢNG CÀI ĐẶT</div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <button class="btn btn-terminal-primary btn-sm w-full" id="cloud-sync-btn">${SVG.cloud} ĐỒNG BỘ CLOUD</button>
+
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <button class="btn btn-terminal btn-sm" id="import-btn" style="padding:0 8px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Nhập CSV / JSON">${SVG.import} NHẬP CSV/JSON</button>
+                    <button class="btn btn-terminal btn-sm" id="export-btn" style="padding:0 8px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Xuất Sao Lưu">${SVG.export} XUẤT SAO LƯU</button>
+                    <button class="btn btn-terminal btn-sm" id="change-pw-btn" style="padding:0 8px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Đổi Mật Khẩu Chính">${SVG.key} ĐỔI MK CHÍNH</button>
+                    ${data.webauthn_enabled
+                      ?`<button class="btn btn-terminal btn-sm" id="disable-webauthn-btn" style="color:var(--success);border-color:rgba(16,185,129,0.5);padding:0 8px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Vân tay đang bật">👆 VÂN TAY: BẬT</button>`
+                      :`<button class="btn btn-terminal btn-sm" id="enable-webauthn-btn" style="padding:0 8px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Bật mở khóa vân tay">👆 MỞ KHÓA VÂN TAY</button>`}
+                    ${has2FA
+                      ?`<button class="btn btn-danger btn-sm" id="disable-2fa-btn" style="grid-column:span 2;padding:0 8px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Tắt 2FA">${SVG.shield} TẮT XÁC THỰC 2FA</button>`
+                      :`<button class="btn btn-terminal btn-sm" id="setup-2fa-btn" style="grid-column:span 2;color:var(--success);border-color:rgba(16,185,129,0.4);padding:0 8px;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="Bật 2FA QR">${SVG.shield} BẬT XÁC THỰC 2FA (QR)</button>`}
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+          </div>`
     }
-    const allCats=Array.from(catCount.entries()).sort((a,b)=>b[1]-a[1])
-    const pillsHtml=allCats.map(([c,n])=>`<span class="pill${state.activeCategory===c?' active':''}" data-cat="${c}">${esc(c.toUpperCase())} (${n})</span>`).join('')
+
     html=`
       <div class="terminal-section">
         <div class="title-bar">
-          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-          <span class="lbl"><b>FEAR · VAULT</b> &nbsp;|&nbsp; ${SVG.lock} ${state.items.length} tài khoản${has2FA?`<span class="badge-2fa">${SVG.shield} 2FA ĐANG BẬT</span>`:''}</span>
+          <div style="display:flex;align-items:center;gap:14px;color:var(--muted);">
+            <b style="color:var(--accent);font-family:var(--font-display);font-size:15px;letter-spacing:1px;">FEAR · CYBERDECK HUD V2.0</b>
+            <span style="background:var(--badge-bg);border:1px solid var(--border-hover);color:var(--accent);padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;">ENCRYPTED (AES-256)</span>
+            <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">ROOT@VAULT:~#</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="color:var(--muted);font-size:12px;font-weight:700;">THEME:</span>
+            <div class="theme-picker">
+              <div class="theme-dot crimson" data-set-theme="crimson" title="Crimson Red (Ảnh 1)"></div>
+              <div class="theme-dot purple" data-set-theme="purple" title="Deep Purple (Ảnh 2)"></div>
+              <div class="theme-dot cyan" data-set-theme="cyan" title="Cyan Cyberpunk"></div>
+            </div>
+          </div>
         </div>
         <div class="body">
-          <div class="flex justify-between items-center mb-16" style="flex-wrap:wrap;gap:14px;">
-            <div class="prompt-line" style="flex:1;min-width:260px;position:relative;">
-              <input type="search" class="terminal-input" id="search-input" style="padding-left:38px;" placeholder="Tìm kiếm dịch vụ, email... (Nhấn / hoặc Ctrl+F)" value="${esc(state.search)}"/>
-              <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;">${SVG.search}</span>
-            </div>
-            <div class="flex gap-10">
-              <button class="btn btn-terminal" id="lock-btn">${SVG.lock} KHÓA VAULT</button>
-              <button class="btn btn-terminal-primary" id="add-btn">${SVG.plus} THÊM MỤC MỚI</button>
-            </div>
-          </div>
-          ${allCats.length>1?`<div class="pills"><span class="pill${!state.activeCategory?' active':''}" data-cat="">TẤT CẢ (${state.items.length})</span>${pillsHtml}</div>`:''}
-          ${state.showAdd?`
-          <div style="margin-bottom:20px;border:1px solid var(--primary);padding:20px;border-radius:12px;background:rgba(6,10,18,0.95);box-shadow:0 8px 30px rgba(0,240,255,0.15);">
-            <h4 style="font-size:15px;font-weight:700;color:var(--primary-hover);margin-bottom:14px;display:flex;align-items:center;gap:8px;">${SVG.plus} THÊM TÀI KHOẢN MỚI</h4>
-            <div class="grid-2 mb-12">
-              <div class="form-group"><label>Tên Dịch Vụ (Google, GitHub, Facebook...)</label><input class="terminal-input" id="new-service" placeholder="VD: GitHub" value="${esc(state.newItem.service)}"/></div>
-              <div class="form-group"><label>Danh Mục</label><div style="display:flex;gap:8px;"><select class="terminal-input" id="new-cat" style="flex:1;"><option value="">— Chưa phân loại —</option>${state.categories.map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}${Array.from(catCount.keys()).filter(c=>c!=='other'&&!state.categories.includes(c)).map(c=>`<option value="${c}"${state.newItem.category===c?' selected':''}>${c.toUpperCase()}</option>`).join('')}<option value="__new__">+ TẠO DANH MỤC MỚI...</option></select><button type="button" class="btn btn-terminal btn-sm" id="btn-add-cat-new" title="Tạo danh mục mới">${SVG.plus} MỚI</button></div></div>
-            </div>
-            <div class="grid-2 mb-12">
-              <div class="form-group"><label>Tên Đăng Nhập / Email</label><input class="terminal-input" id="new-user" placeholder="user@domain.com" value="${esc(state.newItem.username)}"/></div>
-              <div class="form-group"><label>Mật Khẩu</label><div style="display:flex;gap:8px;"><div style="position:relative;flex:1;"><input class="terminal-input" id="new-pass" type="password" placeholder="••••••••" value="${esc(state.newItem.password)}" style="padding-right:40px !important;"/><button type="button" class="eye-toggle-btn" data-input="new-pass" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#00f0ff;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;z-index:3;" title="Hiển thị/Ẩn mật khẩu">${SVG.eye}</button></div><button class="btn btn-terminal btn-sm" id="gen-new">${SVG.dice} TẠO MK</button></div></div>
-            </div>
-            <div style="display:flex;gap:10px;justify-content:flex-end;">
-              <button class="btn btn-terminal btn-sm" id="cancel-add">HỦY</button>
-              <button class="btn btn-terminal-primary btn-sm" id="save-add">LƯU MỤC MỚI</button>
-            </div>
-          </div>`:''
-          }
-          <div style="display:flex;flex-direction:column;gap:8px;">${entriesHtml}</div>
-          <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(0,240,255,0.15);padding-top:20px;">
-            <button class="btn btn-terminal btn-sm" id="export-btn">${SVG.export} XUẤT SAO LƯU (EXPORT)</button>
-            <button class="btn btn-terminal btn-sm" id="import-btn">${SVG.import} NHẬP DỮ LIỆU (IMPORT)</button>
-            <button class="btn btn-terminal btn-sm" id="change-pw-btn">${SVG.key} ĐỔI MẬT KHẨU CHÍNH</button>
-            ${has2FA
-              ?`<button class="btn btn-danger btn-sm" id="disable-2fa-btn">${SVG.shield} TẮT 2FA</button>`
-              :`<button class="btn btn-terminal btn-sm" id="setup-2fa-btn" style="color:var(--success);border-color:rgba(16,185,129,0.4);">${SVG.shield} BẬT XÁC THỰC 2FA (QR)</button>`}
-          </div>
+          ${bodyTabContent}
         </div>
       </div>`
+  }
+
+  // ── Cloud Sync Modal ──
+  if(state.showCloudSync){
+    html+=`<div class="modal-overlay" id="cloud-overlay"><div class="modal" style="max-width:560px;">
+      <h3>${SVG.cloud} MÃ HÓA & ĐỒNG BỘ CLOUD</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Đồng bộ kho an toàn giữa các thiết bị theo cơ chế Zero-Knowledge (Mã hóa AES-256-GCM + chữ ký HMAC trước khi đẩy lên Cloud).</p>
+      
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(4,7,14,0.8);">
+          <h4 style="font-size:13px;color:var(--primary);margin-bottom:8px;">📤 1. ĐẨY KHO MÃ HÓA LÊN CLOUD (DRIVE / GIST / FILE)</h4>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Tải tệp mã hóa lên Google Drive, GitHub Gist hoặc tạo chuỗi sao lưu cá nhân.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="btn btn-terminal-primary btn-sm" style="flex:1;min-width:140px;" id="cloud-gdrive-push-btn">🟡 GOOGLE DRIVE</button>
+            <button class="btn btn-terminal-primary btn-sm" style="flex:1;min-width:140px;" id="cloud-gist-push-btn">🐙 GITHUB GIST</button>
+            <button class="btn btn-terminal btn-sm" style="flex:1;min-width:120px;" id="cloud-gen-btn">${SVG.cloud} CHUỖI JSON</button>
+          </div>
+          
+          ${state.cloudEncryptedOutput?`
+            <div style="margin-top:12px;">
+              <textarea class="terminal-input" rows="3" readonly style="font-size:11px;font-family:var(--font-mono);">${esc(state.cloudEncryptedOutput)}</textarea>
+              <button class="btn btn-terminal btn-sm w-full" style="margin-top:6px;" id="cloud-copy-output">${SVG.copy} SAO CHÉP CHUỖI MÃ HÓA CLOUD</button>
+            </div>
+          `:''}
+        </div>
+
+        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(4,7,14,0.8);">
+          <h4 style="font-size:13px;color:var(--primary);margin-bottom:8px;">📥 2. KÉO KHO TỪ CLOUD VỀ MÁY MỚI</h4>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Tải tệp từ Google Drive, dán Gist ID hoặc dán chuỗi JSON mã hóa để phục hồi kho.</p>
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <button class="btn btn-terminal-primary btn-sm" style="flex:1;" id="cloud-gdrive-pull-btn">🟡 KÉO TỪ GOOGLE DRIVE</button>
+            <button class="btn btn-terminal-primary btn-sm" style="flex:1;" id="cloud-gist-pull-btn">🐙 KÉO TỪ GIST ID</button>
+          </div>
+          <textarea class="terminal-input mb-12" id="cloud-input-val" rows="3" placeholder="Dán JSON hoặc chuỗi Cloud mã hóa vào đây...">${esc(state.cloudSyncInput)}</textarea>
+          <button class="btn btn-terminal btn-sm w-full" id="cloud-restore-btn">${SVG.import} KÉO & GIẢI MÃ KHO VỀ MÁY</button>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px;">
+          <button class="btn btn-terminal-primary btn-sm" id="cloud-modal-guide-btn" style="font-size:11px;padding:0 14px;">📖 HƯỚNG DẪN LẤY GIT & DRIVE ID</button>
+          <button class="btn btn-terminal btn-sm" id="cloud-close-btn">ĐÓNG</button>
+        </div>
+      </div>
+    </div></div>`
+  }
+
+  // ── Category Manager Modal ──
+  if(state.showCatManager){
+    html+=`<div class="modal-overlay" id="cat-mgr-overlay"><div class="modal" style="max-width:540px;">
+      <h3 style="display:flex;align-items:center;gap:8px;">📁 QUẢN LÝ DANH MỤC TÀI KHOẢN</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Tạo mới, đổi tên hoặc xóa các danh mục trong kho dữ liệu của bạn.</p>
+      
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <input class="terminal-input" id="new-cat-mgr-input" placeholder="Tên danh mục mới (Vd: Crypto, Work, Personal...)" style="flex:1;" />
+        <button class="btn btn-terminal-primary btn-sm" id="new-cat-mgr-btn">${SVG.plus} THÊM MỚI</button>
+      </div>
+
+      <div style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px;">
+        ${state.categories.map(c=>{
+          const count=state.items.filter(i=>(i.category||'other')===c).length
+          const isDefault=['email','social','dev','finance','shopping','work','other'].includes(c)
+          return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-family:var(--font-mono);font-weight:700;color:var(--foreground);font-size:13px;">${esc(c.toUpperCase())}</span>
+              <span style="font-size:11px;padding:2px 8px;border-radius:12px;background:var(--badge-bg);color:var(--accent);font-weight:700;">${count} mục</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-terminal btn-sm" data-rename-cat="${esc(c)}" title="Đổi tên danh mục">${SVG.edit} ĐỔI TÊN</button>
+              ${!isDefault?`<button class="btn btn-danger btn-sm" data-del-cat="${esc(c)}" title="Xóa danh mục">${SVG.trash} XOÁ</button>`:''}
+            </div>
+          </div>`
+        }).join('')}
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:18px;">
+        <button class="btn btn-terminal btn-sm" id="close-cat-mgr-btn">ĐÓNG BẢNG</button>
+      </div>
+    </div></div>`
   }
 
   // ── Change password modal ──
@@ -1499,6 +3164,67 @@ function render(){
     </div></div>`
   }
 
+  // ── Vault Health Check modal ──
+  if(state.showHealthCheck){
+    const passMap=new Map()
+    let weakCount=0, reusedCount=0, staleCount=0
+    const now=Date.now()
+    const STALE_MS=180*24*60*60*1000
+
+    state.items.forEach(i=>{
+      if(i.password){
+        passMap.set(i.password, (passMap.get(i.password)||0)+1)
+        if(calcPasswordStrength(i.password).score < 50) weakCount++
+      }
+      if(i.updatedAt && (now - i.updatedAt > STALE_MS)) staleCount++
+    })
+    passMap.forEach(count=>{ if(count > 1) reusedCount += count })
+
+    html+=`<div class="modal-overlay" id="hc-overlay"><div class="modal" style="max-width:560px;">
+      <h3>${SVG.heartPulse} VAULT HEALTH AUDIT</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Phân tích và phát hiện các rủi ro bảo mật trong kho mật khẩu của bạn.</p>
+      
+      <div class="grid-2 mb-16" style="grid-template-columns:1fr 1fr 1fr;">
+        <div style="padding:14px;border:1px solid ${reusedCount>0?'var(--error)':'var(--border)'};border-radius:12px;background:rgba(4,7,14,0.8);text-align:center;">
+          <div style="font-size:24px;font-weight:900;color:${reusedCount>0?'var(--error)':'var(--success)'};">${reusedCount}</div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:4px;">DÙNG TRÙNG LẶP</div>
+        </div>
+        <div style="padding:14px;border:1px solid ${weakCount>0?'var(--warning)':'var(--border)'};border-radius:12px;background:rgba(4,7,14,0.8);text-align:center;">
+          <div style="font-size:24px;font-weight:900;color:${weakCount>0?'var(--warning)':'var(--success)'};">${weakCount}</div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:4px;">MẬT KHẨU YẾU</div>
+        </div>
+        <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(4,7,14,0.8);text-align:center;">
+          <div style="font-size:24px;font-weight:900;color:#00f0ff;">${staleCount}</div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:4px;">QUÁ 180 NGÀY</div>
+        </div>
+      </div>
+
+      <div style="max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+        ${state.items.map(i=>{
+          const isReused = (passMap.get(i.password)||0) > 1
+          const st = calcPasswordStrength(i.password)
+          const isWeak = st.score < 50
+          if(!isReused && !isWeak) return ''
+          return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+            <div>
+              <span style="font-weight:700;color:#fff;">${esc(i.service)}</span>
+              <span style="font-size:12px;color:var(--muted);margin-left:8px;">(${esc(i.username)})</span>
+              <div style="font-size:11px;margin-top:2px;">
+                ${isReused?`<span style="color:var(--error);font-weight:700;margin-right:8px;">⚠️ Dùng trùng mật khẩu</span>`:''}
+                ${isWeak?`<span style="color:var(--warning);font-weight:700;">🔴 MK Yếu (${st.score}/100)</span>`:''}
+              </div>
+            </div>
+            <button class="btn btn-terminal btn-sm" data-fix-id="${i.id}">${SVG.edit} FIX</button>
+          </div>`
+        }).join('') || '<div style="text-align:center;padding:20px;color:var(--success);font-weight:700;">✅ Tuyệt vời! Không phát hiện mật khẩu trùng lặp hay yếu.</div>'}
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="btn btn-terminal btn-sm" id="hc-close">ĐÓNG</button>
+      </div>
+    </div></div>`
+  }
+
   if(state.loading)html=html.replace('</div>','<div style="text-align:center;padding:14px;font-size:13px;color:var(--primary-hover);font-weight:600;">⌛ ĐANG XỬ LÝ MÃ HÓA...</div></div>')
 
   if(state.toast){
@@ -1507,12 +3233,26 @@ function render(){
 
   app.innerHTML=html
   bindEvents()
+  if(state.page==='unlocked') renderEntries()
 }
 
 function esc(s){if(typeof s!=='string')return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
 // ─── EVENTS ──────────────────────────────────────────
 let totpInterval=null, warnTimer=null
+
+function triggerAddCategory(targetField){
+  const catInput=prompt('Nhập tên danh mục mới (VD: crypto, game, personal, banking, cloud...):')
+  if(catInput){
+    const clean=addCustomCategory(catInput)
+    if(clean){
+      if(targetField==='new') state.newItem.category=clean
+      if(targetField==='edit') state.editForm.category=clean
+      toast('success',`Đã tạo danh mục "${clean.toUpperCase()}"`)
+      render()
+    }
+  }
+}
 
 function bindEvents(){
   const data=loadData()
@@ -1523,21 +3263,17 @@ function bindEvents(){
       pw.focus()
       pw.addEventListener('input',e=>{
         const raw=e.target.value
-        const filtered=raw.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-        if(raw!==filtered){
-          e.target.value=filtered
-          const warn=document.getElementById('pw-warn-msg')
-          if(warn){
-            warn.style.display='block'
-            if(warnTimer)clearTimeout(warnTimer)
-            warnTimer=setTimeout(()=>{const w=document.getElementById('pw-warn-msg');if(w)w.style.display='none'},2800)
-          }
+        state.masterPassword=raw
+        const warn=document.getElementById('pw-warn-msg')
+        if(/[^\x00-\x7F]/.test(raw)){
+          if(warn) warn.style.display='block'
+        }else{
+          if(warn) warn.style.display='none'
         }
-        state.masterPassword=filtered
       })
     }
     
-    // 6 OTP Squircle Boxes handling
+    // OTP Boxes handling
     const otpBoxes=document.querySelectorAll('.otp-box')
     if(otpBoxes.length>0){
       otpBoxes.forEach((box, idx)=>{
@@ -1585,7 +3321,7 @@ function bindEvents(){
       })
     }
 
-    // Direct OTP Group Mousemove Wave Ripple
+    // OTP Mousemove Wave Ripple
     document.querySelectorAll('.otp-group').forEach(group=>{
       const boxes=group.querySelectorAll('.otp-box, .setup-otp-box')
       if(boxes.length===0)return
@@ -1624,7 +3360,6 @@ function bindEvents(){
       })
     })
 
-    // Live TOTP countdown timer
     const timerEl=document.getElementById('totp-timer')
     if(timerEl){
       if(totpInterval) clearInterval(totpInterval)
@@ -1647,26 +3382,27 @@ function bindEvents(){
       btn.title=state.showMasterPw?'Ẩn mật khẩu':'Hiển thị mật khẩu'
     })
     document.getElementById('unlock-btn')?.addEventListener('click',handleUnlock)
+    document.getElementById('webauthn-unlock-btn')?.addEventListener('click',handleWebAuthnUnlock)
+    document.querySelector('.spinning-stamp-container')?.addEventListener('click',()=>{
+      const data = loadData()
+      if(data.webauthn_enabled) handleWebAuthnUnlock()
+      else toast('error', 'Vân tay chưa được bật. Hãy bật trong Settings sau khi đăng nhập!')
+    })
     pw?.addEventListener('keydown',e=>{if(e.key==='Enter')handleUnlock()})
     document.getElementById('recover-btn')?.addEventListener('click',e=>{e.preventDefault();state.page='recovery';state.masterPassword='';state.recoveryKeyInput='';render()})
-    document.getElementById('reset-btn')?.addEventListener('click',()=>{if(confirm('Xoá toàn bộ dữ liệu Vault? Hành động này không thể hoàn tác!')){localStorage.removeItem(STORAGE_KEY);state.page='locked';state.masterPassword='';render()}})
+    document.getElementById('cloud-pull-lock-btn')?.addEventListener('click',e=>{e.preventDefault();state.showCloudSync=true;render()})
+    document.getElementById('cloud-sync-lock-btn')?.addEventListener('click',()=>{state.showCloudSync=true;render()})
+    document.getElementById('reset-btn')?.addEventListener('click',()=>{if(confirm('Xoá toàn bộ dữ liệu Vault? Hành động này không thể hoàn tác!')){localStorage.removeItem(STORAGE_KEY);setDBItem(STORAGE_KEY,{});state.page='locked';state.masterPassword='';render()}})
     document.getElementById('totp-verify-btn')?.addEventListener('click',handleTOTPVerify)
     document.getElementById('totp-back-btn')?.addEventListener('click',()=>{state.page='locked';state.masterPassword='';state.vaultKey='';state._totpSecret='';state.totpCode='';render()})
   }
 
   if(state.page==='create'){
-    document.getElementById('pw-input')?.addEventListener('input',e=>{
-      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-      if(e.target.value!==f)e.target.value=f
-      state.masterPassword=f
-    })
-    document.getElementById('pw-confirm')?.addEventListener('input',e=>{
-      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-      if(e.target.value!==f)e.target.value=f
-      state.confirmPassword=f
-    })
+    document.getElementById('pw-input')?.addEventListener('input',e=>{state.masterPassword=e.target.value})
+    document.getElementById('pw-confirm')?.addEventListener('input',e=>{state.confirmPassword=e.target.value})
     document.getElementById('pw-confirm')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleCreateVault()})
     document.getElementById('create-btn')?.addEventListener('click',handleCreateVault)
+    document.getElementById('create-cloud-pull-btn')?.addEventListener('click',()=>{state.showCloudSync=true;render()})
   }
 
   if(state.page==='recovery-show'){
@@ -1683,16 +3419,8 @@ function bindEvents(){
   }
 
   if(state.page==='recovery-reset'){
-    document.getElementById('pw-input')?.addEventListener('input',e=>{
-      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-      if(e.target.value!==f)e.target.value=f
-      state.masterPassword=f
-    })
-    document.getElementById('pw-confirm')?.addEventListener('input',e=>{
-      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-      if(e.target.value!==f)e.target.value=f
-      state.confirmPassword=f
-    })
+    document.getElementById('pw-input')?.addEventListener('input',e=>{state.masterPassword=e.target.value})
+    document.getElementById('pw-confirm')?.addEventListener('input',e=>{state.confirmPassword=e.target.value})
     document.getElementById('pw-confirm')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleRecoverReset()})
     document.getElementById('recover-reset-btn')?.addEventListener('click',handleRecoverReset)
     document.getElementById('back-to-lock')?.addEventListener('click',()=>{state.page='locked';state.masterPassword='';state.confirmPassword='';state.vaultKey='';state.recoveryKeyInput='';render()})
@@ -1701,121 +3429,110 @@ function bindEvents(){
   if(state.page==='unlocked'){
     if(totpInterval){clearInterval(totpInterval);totpInterval=null}
     document.getElementById('lock-btn')?.addEventListener('click',lockVault)
+    document.getElementById('health-btn')?.addEventListener('click',()=>{state.activeDockTab='audit';render()})
     document.getElementById('add-btn')?.addEventListener('click',()=>{state.showAdd=!state.showAdd;render()})
+    document.getElementById('cloud-sync-btn')?.addEventListener('click',()=>{state.activeDockTab='cloud';render()})
+    document.getElementById('change-pw-btn')?.addEventListener('click',()=>{state.activeDockTab='settings';render()})
+    
     const si=document.getElementById('search-input')
     if(si){
       si.addEventListener('input',e=>{
         state.search=e.target.value
-        const pos=e.target.selectionStart
-        render()
-        const nsi=document.getElementById('search-input')
-        if(nsi){nsi.focus();nsi.setSelectionRange(pos,pos)}
+        renderEntries()
       })
-    }
-    document.querySelectorAll('.pill[data-cat]').forEach(el=>{el.addEventListener('click',()=>{state.activeCategory=el.dataset.cat===''?'':el.dataset.cat;render()})})
-
-    // Category creation handler
-    const triggerAddCategory=(targetField)=>{
-      const catInput=prompt('Nhập tên danh mục mới (VD: crypto, game, personal, banking, cloud...):')
-      if(catInput){
-        const clean=addCustomCategory(catInput)
-        if(clean){
-          if(targetField==='new') state.newItem.category=clean
-          if(targetField==='edit') state.editForm.category=clean
-          toast('success',`Đã tạo danh mục "${clean.toUpperCase()}"`)
-          render()
-        }else if(targetField==='new'){
-          state.newItem.category=''
-          render()
-        }else if(targetField==='edit'){
-          state.editForm.category=''
-          render()
-        }
-      }else if(targetField==='new'){
-        state.newItem.category=''
-        render()
-      }else if(targetField==='edit'){
-        state.editForm.category=''
-        render()
-      }
     }
 
     document.getElementById('btn-add-cat-new')?.addEventListener('click',()=>triggerAddCategory('new'))
-    document.getElementById('btn-add-cat-edit')?.addEventListener('click',()=>triggerAddCategory('edit'))
 
     // Add form
     document.getElementById('new-service')?.addEventListener('input',e=>{state.newItem.service=e.target.value})
     document.getElementById('new-user')?.addEventListener('input',e=>{state.newItem.username=e.target.value})
-    document.getElementById('new-pass')?.addEventListener('input',e=>{state.newItem.password=e.target.value})
+    document.getElementById('new-url')?.addEventListener('input',e=>{state.newItem.url=e.target.value})
+    document.getElementById('new-notes')?.addEventListener('input',e=>{state.newItem.notes=e.target.value})
+    document.getElementById('new-pass')?.addEventListener('input',e=>{
+      state.newItem.password=e.target.value
+      const st=calcPasswordStrength(e.target.value)
+      const meter=document.querySelector('.pw-meter-bar')
+      const lbl=document.querySelector('.pw-strength-lbl')
+      if(meter) { meter.style.width=st.percent+'%'; meter.style.backgroundColor=st.color; }
+      if(lbl) { lbl.innerHTML=`<span style="color:var(--muted);">ĐỘ MẠNH:</span><span style="color:${st.color}">${st.text} (${st.score}/100)</span>` }
+    })
     document.getElementById('new-cat')?.addEventListener('change',e=>{
       if(e.target.value==='__new__') triggerAddCategory('new')
       else state.newItem.category=e.target.value
     })
-    document.getElementById('gen-new')?.addEventListener('click',()=>{state.newItem.password=genPassword();render()})
+    
+    // Custom generator controls
+    document.getElementById('gen-len')?.addEventListener('change',e=>{state.genOpts.len=parseInt(e.target.value)||20})
+    document.getElementById('gen-upper')?.addEventListener('change',e=>{state.genOpts.upper=e.target.checked})
+    document.getElementById('gen-lower')?.addEventListener('change',e=>{state.genOpts.lower=e.target.checked})
+    document.getElementById('gen-digits')?.addEventListener('change',e=>{state.genOpts.digits=e.target.checked})
+    document.getElementById('gen-symbols')?.addEventListener('change',e=>{state.genOpts.symbols=e.target.checked})
+
+    document.getElementById('gen-new')?.addEventListener('click',()=>{
+      state.newItem.password=genPassword()
+      render()
+    })
     document.getElementById('save-add')?.addEventListener('click',addItem)
-    document.getElementById('cancel-add')?.addEventListener('click',()=>{state.showAdd=false;state.newItem={service:'',username:'',password:'',category:''};render()})
-
-    // Edit form
-    document.getElementById('edit-service')?.addEventListener('input',e=>{state.editForm.service=e.target.value})
-    document.getElementById('edit-user')?.addEventListener('input',e=>{state.editForm.username=e.target.value})
-    document.getElementById('edit-pass')?.addEventListener('input',e=>{state.editForm.password=e.target.value})
-    document.getElementById('edit-cat')?.addEventListener('change',e=>{
-      if(e.target.value==='__new__') triggerAddCategory('edit')
-      else state.editForm.category=e.target.value
-    })
-    document.getElementById('gen-edit')?.addEventListener('click',()=>{state.editForm.password=genPassword();render()})
-    document.getElementById('save-edit')?.addEventListener('click',saveEdit)
-    document.getElementById('cancel-edit')?.addEventListener('click',()=>{state.editingId=null;render()})
-
-    // Entry actions
-    document.querySelectorAll('[data-copy-id]').forEach(el=>{el.addEventListener('click',()=>{const item=state.items.find(i=>i.id===el.dataset.copyId);if(item)copyText(item.password)})})
-    document.querySelectorAll('[data-show]').forEach(el=>{
-      el.addEventListener('click',()=>{
-        const id=el.dataset.show
-        state.showPasswords[id]=!state.showPasswords[id]
-        const entry=el.closest('.vault-entry')
-        if(entry){
-          const item=state.items.find(i=>i.id===id)
-          const passSpan=entry.querySelector('.pass')
-          if(passSpan&&item){
-            passSpan.textContent=state.showPasswords[id]?item.password:'••••••••••••'
-            el.innerHTML=state.showPasswords[id]?SVG.eyeOff+' ẨN':SVG.eye+' XEM'
-          }
-        }
-      })
-    })
-    document.querySelectorAll('[data-edit]').forEach(el=>{el.addEventListener('click',()=>{const id=el.dataset.edit;const item=state.items.find(i=>i.id===id);if(item){state.editingId=id;state.editForm={service:item.service,username:item.username,password:item.password,category:item.category||''};render()}})})
-    document.querySelectorAll('[data-del]').forEach(el=>{el.addEventListener('click',()=>{if(confirm('Xoá mục này?')){deleteItem(el.dataset.del);render()}})})
+    document.getElementById('cancel-add')?.addEventListener('click',()=>{state.showAdd=false;state.newItem={service:'',username:'',password:'',category:'',notes:'',url:''};render()})
 
     document.getElementById('export-btn')?.addEventListener('click',handleExport)
     document.getElementById('import-btn')?.addEventListener('click',handleImport)
     document.getElementById('change-pw-btn')?.addEventListener('click',()=>{state.showChangePw=true;state.changePwForm={current:'',newPw:'',confirm:''};render()})
+    document.getElementById('enable-webauthn-btn')?.addEventListener('click',handleEnableWebAuthn)
+    document.getElementById('disable-webauthn-btn')?.addEventListener('click',handleDisableWebAuthn)
     document.getElementById('setup-2fa-btn')?.addEventListener('click',handleSetup2FAStart)
     document.getElementById('disable-2fa-btn')?.addEventListener('click',handleDisable2FA)
   }
 
-  // Change password modal
-  if(state.showChangePw){
-    document.getElementById('cpw-current')?.addEventListener('input',e=>{
-      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-      if(e.target.value!==f)e.target.value=f
-      state.changePwForm.current=f
+  // Cloud Sync handlers
+  document.getElementById('cloud-gdrive-push-btn')?.addEventListener('click',handleCloudPushGDrive)
+  document.getElementById('cloud-gdrive-pull-btn')?.addEventListener('click',handleCloudPullGDrive)
+  document.getElementById('cloud-gist-push-btn')?.addEventListener('click',handleCloudPushGist)
+  document.getElementById('cloud-gist-pull-btn')?.addEventListener('click',()=>handleCloudPullGist())
+  document.getElementById('cloud-gen-btn')?.addEventListener('click',handleCloudGeneratePayload)
+  document.getElementById('cloud-copy-output')?.addEventListener('click',()=>{if(state.cloudEncryptedOutput) copyText(state.cloudEncryptedOutput)})
+  document.getElementById('cloud-input-val')?.addEventListener('input',e=>{state.cloudSyncInput=e.target.value})
+  document.getElementById('cloud-restore-btn')?.addEventListener('click',handleCloudRestoreFromPayload)
+  document.getElementById('cloud-close-btn')?.addEventListener('click', () => { state.showCloudSync = false; render(); })
+  document.getElementById('cloud-modal-guide-btn')?.addEventListener('click', () => {
+    state.showCloudSync = false
+    if(state.page === 'unlocked'){
+      state.activeDockTab = 'guide'
+      render()
+    } else {
+      alert(
+        "📖 HƯỚNG DẪN NHANH LẤY ID KÉO KHO CLOUD:\n\n" +
+        "1. GITHUB GIST ID:\n" +
+        "   - Đăng nhập Gist.github.com\n" +
+        "   - Gist ID là chuỗi mã ở cuối đường link Gist cá nhân của bạn\n" +
+        "   - Ví dụ: https://gist.github.com/user/a1b2c3d4e5f6 -> ID là: a1b2c3d4e5f6\n\n" +
+        "2. GOOGLE DRIVE OAUTH TOKEN / FILE ID:\n" +
+        "   - Lấy OAuth Token 'ya29...' tại: developers.google.com/oauthplayground (Chọn Drive API v3 -> Authorize APIs)\n" +
+        "   - Hoặc dán tệp JSON mã hóa đã tải về vào ô nhập!"
+      )
+    }
+  })
+  document.getElementById('cloud-overlay')?.addEventListener('click', e => {
+    if(e.target.id === 'cloud-overlay'){
+      state.showCloudSync = false
+      render()
+    }
+  })
+
+  // Health Audit handlers
+  document.querySelectorAll('[data-fix-id]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const id=btn.dataset.fixId
+      const item=state.items.find(i=>i.id===id)
+      if(item){
+        state.activeDockTab='hud'
+        state.editingId=id
+        state.editForm={service:item.service,username:item.username,password:item.password,category:item.category||'',notes:item.notes||'',url:item.url||''}
+        render()
+      }
     })
-    document.getElementById('cpw-new')?.addEventListener('input',e=>{
-      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-      if(e.target.value!==f)e.target.value=f
-      state.changePwForm.newPw=f
-    })
-    document.getElementById('cpw-confirm')?.addEventListener('input',e=>{
-      const f=e.target.value.replace(/[^a-zA-Z0-9@!#&-]/g,'')
-      if(e.target.value!==f)e.target.value=f
-      state.changePwForm.confirm=f
-    })
-    document.getElementById('cpw-confirm')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleChangePassword()})
-    document.getElementById('cpw-submit')?.addEventListener('click',handleChangePassword)
-    document.getElementById('cpw-cancel')?.addEventListener('click',()=>{state.showChangePw=false;render()})
-    document.getElementById('cpw-overlay')?.addEventListener('click',e=>{if(e.target.id==='cpw-overlay'){state.showChangePw=false;render()}})
-  }
+  })
 
   // 2FA setup modal
   if(state.show2FASetup){
@@ -1844,6 +3561,20 @@ function bindEvents(){
             state.setup2FACode=code
           }
         })
+        box.addEventListener('paste', e=>{
+          e.preventDefault()
+          const pasted=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6)
+          if(pasted){
+            for(let i=0;i<6;i++){
+              if(setupOtpBoxes[i]) setupOtpBoxes[i].value = pasted[i] || ''
+            }
+            state.setup2FACode=pasted
+            if(pasted.length===6){
+              setupOtpBoxes[5].focus()
+              handleVerify2FASetup()
+            }
+          }
+        })
       })
     }
     document.getElementById('2fa-verify')?.addEventListener('click',handleVerify2FASetup)
@@ -1851,6 +3582,101 @@ function bindEvents(){
     document.getElementById('2fa-overlay')?.addEventListener('click',e=>{if(e.target.id==='2fa-overlay'){state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';render()}})
     document.getElementById('copy-2fa-secret')?.addEventListener('click',()=>{copyText(state.setup2FASecret)})
   }
+  
+  // Left Vertical Dock Navigation Active State
+  document.querySelectorAll('.dock-btn').forEach(b => {
+    const isMatch = (b.dataset.dock === state.activeDockTab) || (b.dataset.dock === 'settings' && state.activeDockTab === 'cloud')
+    b.classList.toggle('active', isMatch)
+  })
+
+  // One-time static listeners setup
+  if(!window._staticListenersInitialized){
+    window._staticListenersInitialized = true
+
+    document.querySelectorAll('[data-set-theme]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const t = btn.dataset.setTheme
+        if(state.theme === t) return
+        state.theme = t
+        localStorage.setItem('fear_vault_theme', t)
+        document.documentElement.setAttribute('data-theme', t)
+        render()
+      })
+    })
+
+    document.querySelectorAll('[data-dock]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dock = btn.dataset.dock
+        if(state.page !== 'unlocked'){
+          toast('info', 'Vui lòng mở khóa Vault để truy cập các tính năng!')
+          document.getElementById('pw-input')?.focus()
+          return
+        }
+        if(state.activeDockTab === dock) return
+        state.activeDockTab = dock
+        if(dock === 'hud' || dock === 'vault'){
+          state.search = ''
+          state.activeCategory = ''
+        }
+        render()
+      })
+    })
+  }
+
+  // Tab View Specific Handlers
+  document.getElementById('new-cat-tab-btn')?.addEventListener('click', () => {
+    const val = document.getElementById('new-cat-tab-input')?.value
+    const added = addCustomCategory(val)
+    if(added){
+      toast('success', `Đã tạo danh mục "${added.toUpperCase()}"`)
+      render()
+    } else {
+      toast('error', 'Tên danh mục không hợp lệ hoặc đã tồn tại')
+    }
+  })
+
+  document.querySelectorAll('[data-rename-cat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const oldCat = btn.dataset.renameCat
+      const val = prompt(`Nhập tên mới cho danh mục "${oldCat.toUpperCase()}":`, oldCat)
+      if(val !== null) renameCategory(oldCat, val)
+    })
+  })
+
+  document.querySelectorAll('[data-del-cat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const cat = btn.dataset.delCat
+      deleteCategory(cat)
+    })
+  })
+
+  document.querySelectorAll('[data-copy-note]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      copyText(btn.dataset.copyNote)
+    })
+  })
+
+  document.getElementById('btn-goto-guide')?.addEventListener('click', () => { state.activeDockTab = 'guide'; render(); })
+  document.getElementById('btn-back-to-settings')?.addEventListener('click', () => { state.activeDockTab = 'settings'; render(); })
+
+  document.querySelectorAll('[data-edit]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.edit
+      const item = state.items.find(i => i.id === id)
+      if(item){
+        state.activeDockTab = 'hud'
+        state.editingId = id
+        state.editForm = {service:item.service, username:item.username, password:item.password, category:item.category||'', notes:item.notes||'', url:item.url||''}
+        render()
+      }
+    })
+  })
+
+  document.getElementById('tab-cpw-current')?.addEventListener('input', e => { state.changePwForm.current = e.target.value })
+  document.getElementById('tab-cpw-new')?.addEventListener('input', e => { state.changePwForm.newPw = e.target.value })
+  document.getElementById('tab-cpw-confirm')?.addEventListener('input', e => { state.changePwForm.confirm = e.target.value })
+  document.getElementById('tab-cpw-submit')?.addEventListener('click', handleChangePassword)
+
   document.querySelectorAll('.eye-toggle-btn').forEach(btn=>{
     btn.addEventListener('click',e=>{
       e.preventDefault()
@@ -1893,13 +3719,11 @@ function initCyberHUDCanvas(){
   }
 
   let scanY=0
-  let hudTime=0
 
   function drawHUD(){
     ctx.fillStyle='#000000'
     ctx.fillRect(0,0,width,height)
 
-    // 1. Draw Red Grid Lines (Nền đen tuyền)
     ctx.strokeStyle='rgba(239, 68, 68, 0.08)'
     ctx.lineWidth=1
     const gridSize=40
@@ -1910,7 +3734,6 @@ function initCyberHUDCanvas(){
       ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke()
     }
 
-    // 2. Draw Falling Crimson Matrix Code Telemetry
     ctx.font=`${fontSize}px 'JetBrains Mono', monospace`
     for(let i=0;i<drops.length;i+=2){
       const text=charSet[Math.floor(Math.random()*charSet.length)]
@@ -1926,34 +3749,18 @@ function initCyberHUDCanvas(){
       drops[i]++
     }
 
-    // 3. Draw Connecting Circuit Nodes (Electric Cyan glowing nodes)
+    ctx.fillStyle='#00f0ff'
+    ctx.shadowBlur=0
     for(let i=0;i<nodes.length;i++){
       const n=nodes[i]
       n.x+=n.vx;n.y+=n.vy
       if(n.x<0||n.x>width)n.vx*=-1
       if(n.y<0||n.y>height)n.vy*=-1
-
-      ctx.fillStyle='#00f0ff'
-      ctx.shadowBlur=6
-      ctx.shadowColor='#00f0ff'
       ctx.beginPath()
       ctx.arc(n.x,n.y,n.r,0,Math.PI*2)
       ctx.fill()
-
-      for(let j=i+1;j<nodes.length;j++){
-        const n2=nodes[j]
-        const d=Math.hypot(n.x-n2.x,n.y-n2.y)
-        if(d<120){
-          ctx.strokeStyle=`rgba(0, 240, 255, ${(1-d/120)*0.15})`
-          ctx.beginPath()
-          ctx.moveTo(n.x,n.y)
-          ctx.lineTo(n2.x,n2.y)
-          ctx.stroke()
-        }
-      }
     }
 
-    // 4. Red Laser Scan Line (Biometric Laser)
     scanY=(scanY+1.2)%height
     const grad=ctx.createLinearGradient(0,scanY-15,0,scanY+15)
     grad.addColorStop(0,'rgba(239, 68, 68, 0)')
@@ -1967,7 +3774,6 @@ function initCyberHUDCanvas(){
 
   drawHUD()
 
-  // 3D Card Tilt on Mousemove
   document.addEventListener('mousemove',e=>{
     const card=document.querySelector('.lock-screen')
     if(card){
@@ -2008,7 +3814,6 @@ function initLockCardFingerprintCanvas(){
 
     ctx.save()
 
-    // HUD Target Brackets [ ]
     const boxSize=fpRadius*1.35
     const cLen=22
     ctx.strokeStyle='rgba(0, 240, 255, 0.85)'
@@ -2016,13 +3821,11 @@ function initLockCardFingerprintCanvas(){
     ctx.shadowColor='#00f0ff'
     ctx.shadowBlur=12
 
-    // Corner Brackets
     ctx.beginPath(); ctx.moveTo(fpX - boxSize, fpY - boxSize + cLen); ctx.lineTo(fpX - boxSize, fpY - boxSize); ctx.lineTo(fpX - boxSize + cLen, fpY - boxSize); ctx.stroke()
     ctx.beginPath(); ctx.moveTo(fpX + boxSize - cLen, fpY - boxSize); ctx.lineTo(fpX + boxSize, fpY - boxSize); ctx.lineTo(fpX + boxSize, fpY - boxSize + cLen); ctx.stroke()
     ctx.beginPath(); ctx.moveTo(fpX - boxSize, fpY + boxSize - cLen); ctx.lineTo(fpX - boxSize, fpY + boxSize); ctx.lineTo(fpX - boxSize + cLen, fpY + boxSize); ctx.stroke()
     ctx.beginPath(); ctx.moveTo(fpX + boxSize - cLen, fpY + boxSize); ctx.lineTo(fpX + boxSize, fpY + boxSize); ctx.lineTo(fpX + boxSize, fpY + boxSize - cLen); ctx.stroke()
 
-    // Reticle Ticks & Grid Dots
     ctx.fillStyle='rgba(0, 240, 255, 0.6)'
     ctx.shadowBlur=4
     for(let gx = -1; gx <= 1; gx += 2){
@@ -2031,7 +3834,6 @@ function initLockCardFingerprintCanvas(){
       }
     }
 
-    // Fingerprint Whorls & Circuit Tracks
     ctx.lineWidth=2
     const numRings=9
     for(let i=1;i<=numRings;i++){
@@ -2049,7 +3851,6 @@ function initLockCardFingerprintCanvas(){
       ctx.ellipse(fpX,fpY,rX,rY,0,startAngle,endAngle)
       ctx.stroke()
 
-      // Circuit node terminals
       if(i%2===1){
         const midAngle=startAngle+(endAngle-startAngle)*0.45
         const px=fpX+Math.cos(midAngle)*rX
@@ -2061,11 +3862,9 @@ function initLockCardFingerprintCanvas(){
       }
     }
 
-    // Glowing White Pulse Hotspot Nodes (Exact match to User Image!)
     const p1Time=(fpTime*2)%(Math.PI*2)
     const p2Time=(fpTime*1.6+2)%(Math.PI*2)
 
-    // Top White Node
     const n1X=fpX+Math.cos(fpTime*0.7)*(fpRadius*0.22)
     const n1Y=fpY-fpRadius*0.4+Math.sin(fpTime*0.5)*(fpRadius*0.1)
     ctx.fillStyle='#ffffff'
@@ -2075,7 +3874,6 @@ function initLockCardFingerprintCanvas(){
     ctx.arc(n1X,n1Y,8+Math.sin(p1Time)*2.5,0,Math.PI*2)
     ctx.fill()
 
-    // Bottom White Node
     const n2X=fpX-fpRadius*0.28+Math.sin(fpTime*0.6)*(fpRadius*0.08)
     const n2Y=fpY+fpRadius*0.42+Math.cos(fpTime*0.5)*(fpRadius*0.08)
     ctx.fillStyle='#ffffff'
@@ -2085,7 +3883,6 @@ function initLockCardFingerprintCanvas(){
     ctx.arc(n2X,n2Y,7+Math.cos(p2Time)*2.5,0,Math.PI*2)
     ctx.fill()
 
-    // Dedicated Fingerprint Scanning Laser
     const fpLaserY=fpY-boxSize+((fpTime*60)%(boxSize*2))
     const fpLaserGrad=ctx.createLinearGradient(fpX-boxSize,fpLaserY,fpX+boxSize,fpLaserY)
     fpLaserGrad.addColorStop(0,'rgba(0,240,255,0)')
@@ -2101,7 +3898,6 @@ function initLockCardFingerprintCanvas(){
     ctx.lineTo(fpX+boxSize,fpLaserY)
     ctx.stroke()
 
-    // Laser Beam Glow
     const fpBeamGrad=ctx.createLinearGradient(0,fpLaserY-12,0,fpLaserY+12)
     fpBeamGrad.addColorStop(0,'rgba(0,240,255,0)')
     fpBeamGrad.addColorStop(0.5,'rgba(0,240,255,0.3)')
@@ -2109,7 +3905,6 @@ function initLockCardFingerprintCanvas(){
     ctx.fillStyle=fpBeamGrad
     ctx.fillRect(fpX-boxSize,fpLaserY-12,boxSize*2,24)
 
-    // Telemetry Status & Audio Spectrum Waves
     ctx.shadowBlur=0
     ctx.font="10px 'JetBrains Mono', monospace"
     ctx.fillStyle='#00f0ff'
@@ -2132,12 +3927,15 @@ document.addEventListener('click',resetLockTimer)
 document.addEventListener('keydown',e=>{
   resetLockTimer()
   if(state.page==='unlocked'){
-    if((e.key==='/'||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'))&&document.activeElement?.tagName!=='INPUT'&&document.activeElement?.tagName!=='SELECT'){
+    if((e.key==='/'||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'))&&document.activeElement?.tagName!=='INPUT'&&document.activeElement?.tagName!=='TEXTAREA'&&document.activeElement?.tagName!=='SELECT'){
       e.preventDefault()
       document.getElementById('search-input')?.focus()
     }
     if(e.key==='Escape'){
-      if(state.showChangePw){state.showChangePw=false;render()}
+      if(state.showCatManager){state.showCatManager=false;render()}
+      else if(state.showCloudSync){state.showCloudSync=false;render()}
+      else if(state.showHealthCheck){state.showHealthCheck=false;render()}
+      else if(state.showChangePw){state.showChangePw=false;render()}
       else if(state.show2FASetup){state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';render()}
       else if(state.editingId){state.editingId=null;render()}
       else if(state.showAdd){state.showAdd=false;render()}
@@ -2145,7 +3943,21 @@ document.addEventListener('keydown',e=>{
   }
 })
 
-const data=loadData()
+// PWA Manifest & Service Worker Registration
+if(window.location.protocol.startsWith('http')){
+  const manifestLink=document.createElement('link')
+  manifestLink.rel='manifest'
+  manifestLink.href='./manifest.json'
+  document.head.appendChild(manifestLink)
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('./sw.js').catch(()=>{})
+    })
+  }
+}
+
+initIndexedDBAutoRestore()
 state.page='locked';state.masterPassword=''
 render()
 initCyberHUDCanvas()
