@@ -980,6 +980,77 @@ html, body{
   user-select:none;
 }
 .toggle-opt input{accent-color:var(--primary);cursor:pointer}
+
+/* ─── MOBILE RESPONSIVE ─── */
+@media (max-width: 768px){
+  html{font-size:15px}
+  /* Left Dock → Bottom Nav */
+  .left-dock{
+    width:100%;height:60px;flex-direction:row;padding:6px 12px;gap:0;
+    border-right:none;border-top:1px solid var(--border);
+    position:fixed;bottom:0;left:0;z-index:100
+  }
+  .dock-logo{display:none}
+  .dock-menu{flex-direction:row;justify-content:space-around;margin-top:0;gap:2px}
+  .dock-btn{width:42px;height:42px}
+  .dock-btn.active::before{display:none}
+  .container{padding-bottom:60px}
+  /* Modals fullscreen bottom-sheet */
+  .modal-overlay{padding:0;align-items:flex-end}
+  .modal{max-width:100%;max-height:92vh;border-radius:24px 24px 0 0;padding:24px 20px}
+  /* Lock screen */
+  .lock-screen{max-width:100%;margin:10px;padding:28px 20px;border-radius:20px;transform:none!important}
+  .lock-screen .ghost-typography,.spinning-stamp-container{display:none}
+  .lock-screen h2{font-size:22px}
+  /* Disable 3D tilt canvas overlay */
+  #fp-card-canvas{display:none}
+  /* Stack grids */
+  .grid-2{grid-template-columns:1fr}
+  /* Vault entries */
+  .vault-entry{flex-wrap:wrap;gap:10px;padding:14px 16px}
+  .vault-entry .service{min-width:auto;flex:1}
+  .vault-entry .username{min-width:auto;width:100%;order:3}
+  .vault-entry .pass{min-width:auto}
+  .vault-entry .cat{margin-left:0}
+  .vault-entry .actions{margin-left:0;width:100%;justify-content:flex-end}
+  /* Title bar */
+  .terminal-section .title-bar{padding:0 12px;font-size:11px}
+  .terminal-section .body{padding:12px}
+  /* Pills */
+  .pills{gap:6px}
+  .pill{font-size:11px;padding:5px 12px}
+  /* OTP */
+  .otp-box,.setup-otp-box{width:40px;height:46px;font-size:18px;border-radius:12px}
+  .otp-group{gap:6px}
+  /* Inputs */
+  .terminal-input{height:44px;font-size:14px}
+  .input-pill{height:46px!important;font-size:14px!important}
+  /* Toast — above bottom nav */
+  .toast{bottom:74px;right:12px;left:12px;text-align:center}
+  /* Sidebar cat list */
+  .sidebar-cat-list{gap:8px}
+  /* Dashboard grid */
+  .dashboard-grid{gap:16px}
+  /* Lock screen buttons */
+  #unlock-btn{height:46px!important;font-size:14px!important}
+}
+@media (max-width: 480px){
+  html{font-size:14px}
+  .lock-screen{padding:20px 14px;margin:8px}
+  .modal{padding:20px 14px}
+  .terminal-section .title-bar{height:44px}
+  .terminal-section .title-bar .lbl b{font-size:14px}
+  .dock-btn{width:38px;height:38px}
+  .left-dock{height:52px;padding:4px 8px}
+  .container{padding-bottom:52px}
+  .vault-entry{padding:12px}
+  .icon-letter{width:40px;height:40px;font-size:16px}
+  .hud-num{font-size:18px}
+  .sidebar-cat-list{grid-template-columns:1fr}
+  .otp-box,.setup-otp-box{width:34px;height:40px;font-size:15px;border-radius:10px}
+  .otp-group{gap:4px}
+  .toast{bottom:66px;right:8px;left:8px;font-size:12px;padding:10px 14px}
+}
 </style>
 </head>
 <body>
@@ -3391,7 +3462,20 @@ function bindEvents(){
     pw?.addEventListener('keydown',e=>{if(e.key==='Enter')handleUnlock()})
     document.getElementById('recover-btn')?.addEventListener('click',e=>{e.preventDefault();state.page='recovery';state.masterPassword='';state.recoveryKeyInput='';render()})
     document.getElementById('cloud-pull-lock-btn')?.addEventListener('click',e=>{e.preventDefault();state.showCloudSync=true;render()})
-    document.getElementById('cloud-sync-lock-btn')?.addEventListener('click',()=>{state.showCloudSync=true;render()})
+    document.getElementById('cloud-sync-lock-btn')?.addEventListener('click',()=>{
+      alert(
+        "☁️ ĐỒNG BỘ CLOUD — HƯỚNG DẪN NHANH:\n\n"+
+        "1. GITHUB GIST ID:\n"+
+        "   - Đăng nhập Gist.github.com\n"+
+        "   - Gist ID là chuỗi ở cuối link Gist cá nhân của bạn\n"+
+        "   - VD: gist.github.com/user/a1b2c3d4e5f6 → ID: a1b2c3d4e5f6\n\n"+
+        "2. GOOGLE DRIVE OAUTH TOKEN / FILE ID:\n"+
+        "   - Lấy OAuth Token tại: developers.google.com/oauthplayground\n"+
+        "   - Chọn Drive API v3 → Authorize APIs → lấy token 'ya29...'\n"+
+        "   - Hoặc dán tệp JSON mã hóa đã tải về vào ô nhập!\n\n"+
+        "👉 Sau khi có ID/Token, mở khoá Vault và dùng tính năng Cloud trong Settings."
+      )
+    })
     document.getElementById('reset-btn')?.addEventListener('click',()=>{if(confirm('Xoá toàn bộ dữ liệu Vault? Hành động này không thể hoàn tác!')){localStorage.removeItem(STORAGE_KEY);setDBItem(STORAGE_KEY,{});state.page='locked';state.masterPassword='';render()}})
     document.getElementById('totp-verify-btn')?.addEventListener('click',handleTOTPVerify)
     document.getElementById('totp-back-btn')?.addEventListener('click',()=>{state.page='locked';state.masterPassword='';state.vaultKey='';state._totpSecret='';state.totpCode='';render()})
@@ -3774,22 +3858,24 @@ function initCyberHUDCanvas(){
 
   drawHUD()
 
-  document.addEventListener('mousemove',e=>{
-    const card=document.querySelector('.lock-screen')
-    if(card){
-      const rect=card.getBoundingClientRect()
-      const x=e.clientX-rect.left-rect.width/2
-      const y=e.clientY-rect.top-rect.height/2
-      const tiltX=(y/(rect.height/2))*-7
-      const tiltY=(x/(rect.width/2))*7
-      card.style.transform=`perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.015,1.015,1.015)`
-    }
-  })
+  if(window.innerWidth>768){
+    document.addEventListener('mousemove',e=>{
+      const card=document.querySelector('.lock-screen')
+      if(card){
+        const rect=card.getBoundingClientRect()
+        const x=e.clientX-rect.left-rect.width/2
+        const y=e.clientY-rect.top-rect.height/2
+        const tiltX=(y/(rect.height/2))*-7
+        const tiltY=(x/(rect.width/2))*7
+        card.style.transform=`perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.015,1.015,1.015)`
+      }
+    })
 
-  document.addEventListener('mouseleave',()=>{
-    const card=document.querySelector('.lock-screen')
-    if(card)card.style.transform='perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
-  })
+    document.addEventListener('mouseleave',()=>{
+      const card=document.querySelector('.lock-screen')
+      if(card)card.style.transform='perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)'
+    })
+  }
 }
 
 // ─── LOCK SCREEN CARD FINGERPRINT CANVAS ──────────────
@@ -3921,6 +4007,28 @@ function initLockCardFingerprintCanvas(){
 
   drawCardFP()
 }
+
+// ─── TOUCH SWIPE-TO-CLOSE MODAL ────────────────────
+let touchStartY=0
+document.addEventListener('touchstart',e=>{
+  const modal=e.target.closest('.modal')
+  if(modal)touchStartY=e.touches[0].clientY
+},{passive:true})
+
+document.addEventListener('touchmove',e=>{
+  const modal=e.target.closest('.modal-overlay')
+  if(!modal||!touchStartY)return
+  const dy=e.touches[0].clientY-touchStartY
+  if(dy>80){
+    touchStartY=0
+    const closeBtn=modal.querySelector('[onclick*="close"], .modal .btn-terminal, .modal-overlay')
+    if(state.showCloudSync){state.showCloudSync=false;render()}
+    else if(state.showCatManager){state.showCatManager=false;render()}
+    else if(state.showHealthCheck){state.showHealthCheck=false;render()}
+    else if(state.showChangePw){state.showChangePw=false;render()}
+    else if(state.show2FASetup){state.show2FASetup=false;state.setup2FASecret='';state.setup2FACode='';render()}
+  }
+},{passive:true})
 
 // ─── INIT ────────────────────────────────────────────
 document.addEventListener('click',resetLockTimer)
