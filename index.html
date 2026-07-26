@@ -3713,23 +3713,26 @@ function bindEvents(){
     b.classList.toggle('active', isMatch)
   })
 
-  // One-time static listeners setup
-  if(!window._staticListenersInitialized){
-    window._staticListenersInitialized = true
+  // One-time delegated listeners (survives DOM replacement)
+  if(!window._staticDelegated){
+    window._staticDelegated = true
 
-    document.querySelectorAll('[data-set-theme]').forEach(btn => {
-      btn.addEventListener('click', () => {
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-set-theme]')
+      if(btn){
         const t = btn.dataset.setTheme
         if(state.theme === t) return
         state.theme = t
         localStorage.setItem('fear_vault_theme', t)
         document.documentElement.setAttribute('data-theme', t)
         render()
-      })
+        return
+      }
     })
 
-    document.querySelectorAll('[data-dock]').forEach(btn => {
-      btn.addEventListener('click', () => {
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('[data-dock]')
+      if(btn){
         const dock = btn.dataset.dock
         if(state.page !== 'unlocked'){
           toast('info', 'Vui lòng mở khóa Vault để truy cập các tính năng!')
@@ -3743,7 +3746,7 @@ function bindEvents(){
           state.activeCategory = ''
         }
         render()
-      })
+      }
     })
   }
 
