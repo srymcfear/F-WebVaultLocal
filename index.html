@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://www.googleapis.com https://api.github.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; connect-src 'self' https://cdn.jsdelivr.net https://www.googleapis.com https://api.github.com;">
-<title>FEAR·VAULT · CYBER HUD</title>
+<title>FEAR · VAULT</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1060,15 +1060,20 @@ html, body{
   .container{padding-bottom:52px}
   .sidebar-panel{display:none}
   .vault-entry{padding:12px}
-  .icon-letter{width:40px;height:40px;font-size:16px}
+  .entry-body{flex-wrap:wrap;gap:6px;align-items:flex-start}
+  .entry-body .icon-letter{width:36px;height:36px;font-size:14px;border-radius:10px}
+  .entry-body > :nth-child(2){min-width:0;width:auto;flex:1}
+  .entry-body .cat{margin-left:0}
+  .entry-body .username,.entry-body .pass{order:1;width:auto;flex:1;min-width:0;margin-top:6px}
+  .entry-body .pass{text-align:right}
+  .entry-body .actions{order:2;width:100%;margin-left:0;margin-top:4px;justify-content:flex-end}
+  .entry-body .actions .btn-sm{font-size:0;padding:0;width:36px;height:36px;gap:0;border-radius:8px}
+  .entry-body .actions .btn-sm svg{width:16px;height:16px}
   .hud-num{font-size:18px}
   .sidebar-cat-list{grid-template-columns:1fr}
   .otp-box,.setup-otp-box{width:34px;height:40px;font-size:15px;border-radius:10px}
   .otp-group{gap:4px}
   .toast{bottom:66px;right:8px;left:8px;font-size:12px;padding:10px 14px}
-  /* Icon-only action buttons */
-  .vault-entry .actions .btn-sm{font-size:0;padding:0;width:36px;height:36px;gap:0;border-radius:8px}
-  .vault-entry .actions .btn-sm svg{width:16px;height:16px}
   /* Category add row wrap */
   .cat-add-row{flex-wrap:wrap;gap:8px!important}
   .cat-add-row .terminal-input{min-width:160px}
@@ -1921,7 +1926,7 @@ async function handleEnableWebAuthn(){
     const cred = await navigator.credentials.create({
       publicKey: {
         challenge,
-        rp: { name: "FEAR-Vault Cyber HUD" },
+        rp: { name: "FEAR-Vault Cyber Password Manager" },
         user: {
           id: userId,
           name: "fear-vault-user",
@@ -2173,7 +2178,7 @@ async function handleCloudPushGist(){
           'Accept': 'application/vnd.github+json'
         },
         body: JSON.stringify({
-          description: 'FEAR-Vault Zero-Knowledge Encrypted Backup',
+          description: 'FEAR-Vault Encrypted Backup',
           public: false,
           files: { 'fear_vault_backup.json': { content: envString } }
         })
@@ -2411,7 +2416,7 @@ function renderEntries(){
     const showNote = state.showNotes[i.id]
 
     return `<div class="vault-entry" data-id="${i.id}" style="flex-direction:column;align-items:stretch;gap:10px;">
-      <div style="display:flex;align-items:center;gap:14px;width:100%;">
+      <div class="entry-body" style="display:flex;align-items:center;gap:14px;width:100%;">
         <div class="icon-letter" style="background:${bg};color:#000000;">${letter}</div>
         <div style="display:flex;flex-direction:column;flex:1;min-width:140px;">
           <span class="service">${esc(i.service)}</span>
@@ -2521,7 +2526,7 @@ function render(){
           <svg class="spinning-stamp" viewBox="0 0 160 160">
             <path id="stampPath" d="M 80, 80 m -60, 0 a 60,60 0 1,1 120,0 a 60,60 0 1,1 -120,0" fill="none" />
             <text font-family="'Orbitron', sans-serif" font-size="10" font-weight="700" fill="rgba(0, 240, 255, 0.75)" letter-spacing="3">
-              <textPath href="#stampPath">• BIOMETRIC MATRIX HUD • FEAR VAULT </textPath>
+              <textPath href="#stampPath">• FEAR VAULT • Cyber Password Manager</textPath>
             </text>
           </svg>
           <div class="stamp-center-icon">${SVG.lock}</div>
@@ -3133,7 +3138,7 @@ function render(){
       <div class="terminal-section">
         <div class="title-bar">
           <div style="display:flex;align-items:center;gap:14px;color:var(--muted);">
-            <b style="color:var(--accent);font-family:var(--font-display);font-size:15px;letter-spacing:1px;">FEAR · CYBERDECK HUD V2.0</b>
+            <b style="color:var(--accent);font-family:var(--font-display);font-size:15px;letter-spacing:1px;">FEAR •  Password Manager V2.0</b>
             <span style="background:var(--badge-bg);border:1px solid var(--border-hover);color:var(--accent);padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;">ENCRYPTED (AES-256)</span>
             <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">ROOT@VAULT:~#</span>
           </div>
@@ -3156,7 +3161,7 @@ function render(){
   if(state.showCloudSync){
     html+=`<div class="modal-overlay" id="cloud-overlay"><div class="modal" style="max-width:560px;">
       <h3>${SVG.cloud} MÃ HÓA & ĐỒNG BỘ CLOUD</h3>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Đồng bộ kho an toàn giữa các thiết bị theo cơ chế Zero-Knowledge (Mã hóa AES-256-GCM + chữ ký HMAC trước khi đẩy lên Cloud).</p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Đồng bộ kho an toàn giữa các thiết bị theo cơ chế Zero-Knowledge .</p>
       
       <div style="display:flex;flex-direction:column;gap:14px;">
         <div style="padding:14px;border:1px solid var(--border);border-radius:12px;background:rgba(4,7,14,0.8);">

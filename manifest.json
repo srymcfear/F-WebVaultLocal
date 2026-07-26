@@ -1,7 +1,7 @@
 {
-  "name": "FEAR-Vault · Cyber HUD Password Manager",
+  "name": "FEAR-Vault · Cyber Password Manager",
   "short_name": "FEAR-Vault",
-  "description": "Zero-Knowledge Cyber HUD Matrix Password Manager 100% Client-Side",
+  "description": "Password Manager 100% Client-Side",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
