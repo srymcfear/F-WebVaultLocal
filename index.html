@@ -3343,8 +3343,8 @@ function render(){
   }
 
   app.innerHTML=html
-  bindEvents()
   if(state.page==='unlocked') renderEntries()
+  bindEvents()
 }
 
 function esc(s){if(typeof s!=='string')return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
