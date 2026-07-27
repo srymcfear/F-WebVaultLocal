@@ -1873,8 +1873,8 @@ async function handleExport(){
   if(!rk)return
   const data=loadData()
   if(data.vault_key_recovery){try{await aesDecrypt(data.vault_key_recovery,rk)}catch{toast('error','Sai Recovery Key');return}}
-  const plainData=state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
-  const env=await exportVault(JSON.stringify(plainData),rk)
+  const payload=await buildExportPayload()
+  const env=await exportVault(JSON.stringify(payload),rk)
   const blob=new Blob([JSON.stringify(env,null,2)],{type:'application/json'})
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='fear-vault-export.json';a.click();URL.revokeObjectURL(a.href)
   toast('success','Xuất Vault thành công')
@@ -1899,7 +1899,8 @@ async function handleImport(){
     try{
       const envelope=JSON.parse(await f.text());const json=await importVault(envelope,rk)
       if(!json){toast('error','Sai Recovery Key hoặc file không hợp lệ');return}
-      const imported=JSON.parse(json);const ek=state.vaultKey||state.masterPassword;const data=loadData()
+      const parsed=JSON.parse(json);const ek=state.vaultKey||state.masterPassword;const data=loadData()
+      const imported=Array.isArray(parsed)?parsed:(parsed.items||[])
       for(const item of imported){
         const id=crypto.randomUUID();
         const full={service:item.service||'',username:item.username||'',password:item.password||'',category:item.category||'',notes:item.notes||'',url:item.url||'',createdAt:Date.now(),updatedAt:Date.now()}
@@ -1907,9 +1908,22 @@ async function handleImport(){
         data.entries.push({id,encrypted:enc})
         state.items.push({id,...full})
       }
-      saveData(data);toast('success','Import '+imported.length+' mục thành công');renderEntries()
+      if(!Array.isArray(parsed)&&parsed.totp_secret&&ek&&!data.totp_encrypted)
+        data.totp_encrypted=await directEncrypt(parsed.totp_secret,ek)
+      saveData(data);toast('success','Import '+(imported.length)+' mục thành công'+(parsed.totp_secret?' (kèm 2FA)':''));renderEntries()
     }catch(e){toast('error','Lỗi import: '+e.message)}
   };inp.click()
+}
+
+// ─── EXPORT PAYLOAD HELPER (items + 2FA state) ───────
+async function buildExportPayload(){
+  const data=loadData()
+  const items=state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
+  const payload={items}
+  if(data.totp_encrypted&&state.vaultKey){
+    try{payload.totp_secret=await directDecrypt(data.totp_encrypted,state.vaultKey)}catch{}
+  }
+  return payload
 }
 
 // ─── WEBAUTHN BIOMETRIC OPS ──────────────────────────
@@ -2015,8 +2029,8 @@ async function handleCloudGeneratePayload(){
   if(data.vault_key_recovery){
     try{await aesDecrypt(data.vault_key_recovery,rk)}catch{toast('error','Sai Recovery Key');return}
   }
-  const plainData=state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
-  const env=await exportVault(JSON.stringify(plainData),rk)
+  const payload=await buildExportPayload()
+  const env=await exportVault(JSON.stringify(payload),rk)
   state.cloudEncryptedOutput=JSON.stringify(env)
   toast('success','Đã tạo bản đóng gói mã hóa Cloud (Zero-Knowledge AES-256-GCM)')
   render()
@@ -2031,10 +2045,10 @@ async function handleCloudRestoreFromPayload(){
     try{ envelope=JSON.parse(state.cloudSyncInput) }catch{ toast('error','Chuỗi JSON không hợp lệ'); return }
     const json=await importVault(envelope, rk)
     if(!json){toast('error','Sai Recovery Key hoặc chữ ký HMAC không hợp lệ');return}
-    const imported=JSON.parse(json)
+    const parsed=JSON.parse(json);const data=loadData()
+    const imported=Array.isArray(parsed)?parsed:(parsed.items||[])
     
     // If not initialized vault yet or resetting vault to imported
-    const data=loadData()
     if(!data.vault_hash){
       // Initialize vault for new device
       const vk=generateVaultKey()
@@ -2048,11 +2062,14 @@ async function handleCloudRestoreFromPayload(){
         const full={service:item.service||'',username:item.username||'',password:item.password||'',category:item.category||'',notes:item.notes||'',url:item.url||'',createdAt:Date.now(),updatedAt:Date.now()}
         entries.push({id, encrypted:await encryptEntry(full, vk)})
       }
-      saveData({vault_hash:vh, vault_key_encrypted:evk, vault_key_recovery:erk, recovery_hash:rh, entries})
+      const payload={vault_hash:vh, vault_key_encrypted:evk, vault_key_recovery:erk, recovery_hash:rh, entries}
+      if(!Array.isArray(parsed)&&parsed.totp_secret)
+        payload.totp_encrypted=await directEncrypt(parsed.totp_secret,vk)
+      saveData(payload)
       state.vaultKey=vk
       state.masterPassword=rk
       toast('success','Đã phục hồi kho từ Cloud thành công trên thiết bị mới!')
-      await completeUnlock(vk, {vault_hash:vh, vault_key_encrypted:evk, vault_key_recovery:erk, recovery_hash:rh, entries})
+      await completeUnlock(vk, {...payload})
       return
     }
 
@@ -2064,6 +2081,8 @@ async function handleCloudRestoreFromPayload(){
       data.entries.push({id,encrypted:enc})
       state.items.push({id,...full})
     }
+    if(!Array.isArray(parsed)&&parsed.totp_secret&&ek&&!data.totp_encrypted)
+      data.totp_encrypted=await directEncrypt(parsed.totp_secret,ek)
     saveData(data)
     toast('success','Đã kéo thành công '+imported.length+' mục từ Cloud vào Vault!')
     state.showCloudSync=false
@@ -2081,8 +2100,8 @@ async function handleCloudPushGDrive(){
   
   state.loading = true; render()
   try {
-    const plainData = state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
-    const env = await exportVault(JSON.stringify(plainData), rk)
+    const payload = await buildExportPayload()
+    const env = await exportVault(JSON.stringify(payload), rk)
     const envString = JSON.stringify(env, null, 2)
     state.cloudEncryptedOutput = envString
 
@@ -2159,8 +2178,8 @@ async function handleCloudPushGist(){
   
   state.loading = true; render()
   try {
-    const plainData = state.items.map(i=>({service:i.service,username:i.username,password:i.password,category:i.category,notes:i.notes||'',url:i.url||''}))
-    const env = await exportVault(JSON.stringify(plainData), rk)
+    const payload = await buildExportPayload()
+    const env = await exportVault(JSON.stringify(payload), rk)
     const envString = JSON.stringify(env, null, 2)
     state.cloudEncryptedOutput = envString
 
